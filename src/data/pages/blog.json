@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "title": "Blog — Daniel Oliver Racing",
+    "description": "Race announcements, the sim-to-real methodology, and notes from the journey to IMSA 2026."
+  },
+  "hero": {
+    "eyebrow": "Journal",
+    "titlePrefix": "The",
+    "titleAccent": "blog",
+    "intro": "Announcements, engineering notes, and honest write-ups from the sim-to-real journey."
+  },
+  "readLabel": "Read post",
+  "detail": {
+    "backLabel": "All posts",
+    "ctaTitle": "Follow the journey to IMSA 2026",
+    "ctaBody": "Schedule, media and more from the #25 campaign.",
+    "ctaLabel": "Schedule",
+    "ctaHref": "/schedule"
+  }
+}

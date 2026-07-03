@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import page from '../../data/pages/blog.json';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+---
+<BaseLayout title={page.meta.title} description={page.meta.description}>
+  <section class="px-6 pb-14 pt-40 sm:px-12 lg:px-20">
+    <p class="eyebrow reveal mb-4">{page.hero.eyebrow}</p>
+    <h1 class="h-display reveal text-[clamp(2.6rem,7vw,5.5rem)] uppercase text-white" style="--reveal-delay:100ms">
+      {page.hero.titlePrefix} <span class="text-gradient">{page.hero.titleAccent}</span>
+    </h1>
+    <p class="reveal mt-6 max-w-2xl text-lg text-fog" style="--reveal-delay:200ms">
+      {page.hero.intro}
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-24">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((p, i) => (
+        <a href={`/blog/${p.id}`} class="card reveal group flex flex-col" style={`--reveal-delay:${(i % 3) * 100}ms`}>
+          {p.data.cover && (
+            <div class="aspect-[16/9] overflow-hidden">
+              <img
+                src={p.data.cover}
+                alt=""
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+                width="640"
+                height="360"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-7">
+            <div class="flex items-center gap-3">
+              <time class="font-mono text-xs text-mist" datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+              {p.data.tags.slice(0, 2).map((t) => (
+                <span class="rounded-full border border-line px-2.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest text-cyan">{t}</span>
+              ))}
+            </div>
+            <h2 class="mt-4 font-display text-xl font-bold leading-snug text-white transition-colors group-hover:text-cyan">{p.data.title}</h2>
+            <p class="mt-3 text-sm leading-relaxed text-mist">{p.data.excerpt}</p>
+            <span class="mt-auto inline-flex items-center gap-2 pt-5 font-mono text-xs uppercase tracking-[0.2em] text-fog transition-colors group-hover:text-white">
+              {page.readLabel}
+              <svg class="h-3.5 w-3.5 stroke-current transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

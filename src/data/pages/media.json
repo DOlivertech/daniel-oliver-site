@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "title": "Media — Daniel Oliver Racing",
+    "description": "Race weekend photo galleries — the Praga prototype at Brands Hatch, Silverstone GP and more."
+  },
+  "hero": {
+    "eyebrow": "Media",
+    "titlePrefix": "The",
+    "titleAccent": "gallery",
+    "intro": "Race weekends with the Praga prototype, shot trackside across the UK."
+  },
+  "photosLabel": "PHOTOS",
+  "detail": {
+    "backLabel": "All galleries",
+    "photosLabel": "photos",
+    "openPhotoLabel": "Open photo"
+  }
+}

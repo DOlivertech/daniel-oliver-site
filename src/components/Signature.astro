@@ -1,0 +1,101 @@
+---
+// Signature rendered as SVG text in a cursive font.
+// When `animate` is set, a script splits the text into per-letter <text> nodes
+// and traces each glyph's outline progressively (stroke-dasharray/dashoffset,
+// staggered left to right), then fades the fill in — a true handwriting
+// draw-on. No-JS and prefers-reduced-motion fall back to the static signature.
+import site from '../data/site.json';
+
+interface Props {
+  animate?: boolean;
+  class?: string;
+  size?: number; // font size in svg units
+}
+const { animate = false, class: className = '', size = 72 } = Astro.props;
+---
+<svg
+  class={`signature ${className}`}
+  viewBox="0 0 640 130"
+  role="img"
+  aria-label={`${site.signatureText} signature`}
+  data-sig-animate={animate ? 'true' : undefined}
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <text
+    class="sig-base"
+    x="0"
+    y="92"
+    font-family="'Great Vibes', cursive"
+    font-size={size}
+    data-sig-base
+  >{site.signatureText}</text>
+</svg>
+
+<script>
+  function buildSignature(svg: SVGSVGElement) {
+    const base = svg.querySelector<SVGTextElement>('[data-sig-base]');
+    if (!base || svg.dataset.sigBuilt) return;
+    const str = base.textContent || '';
+    if (!str.trim()) return;
+
+    const NS = 'http://www.w3.org/2000/svg';
+    const baseX = parseFloat(base.getAttribute('x') || '0');
+    const baseY = base.getAttribute('y') || '92';
+    const fontSize = base.getAttribute('font-size') || '72';
+
+    let letterIndex = 0;
+    const nodes: SVGTextElement[] = [];
+
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      if (ch === ' ') continue;
+
+      let offset = 0;
+      try {
+        offset = i === 0 ? 0 : base.getSubStringLength(0, i);
+      } catch {
+        return; // measurement unsupported — keep static base
+      }
+
+      const t = document.createElementNS(NS, 'text') as SVGTextElement;
+      t.setAttribute('class', 'sig-letter');
+      t.setAttribute('x', String(baseX + offset));
+      t.setAttribute('y', baseY);
+      t.setAttribute('font-family', "'Great Vibes', cursive");
+      t.setAttribute('font-size', fontSize);
+      t.textContent = ch;
+
+      // Approximate the glyph outline length from its advance width.
+      let advance = 30;
+      try {
+        advance = base.getSubStringLength(i, 1) || 30;
+      } catch { /* keep default */ }
+      const len = Math.max(90, Math.ceil(advance * 3.6));
+      t.style.setProperty('--len', String(len));
+      t.style.setProperty('--d', `${(letterIndex * 110) / 1000}s`);
+
+      nodes.push(t);
+      letterIndex++;
+    }
+
+    if (!nodes.length) return;
+    svg.dataset.sigBuilt = 'true';
+    nodes.forEach((n) => svg.appendChild(n));
+    base.style.opacity = '0';
+  }
+
+  function initSignatures() {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return; // static fallback: base text stays visible
+    document
+      .querySelectorAll<SVGSVGElement>('svg.signature[data-sig-animate]')
+      .forEach(buildSignature);
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initSignatures);
+  } else {
+    window.addEventListener('load', initSignatures);
+  }
+</script>

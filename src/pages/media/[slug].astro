@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import page from '../../data/pages/media.json';
+
+export async function getStaticPaths() {
+  const galleries = await getCollection('galleries');
+  return galleries.map((g) => ({ params: { slug: g.id }, props: { gallery: g } }));
+}
+
+const { gallery } = Astro.props;
+const { title, date, location, images } = gallery.data;
+const fmt = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<BaseLayout
+  title={`${title} — ${page.meta.title}`}
+  description={`Photo gallery: ${title} (${images.length} ${page.detail.photosLabel}).`}
+  ogImage={gallery.data.cover}
+>
+  <section class="px-6 pb-12 pt-40 sm:px-12 lg:px-20">
+    <a href="/media" class="reveal inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-mist transition-colors hover:text-cyan">
+      <svg class="h-4 w-4 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      {page.detail.backLabel}
+    </a>
+    <h1 class="h-display reveal mt-6 max-w-4xl text-[clamp(2.2rem,5.5vw,4.2rem)] text-white" style="--reveal-delay:100ms">{title}</h1>
+    <p class="reveal mt-4 font-mono text-sm text-mist" style="--reveal-delay:180ms">
+      {location} · {fmt} · <span class="text-cyan">{images.length} {page.detail.photosLabel}</span>
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
+    <div class="gallery-grid">
+      {images.map((src, i) => (
+        <button
+          type="button"
+          class="gallery-item reveal group relative block w-full overflow-hidden rounded-xl border border-transparent transition-colors hover:border-violet/40 focus-visible:border-cyan"
+          data-lightbox
+          data-full={src}
+          data-index={i}
+          style={`--reveal-delay:${(i % 6) * 60}ms`}
+          aria-label={`${page.detail.openPhotoLabel} ${i + 1} / ${images.length}`}
+        >
+          <img
+            src={src}
+            alt={`${title} — photo ${i + 1}`}
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="400"
+            class="h-auto w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+          <span class="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-ink/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true"></span>
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <Lightbox />
+
+  <style>
+    /* Masonry-ish responsive columns */
+    .gallery-grid {
+      columns: 1;
+      column-gap: 1rem;
+    }
+    @media (min-width: 640px) { .gallery-grid { columns: 2; } }
+    @media (min-width: 1024px) { .gallery-grid { columns: 3; } }
+    .gallery-item {
+      margin-bottom: 1rem;
+      break-inside: avoid;
+    }
+  </style>
+</BaseLayout>

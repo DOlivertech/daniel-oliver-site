@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "title": "Contact — Daniel Oliver Racing",
+    "description": "Get in touch with Daniel Oliver — partnerships, media, coaching and Project Limit Break enquiries."
+  },
+  "hero": {
+    "eyebrow": "Contact",
+    "titlePrefix": "Get in",
+    "titleAccent": "touch",
+    "intro": "Partnerships, media requests, sim-to-real coaching or Project Limit Break — drop a message and I'll come back to you."
+  },
+  "emailCard": {
+    "eyebrow": "Email",
+    "blurb": "Fastest way to reach me for anything commercial."
+  },
+  "socialsCard": {
+    "eyebrow": "Socials",
+    "handles": [
+      "Instagram — @daniel.oliver25",
+      "YouTube — @DanielOliverRacing",
+      "TikTok — @danieloliverracing"
+    ]
+  },
+  "partnershipCard": {
+    "eyebrow": "Partnerships",
+    "body": "Looking to put your brand on the 2026 IMSA campaign?",
+    "ctaLabel": "Partnership info",
+    "ctaHref": "/partnerships"
+  },
+  "form": {
+    "successMessage": "Thanks — your message is in. I'll get back to you soon.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@company.com",
+    "topicLabel": "Topic",
+    "topics": ["Partnership", "Media enquiry", "Sim-to-real coaching", "Project Limit Break", "Other"],
+    "messageLabel": "Message",
+    "messagePlaceholder": "What's on your mind?",
+    "submitLabel": "Send message"
+  }
+}

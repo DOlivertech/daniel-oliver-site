@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "title": "Schedule — Daniel Oliver Racing",
+    "description": "The 2026 IMSA VP Racing SportsCar Challenge calendar and past Praga Cup UK results."
+  },
+  "hero": {
+    "eyebrow": "Calendar",
+    "titlePrefix": "Race",
+    "titleAccent": "schedule",
+    "intro": "2026 is the IMSA VP Racing SportsCar Challenge season — endurance rounds with a co-driver. Dates confirmed as they lock in."
+  },
+  "next": {
+    "eyebrow": "Next event",
+    "tbaNote": "EXACT DATE TO BE ANNOUNCED — COUNTDOWN IS PROVISIONAL"
+  },
+  "countdownLabels": {
+    "days": "Days",
+    "hours": "Hours",
+    "mins": "Mins",
+    "secs": "Secs"
+  },
+  "upcoming": {
+    "titlePrefix": "Upcoming",
+    "titleAccent": "2026"
+  },
+  "past": {
+    "titlePrefix": "Past",
+    "titleAccent": "events",
+    "headers": {
+      "date": "Date",
+      "event": "Event",
+      "circuit": "Circuit",
+      "series": "Series",
+      "result": "Result"
+    },
+    "photosLabel": "Photos →"
+  }
+}

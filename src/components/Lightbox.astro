@@ -1,0 +1,118 @@
+---
+// Vanilla-JS lightbox. Pages opt in by giving gallery images the
+// [data-lightbox] attribute with data-index. One instance per page.
+---
+<div
+  id="lightbox"
+  class="lightbox fixed inset-0 z-[80] hidden items-center justify-center bg-ink/95 backdrop-blur-lg"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+>
+  <button id="lb-close" class="absolute right-5 top-5 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white/5 text-white transition hover:bg-white/15" aria-label="Close image viewer">
+    <svg class="h-5 w-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg>
+  </button>
+
+  <button id="lb-prev" class="absolute left-3 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/5 text-white transition hover:bg-white/15 sm:left-6" aria-label="Previous image">
+    <svg class="h-5 w-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <button id="lb-next" class="absolute right-3 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/5 text-white transition hover:bg-white/15 sm:right-6" aria-label="Next image">
+    <svg class="h-5 w-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <figure class="flex max-h-full max-w-full items-center justify-center p-4 sm:p-12">
+    <img id="lb-img" src="" alt="" class="max-h-[86vh] max-w-full rounded-lg object-contain shadow-2xl" />
+  </figure>
+
+  <p id="lb-counter" class="absolute bottom-5 left-1/2 -translate-x-1/2 font-mono text-xs tracking-[0.3em] text-mist" aria-live="polite"></p>
+</div>
+
+<script>
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
+  const counter = document.getElementById('lb-counter');
+  const btnClose = document.getElementById('lb-close');
+  const btnPrev = document.getElementById('lb-prev');
+  const btnNext = document.getElementById('lb-next');
+
+  const triggers = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-lightbox]')
+  );
+
+  if (lb && lbImg && triggers.length) {
+    let idx = 0;
+    let lastFocused: Element | null = null;
+    let touchX = 0;
+
+    const sources = triggers.map((t) => ({
+      src: t.getAttribute('data-full') || t.querySelector('img')?.src || '',
+      alt: t.querySelector('img')?.alt || '',
+    }));
+
+    function render() {
+      const item = sources[idx];
+      lbImg!.src = item.src;
+      lbImg!.alt = item.alt;
+      if (counter) counter.textContent = `${idx + 1} / ${sources.length}`;
+    }
+
+    function open(i: number) {
+      idx = i;
+      lastFocused = document.activeElement;
+      render();
+      lb!.classList.remove('hidden');
+      lb!.classList.add('flex');
+      document.body.classList.add('no-scroll');
+      (btnClose as HTMLElement | null)?.focus();
+      document.addEventListener('keydown', onKey);
+    }
+
+    function close() {
+      lb!.classList.add('hidden');
+      lb!.classList.remove('flex');
+      document.body.classList.remove('no-scroll');
+      document.removeEventListener('keydown', onKey);
+      (lastFocused as HTMLElement | null)?.focus?.();
+    }
+
+    function prev() { idx = (idx - 1 + sources.length) % sources.length; render(); }
+    function next() { idx = (idx + 1) % sources.length; render(); }
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+      else if (e.key === 'Tab') {
+        // simple trap between the three buttons
+        const nodes = [btnClose, btnPrev, btnNext].filter(Boolean) as HTMLElement[];
+        const first = nodes[0], last = nodes[nodes.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+
+    triggers.forEach((t, i) => {
+      t.addEventListener('click', (e) => { e.preventDefault(); open(i); });
+      t.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+      });
+    });
+
+    btnClose?.addEventListener('click', close);
+    btnPrev?.addEventListener('click', prev);
+    btnNext?.addEventListener('click', next);
+
+    // click backdrop to close
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb || (e.target as HTMLElement).tagName === 'FIGURE') close();
+    });
+
+    // swipe
+    lb.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 48) (dx > 0 ? prev() : next());
+    }, { passive: true });
+  }
+</script>

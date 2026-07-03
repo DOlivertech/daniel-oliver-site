@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import page from '../../data/pages/media.json';
+
+const galleries = (await getCollection('galleries'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<BaseLayout
+  title={page.meta.title}
+  description={page.meta.description}
+  ogImage={galleries[0]?.data.cover}
+>
+  <section class="px-6 pb-14 pt-40 sm:px-12 lg:px-20">
+    <p class="eyebrow reveal mb-4">{page.hero.eyebrow}</p>
+    <h1 class="h-display reveal text-[clamp(2.6rem,7vw,5.5rem)] uppercase text-white" style="--reveal-delay:100ms">
+      {page.hero.titlePrefix} <span class="text-gradient">{page.hero.titleAccent}</span>
+    </h1>
+    <p class="reveal mt-6 max-w-2xl text-lg text-fog" style="--reveal-delay:200ms">
+      {page.hero.intro}
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-24">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {galleries.map((g, i) => (
+        <a
+          href={`/media/${g.id}`}
+          class={`card reveal group relative block ${i === 0 ? 'sm:col-span-2' : ''}`}
+          style={`--reveal-delay:${i * 90}ms`}
+        >
+          <div class={`overflow-hidden ${i === 0 ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}>
+            <img
+              src={g.data.cover}
+              alt={`Cover photo — ${g.data.title}`}
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              width={i === 0 ? '1400' : '800'}
+              height={i === 0 ? '600' : '500'}
+            />
+          </div>
+          <div class="flex items-center justify-between gap-4 px-7 py-6">
+            <div>
+              <h2 class="font-display text-lg font-bold text-white sm:text-xl">{g.data.title}</h2>
+              <p class="mt-1 font-mono text-xs text-mist">{g.data.location} · {fmt(g.data.date)}</p>
+            </div>
+            <span class="shrink-0 rounded-full border border-line bg-white/5 px-4 py-2 font-mono text-xs tracking-widest text-cyan">
+              {g.data.images.length} {page.photosLabel}
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,533 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Local editing: run `npm run cms` (decap-server) alongside `npm run dev`,
+# then open http://localhost:4642/admin
+local_backend: true
+
+publish_mode: editorial_workflow
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+site_url: https://danieloliverracing.com
+display_url: https://danieloliverracing.com
+logo_url: /images/brand/do-horizontal-wht.webp
+
+collections:
+  - name: posts
+    label: Blog Posts
+    folder: src/content/posts
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime }
+      - { name: excerpt, label: Excerpt, widget: text }
+      - { name: cover, label: Cover Image, widget: image, required: false }
+      - { name: tags, label: Tags, widget: list, default: [] }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: galleries
+    label: Galleries
+    folder: src/content/galleries
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, format: "YYYY-MM-DD" }
+      - { name: location, label: Location, widget: string, required: false }
+      - { name: cover, label: Cover Image, widget: image }
+      - name: images
+        label: Images
+        widget: list
+        field: { name: image, label: Image, widget: image }
+
+  - name: events
+    label: Events
+    folder: src/content/events
+    create: true
+    slug: "{{year}}-{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, format: "YYYY-MM-DD" }
+      - { name: dateLabel, label: "Date label (e.g. TBA · 2026)", widget: string, required: false }
+      - { name: circuit, label: Circuit, widget: string }
+      - { name: location, label: Location, widget: string }
+      - { name: series, label: Series, widget: string }
+      - name: status
+        label: Status
+        widget: select
+        options: [upcoming, completed]
+      - { name: result, label: Result, widget: string, required: false }
+      - { name: link, label: "Link (e.g. gallery URL)", widget: string, required: false }
+      - { name: body, label: Notes, widget: markdown, required: false }
+
+  - name: settings
+    label: Site Settings
+    files:
+      - name: site
+        label: Global Site Settings
+        file: src/data/site.json
+        fields:
+          - { name: name, label: Name, widget: string }
+          - { name: number, label: Race Number, widget: string }
+          - { name: tagline, label: Tagline, widget: string }
+          - { name: signatureText, label: "Signature Text (traced by the animated signature)", widget: string }
+          - { name: heroImage, label: Hero Image, widget: image }
+          - { name: heroHeadline, label: Hero Headline, widget: string }
+          - { name: bioShort, label: Short Bio, widget: text }
+          - { name: email, label: Contact Email, widget: string }
+          - { name: storeUrl, label: Store URL, widget: string }
+          - name: brand
+            label: Brand Logos
+            widget: object
+            fields:
+              - { name: monogram, label: DO Monogram, widget: image }
+              - { name: wordmarkHorizontal, label: Horizontal Wordmark, widget: image }
+              - { name: wordmarkLaser, label: Laser Wordmark, widget: image }
+          - name: header
+            label: Header
+            widget: object
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: subtitle, label: Subtitle, widget: string }
+              - { name: numberLabel, label: Number Label, widget: string }
+          - name: nav
+            label: Navigation Links
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: href, label: Link, widget: string }
+              - { name: external, label: Opens in new tab, widget: boolean, required: false, default: false }
+          - name: menu
+            label: Overlay Menu
+            widget: object
+            fields:
+              - { name: followLabel, label: Follow Label, widget: string }
+              - { name: taglinePrefix, label: Tagline Prefix, widget: string }
+              - { name: taglineAccent, label: Tagline Accent, widget: string }
+          - name: footer
+            label: Footer
+            widget: object
+            fields:
+              - { name: partnersEyebrow, label: Partners Eyebrow, widget: string }
+              - { name: partnersHeadingPrefix, label: Partners Heading Prefix, widget: string }
+              - { name: partnersHeadingAccent, label: Partners Heading Accent, widget: string }
+              - { name: partnersCtaLabel, label: Partners CTA Label, widget: string }
+              - { name: partnersCtaHref, label: Partners CTA Link, widget: string }
+              - { name: blurbPrefix, label: Blurb Prefix, widget: string }
+              - { name: blurbNumber, label: Blurb Number, widget: string }
+              - { name: blurbSuffix, label: Blurb Suffix, widget: string }
+              - { name: taglinePrefix, label: Tagline Prefix, widget: string }
+              - { name: taglineAccent, label: Tagline Accent, widget: string }
+              - { name: followLabel, label: Follow Label, widget: string }
+              - { name: storeLabel, label: Store Label, widget: string }
+              - { name: copyright, label: Copyright, widget: string }
+              - { name: motto, label: Motto, widget: string }
+          - name: socials
+            label: Socials
+            widget: object
+            fields:
+              - { name: instagram, label: Instagram URL, widget: string }
+              - { name: youtube, label: YouTube URL, widget: string }
+              - { name: tiktok, label: TikTok URL, widget: string }
+          - name: sponsors
+            label: Sponsors
+            widget: list
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: logo, label: Logo, widget: image }
+              - { name: url, label: URL, widget: string, default: "#" }
+
+  - name: pages
+    label: Pages
+    files:
+      - name: home
+        label: Home Page
+        file: src/data/pages/home.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: image, label: Hero Image, widget: image }
+              - { name: imageAlt, label: Hero Image Alt Text, widget: string }
+              - { name: ghostText, label: "Ghost Background Text (big watermark)", widget: string }
+              - { name: eyebrowNumber, label: Eyebrow Number, widget: string }
+              - { name: titleLine1, label: Title Line 1, widget: string }
+              - { name: titleLine2, label: "Title Line 2 (gradient)", widget: string }
+              - { name: intro, label: Intro Paragraph, widget: text }
+              - { name: taglinePrefix, label: Tagline Prefix, widget: string }
+              - { name: taglineAccent, label: Tagline Accent, widget: string }
+              - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
+              - { name: ctaPrimaryHref, label: Primary CTA Link, widget: string }
+              - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
+              - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }
+              - { name: scrollLabel, label: Scroll Cue Label, widget: string }
+          - name: stats
+            label: Stats Strip
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: value, label: Value, widget: string }
+          - name: about
+            label: About Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titleLine1, label: Title Line 1, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: paragraph1, label: Paragraph 1, widget: text }
+              - { name: paragraph2, label: Paragraph 2, widget: text }
+              - { name: ctaLabel, label: CTA Label, widget: string }
+              - { name: ctaHref, label: CTA Link, widget: string }
+              - { name: image, label: Image, widget: image }
+              - { name: imageAlt, label: Image Alt Text, widget: string }
+              - { name: badge, label: Corner Badge, widget: string }
+          - name: simReal
+            label: "Sim → Real Section"
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleArrow, label: Title Arrow, widget: string }
+              - { name: titleSuffix, label: Title Suffix, widget: string }
+              - { name: intro, label: Intro, widget: text }
+              - name: cards
+                label: Method Cards
+                widget: list
+                fields:
+                  - { name: number, label: Number, widget: string }
+                  - { name: title, label: Title, widget: string }
+                  - { name: body, label: Body, widget: text }
+          - name: nextRace
+            label: Next Race Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: ctaLabel, label: CTA Label, widget: string }
+              - { name: ctaHref, label: CTA Link, widget: string }
+          - name: media
+            label: Media Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: ctaLabel, label: CTA Label, widget: string }
+              - { name: ctaHref, label: CTA Link, widget: string }
+              - { name: photosLabel, label: Photos Count Label, widget: string }
+          - name: blog
+            label: Blog Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: ctaLabel, label: CTA Label, widget: string }
+              - { name: ctaHref, label: CTA Link, widget: string }
+          - name: partners
+            label: Partners Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+
+      - name: about
+        label: About Page
+        file: src/data/pages/about.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: ghostText, label: Ghost Background Text, widget: string }
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titleLine1, label: Title Line 1, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+          - name: sections
+            label: Story Sections
+            widget: list
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: image, label: Image, widget: image }
+              - { name: imageAlt, label: Image Alt Text, widget: string }
+          - name: closing
+            label: Closing CTA
+            widget: object
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: subtitle, label: Subtitle, widget: string }
+              - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
+              - { name: ctaPrimaryHref, label: Primary CTA Link, widget: string }
+              - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
+              - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }
+
+      - name: media
+        label: Media Page
+        file: src/data/pages/media.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+          - { name: photosLabel, label: Photos Count Label, widget: string }
+          - name: detail
+            label: Gallery Detail Labels
+            widget: object
+            fields:
+              - { name: backLabel, label: Back Label, widget: string }
+              - { name: photosLabel, label: Photos Label, widget: string }
+              - { name: openPhotoLabel, label: Open Photo Label, widget: string }
+
+      - name: blog
+        label: Blog Page
+        file: src/data/pages/blog.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+          - { name: readLabel, label: "Read Post Label", widget: string }
+          - name: detail
+            label: Post Detail
+            widget: object
+            fields:
+              - { name: backLabel, label: Back Label, widget: string }
+              - { name: ctaTitle, label: Bottom CTA Title, widget: string }
+              - { name: ctaBody, label: Bottom CTA Body, widget: text }
+              - { name: ctaLabel, label: Bottom CTA Label, widget: string }
+              - { name: ctaHref, label: Bottom CTA Link, widget: string }
+
+      - name: schedule
+        label: Schedule Page
+        file: src/data/pages/schedule.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+          - name: next
+            label: Next Race Card
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: tbaNote, label: TBA Note, widget: string }
+          - name: countdownLabels
+            label: Countdown Labels
+            widget: object
+            fields:
+              - { name: days, label: Days, widget: string }
+              - { name: hours, label: Hours, widget: string }
+              - { name: mins, label: Minutes, widget: string }
+              - { name: secs, label: Seconds, widget: string }
+          - name: upcoming
+            label: Upcoming Heading
+            widget: object
+            fields:
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+          - name: past
+            label: Past Events
+            widget: object
+            fields:
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - name: headers
+                label: Table Headers
+                widget: object
+                fields:
+                  - { name: date, label: Date, widget: string }
+                  - { name: event, label: Event, widget: string }
+                  - { name: circuit, label: Circuit, widget: string }
+                  - { name: series, label: Series, widget: string }
+                  - { name: result, label: Result, widget: string }
+              - { name: photosLabel, label: Photos Link Label, widget: string }
+
+      - name: partnerships
+        label: Partnerships Page
+        file: src/data/pages/partnerships.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: image, label: Hero Image, widget: image }
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titleLine1, label: Title Line 1, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+              - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
+              - { name: ctaPrimarySubject, label: "Primary CTA Email Subject", widget: string }
+              - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
+              - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }
+          - name: offers
+            label: What Partners Get
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - name: items
+                label: Offer Cards
+                widget: list
+                fields:
+                  - { name: icon, label: "Icon (emoji or short glyph)", widget: string }
+                  - { name: title, label: Title, widget: string }
+                  - { name: body, label: Body, widget: text }
+          - name: limitBreak
+            label: Project Limit Break Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: image, label: Image, widget: image }
+              - { name: imageAlt, label: Image Alt Text, widget: string }
+          - name: partnersSection
+            label: Current Partners
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+          - name: deck
+            label: Partnership Deck CTA
+            widget: object
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
+              - { name: ctaPrimarySubject, label: "Primary CTA Email Subject", widget: string }
+              - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
+              - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }
+
+      - name: contact
+        label: Contact Page
+        file: src/data/pages/contact.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+          - name: emailCard
+            label: Email Card
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: blurb, label: Blurb, widget: text }
+          - name: socialsCard
+            label: Socials Card
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - name: handles
+                label: Handles
+                widget: list
+                field: { name: handle, label: Handle, widget: string }
+          - name: partnershipCard
+            label: Partnership Card
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: ctaLabel, label: CTA Label, widget: string }
+              - { name: ctaHref, label: CTA Link, widget: string }
+          - name: form
+            label: Contact Form
+            widget: object
+            fields:
+              - { name: successMessage, label: Success Message, widget: string }
+              - { name: nameLabel, label: Name Label, widget: string }
+              - { name: namePlaceholder, label: Name Placeholder, widget: string }
+              - { name: emailLabel, label: Email Label, widget: string }
+              - { name: emailPlaceholder, label: Email Placeholder, widget: string }
+              - { name: topicLabel, label: Topic Label, widget: string }
+              - name: topics
+                label: Topic Options
+                widget: list
+                field: { name: topic, label: Topic, widget: string }
+              - { name: messageLabel, label: Message Label, widget: string }
+              - { name: messagePlaceholder, label: Message Placeholder, widget: string }
+              - { name: submitLabel, label: Submit Label, widget: string }
+
+      - name: notfound
+        label: 404 Page
+        file: src/data/pages/notfound.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - { name: ghostText, label: Ghost Background Text, widget: string }
+          - { name: eyebrow, label: Eyebrow, widget: string }
+          - { name: titlePrefix, label: Title Prefix, widget: string }
+          - { name: titleAccent, label: Title Accent, widget: string }
+          - { name: body, label: Body, widget: text }
+          - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
+          - { name: ctaPrimaryHref, label: Primary CTA Link, widget: string }
+          - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
+          - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }

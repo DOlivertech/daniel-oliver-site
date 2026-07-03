@@ -1,0 +1,208 @@
+---
+import SocialLinks from './SocialLinks.astro';
+import site from '../data/site.json';
+
+const links = site.nav as { label: string; href: string; external?: boolean }[];
+const current = Astro.url.pathname;
+---
+<header class="fixed inset-x-0 top-0 z-[70]">
+  <div class="flex items-center justify-between px-5 py-4 sm:px-8 backdrop-blur-md bg-ink/55 border-b border-white/5">
+    <a href="/" class="flex items-center gap-3 group" aria-label={`${site.name} Racing — home`}>
+      <img
+        src={site.brand.monogram}
+        alt="DO monogram"
+        width="300"
+        height="169"
+        class="h-9 w-auto transition-transform duration-300 group-hover:scale-105"
+      />
+      <span class="hidden sm:flex flex-col leading-none">
+        <span class="font-display text-[0.82rem] font-bold tracking-wide text-white">{site.header.title}</span>
+        <span class="font-mono text-[0.6rem] tracking-[0.32em] text-mist mt-1">{site.header.subtitle}&nbsp;·&nbsp;<span class="text-pink">{site.header.numberLabel}</span></span>
+      </span>
+    </a>
+
+    <button
+      id="menu-toggle"
+      class="menu-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white/5 transition-colors hover:bg-white/10"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="overlay-menu"
+    >
+      <span class="menu-lines relative block h-3.5 w-6" aria-hidden="true">
+        <span class="menu-line absolute left-0 top-0 h-[2px] w-full rounded bg-white"></span>
+        <span class="menu-line absolute left-0 top-1/2 h-[2px] w-full -translate-y-1/2 rounded bg-white"></span>
+        <span class="menu-line absolute bottom-0 left-0 h-[2px] w-full rounded bg-white"></span>
+      </span>
+    </button>
+  </div>
+</header>
+
+<!-- Full-screen overlay menu -->
+<div
+  id="overlay-menu"
+  class="overlay-menu fixed inset-0 z-[60] invisible opacity-0"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Site navigation"
+>
+  <div class="overlay-bg absolute inset-0 bg-ink/95 backdrop-blur-xl"></div>
+  <div class="overlay-glow pointer-events-none absolute inset-0 opacity-60" aria-hidden="true"></div>
+
+  <div class="relative flex h-full flex-col overflow-y-auto px-6 pt-28 pb-10 sm:px-14 lg:px-24">
+    <nav aria-label="Main navigation">
+      <ul class="flex flex-col gap-1 sm:gap-2">
+        {links.map((l, i) => (
+          <li class="menu-item overflow-hidden" style={`--stagger:${i * 55}ms`}>
+            <a
+              href={l.href}
+              target={l.external ? '_blank' : undefined}
+              rel={l.external ? 'noopener noreferrer' : undefined}
+              class={`menu-link group inline-flex items-baseline gap-4 font-display text-[clamp(1.6rem,min(6vw,5.2vh),3.6rem)] font-bold uppercase leading-[1.1] tracking-tight transition-colors duration-300 ${current === l.href ? 'text-gradient' : 'text-white hover:text-transparent hover:bg-clip-text hover:[background-image:var(--grad-accent)]'}`}
+            >
+              <span class="font-mono text-xs font-normal tracking-[0.3em] text-mist" aria-hidden="true">0{i + 1}</span>
+              {l.label}
+              {l.external && (
+                <svg class="h-5 w-5 self-center stroke-mist transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:stroke-cyan" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true">
+                  <path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="menu-item mt-auto flex flex-col gap-8 pt-14 sm:flex-row sm:items-end sm:justify-between" style="--stagger:480ms">
+      <div>
+        <p class="eyebrow mb-4">{site.menu.followLabel}</p>
+        <SocialLinks />
+      </div>
+      <div class="flex flex-col items-start gap-3 sm:items-end">
+        <img
+          src={site.brand.wordmarkHorizontal}
+          alt={`${site.name} ${site.number} wordmark`}
+          width="1280"
+          height="720"
+          class="h-16 w-auto opacity-90 sm:h-20"
+          loading="lazy"
+        />
+        <p class="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-mist">{site.menu.taglinePrefix} <span class="text-gradient font-bold">{site.menu.taglineAccent}</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Hamburger → X */
+  .menu-btn[aria-expanded="true"] .menu-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .menu-btn[aria-expanded="true"] .menu-line:nth-child(2) {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0);
+  }
+  .menu-btn[aria-expanded="true"] .menu-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+  .menu-line {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+    transform-origin: center;
+  }
+
+  .overlay-menu {
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+  }
+  .overlay-menu.open {
+    visibility: visible;
+    opacity: 1;
+  }
+  .overlay-glow {
+    background:
+      radial-gradient(ellipse 50% 40% at 85% 15%, #ff2d871f, transparent 70%),
+      radial-gradient(ellipse 55% 45% at 10% 90%, #38bdf81c, transparent 70%),
+      radial-gradient(ellipse 45% 40% at 60% 60%, #8b5cf61a, transparent 70%);
+  }
+  .menu-item {
+    opacity: 0;
+    transform: translateY(34px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0ms;
+  }
+  .overlay-menu.open .menu-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(120ms + var(--stagger, 0ms));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .overlay-menu, .menu-item, .menu-line {
+      transition: none !important;
+    }
+    .menu-item { transform: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const overlay = document.getElementById('overlay-menu');
+
+  if (toggle && overlay) {
+    const focusablesSelector =
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    let lastFocused: Element | null = null;
+
+    function openMenu() {
+      lastFocused = document.activeElement;
+      overlay!.classList.add('open');
+      toggle!.setAttribute('aria-expanded', 'true');
+      toggle!.setAttribute('aria-label', 'Close menu');
+      document.body.classList.add('no-scroll');
+      const first = overlay!.querySelector<HTMLElement>(focusablesSelector);
+      window.setTimeout(() => first?.focus(), 150);
+      document.addEventListener('keydown', onKeydown);
+    }
+
+    function closeMenu() {
+      overlay!.classList.remove('open');
+      toggle!.setAttribute('aria-expanded', 'false');
+      toggle!.setAttribute('aria-label', 'Open menu');
+      document.body.classList.remove('no-scroll');
+      document.removeEventListener('keydown', onKeydown);
+      (lastFocused as HTMLElement | null)?.focus?.();
+    }
+
+    function onKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeMenu();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      // Focus trap: cycle within overlay + toggle button
+      const nodes = [
+        toggle,
+        ...overlay!.querySelectorAll<HTMLElement>(focusablesSelector),
+      ].filter(Boolean) as HTMLElement[];
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    toggle.addEventListener('click', () => {
+      const isOpen = overlay.classList.contains('open');
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    // Close when a same-page anchor / internal link is chosen
+    overlay.querySelectorAll('a[href]').forEach((a) => {
+      a.addEventListener('click', () => closeMenu());
+    });
+  }
+</script>

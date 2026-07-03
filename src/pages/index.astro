@@ -1,0 +1,311 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Signature from '../components/Signature.astro';
+import site from '../data/site.json';
+import page from '../data/pages/home.json';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const galleries = (await getCollection('galleries'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const events = await getCollection('events');
+const upcoming = events
+  .filter((e) => e.data.status === 'upcoming')
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const nextRace = upcoming[0];
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+const { hero, about, simReal } = page;
+---
+<BaseLayout title={page.meta.title} description={site.bioShort} ogImage={hero.image}>
+  <!-- ============================ HERO ============================ -->
+  <section class="relative flex min-h-[100svh] items-end overflow-hidden">
+    <img
+      src={hero.image}
+      alt={hero.imageAlt}
+      class="absolute inset-0 h-full w-full object-cover object-[70%_30%]"
+      loading="eager"
+      fetchpriority="high"
+      width="1920"
+      height="1280"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent" aria-hidden="true"></div>
+
+    <!-- Giant ghost number -->
+    <div class="pointer-events-none absolute -right-6 top-16 select-none font-display text-[38vw] font-black leading-none text-white/[0.045] sm:text-[26vw]" aria-hidden="true">{hero.ghostText}</div>
+
+    <div class="relative z-10 w-full px-6 pb-24 pt-40 sm:px-12 lg:px-20">
+      <p class="eyebrow reveal mb-5" style="--reveal-delay:100ms">
+        <span class="text-pink">{hero.eyebrowNumber}</span>&nbsp;&nbsp;·&nbsp;&nbsp;{site.tagline}
+      </p>
+
+      <h1 class="h-display reveal text-[clamp(3rem,10vw,7.5rem)] uppercase text-white" style="--reveal-delay:200ms">
+        {hero.titleLine1}<br />
+        <span class="text-gradient">{hero.titleLine2}</span>
+      </h1>
+
+      <p class="reveal mt-6 max-w-xl text-lg leading-relaxed text-fog" style="--reveal-delay:320ms">
+        {hero.intro}
+      </p>
+
+      <p class="reveal mt-5 font-mono text-xs uppercase tracking-[0.35em] text-fog" style="--reveal-delay:380ms">
+        {hero.taglinePrefix} <span class="text-gradient font-bold">{hero.taglineAccent}</span>
+      </p>
+
+      <div class="reveal mt-9 flex flex-wrap items-center gap-4" style="--reveal-delay:430ms">
+        <a href={hero.ctaPrimaryHref} class="btn btn-primary">{hero.ctaPrimaryLabel}</a>
+        <a href={hero.ctaSecondaryHref} class="btn btn-ghost">{hero.ctaSecondaryLabel}</a>
+      </div>
+
+      <div class="reveal mt-12 flex items-end justify-between gap-6" style="--reveal-delay:540ms">
+        <Signature animate class="w-56 sm:w-72" />
+        <a href="#stats" class="group hidden flex-col items-center gap-2 pb-1 sm:flex" aria-label="Scroll to content">
+          <span class="font-mono text-[0.62rem] tracking-[0.35em] text-mist">{hero.scrollLabel}</span>
+          <span class="scroll-cue block h-10 w-px bg-gradient-to-b from-pink via-violet to-transparent"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ STATS STRIP ============================ -->
+  <section id="stats" class="border-y border-white/5 bg-ink-2/70 backdrop-blur">
+    <dl class="mx-auto grid max-w-6xl grid-cols-2 divide-x divide-white/5 md:grid-cols-4">
+      {page.stats.map((s, i) => (
+        <div class="reveal flex flex-col items-center gap-1 px-4 py-8 text-center" style={`--reveal-delay:${i * 90}ms`}>
+          <dt class="order-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-mist">{s.label}</dt>
+          <dd class="order-1 font-display text-2xl font-bold text-gradient sm:text-3xl">{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- ============================ ABOUT TEASER ============================ -->
+  <section class="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal relative">
+        <div class="grad-border overflow-hidden rounded-2xl">
+          <img
+            src={about.image}
+            alt={about.imageAlt}
+            class="aspect-[4/5] w-full rounded-2xl object-cover"
+            loading="lazy"
+            width="800"
+            height="1000"
+          />
+        </div>
+        <div class="absolute -bottom-5 -right-3 rounded-xl border border-line bg-ink-2/90 px-5 py-3 backdrop-blur sm:-right-6" aria-hidden="true">
+          <span class="font-display text-xl font-bold text-gradient">{about.badge}</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="eyebrow reveal mb-4">{about.eyebrow}</p>
+        <h2 class="h-display reveal text-4xl text-white sm:text-5xl" style="--reveal-delay:80ms">
+          {about.titleLine1}<br /><span class="text-gradient">{about.titleAccent}</span>
+        </h2>
+        <p class="reveal mt-6 text-lg leading-relaxed text-fog" style="--reveal-delay:160ms">
+          {about.paragraph1}
+        </p>
+        <p class="reveal mt-4 leading-relaxed text-mist" style="--reveal-delay:240ms">
+          {about.paragraph2}
+        </p>
+        <a href={about.ctaHref} class="btn btn-ghost reveal mt-8" style="--reveal-delay:320ms">
+          {about.ctaLabel}
+          <svg class="h-4 w-4 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SIM → REAL ============================ -->
+  <section class="relative overflow-hidden border-y border-white/5 bg-ink-2/50 py-24 sm:py-32">
+    <!-- telemetry line SVG background -->
+    <svg class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="tele-grad" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#ff2d87"/><stop offset="0.5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#38bdf8"/>
+        </linearGradient>
+        <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M60 0H0v60" fill="none" stroke="#8b5cf6" stroke-width="0.5" opacity="0.35"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="400" fill="url(#grid)"/>
+      <path class="tele-line" d="M0 300 L90 300 C130 300 140 120 180 120 L260 120 C300 120 310 260 350 260 L430 260 C470 260 480 80 530 80 L610 80 C650 80 660 300 700 300 L780 300 C820 300 830 150 880 150 L960 150 C1000 150 1010 240 1050 240 L1200 240"
+        fill="none" stroke="url(#tele-grad)" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+
+    <div class="relative mx-auto max-w-6xl px-6">
+      <p class="eyebrow reveal mb-4">{simReal.eyebrow}</p>
+      <h2 class="h-display reveal max-w-3xl text-4xl text-white sm:text-6xl" style="--reveal-delay:80ms">
+        {simReal.titlePrefix} <span class="text-gradient">{simReal.titleArrow}</span> {simReal.titleSuffix}
+      </h2>
+      <p class="reveal mt-6 max-w-2xl text-lg leading-relaxed text-fog" style="--reveal-delay:160ms">
+        {simReal.intro}
+      </p>
+
+      <div class="mt-14 grid gap-5 md:grid-cols-3">
+        {simReal.cards.map((c, i) => (
+          <div class="card reveal p-7" style={`--reveal-delay:${i * 110}ms`}>
+            <span class="font-mono text-xs tracking-[0.3em] text-cyan">{c.number}</span>
+            <h3 class="mt-4 font-display text-xl font-bold text-white">{c.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-mist">{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ NEXT RACE ============================ -->
+  {nextRace && (
+    <section class="mx-auto max-w-6xl px-6 py-24">
+      <div class="grad-border reveal relative overflow-hidden rounded-2xl">
+        <div class="relative z-10 flex flex-col gap-8 p-8 sm:p-12 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p class="eyebrow mb-3">{page.nextRace.eyebrow}</p>
+            <h2 class="h-display text-3xl text-white sm:text-4xl">{nextRace.data.title}</h2>
+            <p class="mt-3 font-mono text-sm text-mist">
+              {nextRace.data.circuit} · {nextRace.data.location} · {nextRace.data.dateLabel ?? fmt(nextRace.data.date)}
+            </p>
+          </div>
+          <a href={page.nextRace.ctaHref} class="btn btn-primary shrink-0">{page.nextRace.ctaLabel}</a>
+        </div>
+        <div class="pointer-events-none absolute inset-0 opacity-30" style="background: radial-gradient(ellipse 60% 100% at 90% 50%, #8b5cf640, transparent 70%);" aria-hidden="true"></div>
+      </div>
+
+      {upcoming.length > 1 && (
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+          {upcoming.slice(1, 3).map((e, i) => (
+            <li class="card reveal flex items-center justify-between gap-4 px-6 py-5" style={`--reveal-delay:${i * 100}ms`}>
+              <div>
+                <p class="font-display text-sm font-bold text-white">{e.data.title}</p>
+                <p class="mt-1 font-mono text-xs text-mist">{e.data.dateLabel ?? fmt(e.data.date)}</p>
+              </div>
+              <span class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-cyan">{e.data.series.includes('IMSA') ? 'IMSA' : e.data.series}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )}
+
+  <!-- ============================ MEDIA ============================ -->
+  <section class="mx-auto max-w-6xl px-6 py-12 sm:py-20">
+    <div class="mb-10 flex items-end justify-between gap-6">
+      <div>
+        <p class="eyebrow reveal mb-3">{page.media.eyebrow}</p>
+        <h2 class="h-display reveal text-4xl text-white sm:text-5xl" style="--reveal-delay:80ms">{page.media.title}</h2>
+      </div>
+      <a href={page.media.ctaHref} class="btn btn-ghost reveal shrink-0" style="--reveal-delay:160ms">{page.media.ctaLabel}</a>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      {galleries.map((g, i) => (
+        <a href={`/media/${g.id}`} class="card reveal group relative block" style={`--reveal-delay:${i * 90}ms`}>
+          <div class="aspect-[16/10] overflow-hidden">
+            <img
+              src={g.data.cover}
+              alt={`Cover photo — ${g.data.title}`}
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+              width="800"
+              height="500"
+            />
+          </div>
+          <div class="flex items-center justify-between px-6 py-5">
+            <div>
+              <h3 class="font-display text-base font-bold text-white">{g.data.title}</h3>
+              <p class="mt-1 font-mono text-xs text-mist">{g.data.location}</p>
+            </div>
+            <span class="font-mono text-xs tracking-widest text-cyan">{g.data.images.length}&nbsp;{page.media.photosLabel}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============================ BLOG ============================ -->
+  <section class="mx-auto max-w-6xl px-6 py-12 sm:py-20">
+    <div class="mb-10 flex items-end justify-between gap-6">
+      <div>
+        <p class="eyebrow reveal mb-3">{page.blog.eyebrow}</p>
+        <h2 class="h-display reveal text-4xl text-white sm:text-5xl" style="--reveal-delay:80ms">{page.blog.title}</h2>
+      </div>
+      <a href={page.blog.ctaHref} class="btn btn-ghost reveal shrink-0" style="--reveal-delay:160ms">{page.blog.ctaLabel}</a>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-3">
+      {posts.map((p, i) => (
+        <a href={`/blog/${p.id}`} class="card reveal group flex flex-col" style={`--reveal-delay:${i * 100}ms`}>
+          {p.data.cover && (
+            <div class="aspect-[16/9] overflow-hidden">
+              <img src={p.data.cover} alt="" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" width="640" height="360" />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-6">
+            <time class="font-mono text-xs text-mist" datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+            <h3 class="mt-3 font-display text-lg font-bold leading-snug text-white transition-colors group-hover:text-cyan">{p.data.title}</h3>
+            <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-mist">{p.data.excerpt}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============================ PARTNERS MARQUEE ============================ -->
+  <section class="py-16 sm:py-24" aria-label="Partners">
+    <p class="eyebrow reveal mb-10 text-center">{page.partners.eyebrow}</p>
+    <div class="marquee" aria-hidden="false">
+      {[0, 1].map((dup) => (
+        <div class="marquee__track" aria-hidden={dup === 1 ? 'true' : undefined}>
+          {site.sponsors.map((s) => (
+            <img
+              src={s.logo}
+              alt={dup === 0 ? `${s.name} logo` : ''}
+              class="h-10 w-auto max-w-[9rem] object-contain opacity-60 transition-opacity hover:opacity-100 sm:h-12"
+              loading="lazy"
+              width="180"
+              height="48"
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <style>
+    .scroll-cue {
+      animation: cue 2s ease-in-out infinite;
+      transform-origin: top;
+    }
+    @keyframes cue {
+      0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+    .tele-line {
+      stroke-dasharray: 3200;
+      stroke-dashoffset: 3200;
+      animation: tele-draw 7s linear infinite;
+    }
+    @keyframes tele-draw {
+      0% { stroke-dashoffset: 3200; }
+      70%, 100% { stroke-dashoffset: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-cue { animation: none; }
+      .tele-line { animation: none; stroke-dashoffset: 0; }
+    }
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "404 — Off Track — Daniel Oliver Racing",
+    "description": "This page doesn't exist. Let's get you back on the racing line."
+  },
+  "ghostText": "404",
+  "eyebrow": "Error 404",
+  "titlePrefix": "Off",
+  "titleAccent": "track",
+  "body": "This page ran wide and found the gravel trap. Every mistake is an experiment — let's rejoin the racing line.",
+  "ctaPrimaryLabel": "Back to the grid",
+  "ctaPrimaryHref": "/",
+  "ctaSecondaryLabel": "Watch the replays",
+  "ctaSecondaryHref": "/media"
+}

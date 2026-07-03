@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "title": "Daniel Oliver Racing — #25 | Racing Driver × Software Engineer"
+  },
+  "hero": {
+    "image": "/images/hero/emsphotocam-1.webp",
+    "imageAlt": "Daniel Oliver in his pink and blue race suit, sitting on the Praga prototype",
+    "ghostText": "25",
+    "eyebrowNumber": "#25",
+    "titleLine1": "Daniel",
+    "titleLine2": "Oliver",
+    "intro": "Every lap is a dataset. Every mistake, an experiment. From the simulator to an FIA international licence in six months — and in 2026, the IMSA VP Racing SportsCar Challenge.",
+    "taglinePrefix": "No idols.",
+    "taglineAccent": "Outwork everyone.",
+    "ctaPrimaryLabel": "2026 Schedule",
+    "ctaPrimaryHref": "/schedule",
+    "ctaSecondaryLabel": "Partner with me",
+    "ctaSecondaryHref": "/partnerships",
+    "scrollLabel": "SCROLL"
+  },
+  "stats": [
+    { "value": "FIA", "label": "International Licence" },
+    { "value": "P1×", "label": "Multiple Wins" },
+    { "value": "2026", "label": "IMSA VP Challenge" },
+    { "value": "Praga", "label": "Cup UK" }
+  ],
+  "about": {
+    "eyebrow": "The driver",
+    "titleLine1": "No pedigree.",
+    "titleAccent": "No excuses.",
+    "paragraph1": "I didn't inherit racing — I engineered my way into it. From a sim rig and a software career to an FIA international licence in around six months, with multiple wins along the way.",
+    "paragraph2": "Today I race a Praga prototype in the UK, and in 2026 I make my IMSA VP Racing SportsCar Challenge debut — bringing an engineer's discipline to every stint.",
+    "ctaLabel": "Read the full story",
+    "ctaHref": "/about",
+    "image": "/images/galleries/praga-brands-hatch/pxl-20240817-073454402-1.webp",
+    "imageAlt": "Daniel Oliver in the paddock with the Praga prototype",
+    "badge": "#25"
+  },
+  "simReal": {
+    "eyebrow": "Methodology",
+    "titlePrefix": "SIM",
+    "titleArrow": "→",
+    "titleSuffix": "REAL",
+    "intro": "\"Every lap is a dataset, every mistake an experiment.\" The engineering mindset isn't a gimmick — it's the whole operating system.",
+    "cards": [
+      {
+        "number": "01",
+        "title": "Measure",
+        "body": "Telemetry over feel. Braking points, throttle traces, minimum speeds — the data decides where the lap time lives."
+      },
+      {
+        "number": "02",
+        "title": "Simulate",
+        "body": "Hypotheses get tested in the sim first, where experiments are cheap and repeatable — then validated on track."
+      },
+      {
+        "number": "03",
+        "title": "Execute",
+        "body": "Consistency on demand. Not one hero lap, but the same correct lap, every lap, when it counts."
+      }
+    ]
+  },
+  "nextRace": {
+    "eyebrow": "Next on the calendar",
+    "ctaLabel": "Full schedule",
+    "ctaHref": "/schedule"
+  },
+  "media": {
+    "eyebrow": "Media",
+    "title": "On track",
+    "ctaLabel": "All galleries",
+    "ctaHref": "/media",
+    "photosLabel": "PHOTOS"
+  },
+  "blog": {
+    "eyebrow": "Journal",
+    "title": "Latest posts",
+    "ctaLabel": "All posts",
+    "ctaHref": "/blog"
+  },
+  "partners": {
+    "eyebrow": "Trusted by"
+  }
+}
