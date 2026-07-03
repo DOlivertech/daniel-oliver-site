@@ -55,12 +55,23 @@ to `public/images/uploads`.
 
 ## Deploying to Netlify
 
-1. Push this repo to GitHub/GitLab.
-2. In Netlify: **Add new site → Import an existing project**, pick the repo.
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-   (Both are already set in `netlify.toml`.)
-3. Deploy. The contact form works automatically (`data-netlify="true"`).
+**Already done:** the site is live at **https://daniel-oliver-site.netlify.app**
+(Netlify project `daniel-oliver-site`, team `dolivertech`). The first deploy was pushed with
+the Netlify CLI (`netlify deploy --prod --dir=dist`). The contact form works automatically
+(`data-netlify="true"`). Build settings (`npm run build` → `dist`) are in `netlify.toml`.
+
+### Turn on continuous deploy (one-time, browser)
+
+So that pushes to GitHub — including **Publish** from the live CMS — rebuild the site
+automatically:
+
+1. Open **https://app.netlify.com/projects/daniel-oliver-site** → **Site configuration →
+   Build & deploy → Continuous deployment → Link repository**.
+2. Choose **GitHub**, authorize Netlify, pick **DOlivertech/daniel-oliver-site**.
+3. It reads `netlify.toml`, so just confirm: build `npm run build`, publish `dist`, branch `main`.
+
+After this, every `git push` (and every CMS publish) auto-builds and deploys.
+Until it's on, redeploy manually with `netlify deploy --prod --dir=dist`.
 
 ### Enabling the CMS on Netlify (GitHub OAuth)
 
