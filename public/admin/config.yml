@@ -1,9 +1,14 @@
+# GitHub OAuth backend. Netlify brokers the OAuth handshake, so the only secret
+# (the GitHub OAuth app's client secret) lives in your Netlify site settings —
+# never in this repo. Anyone with push access to the repo below can log in.
+# ⚠️ Set `repo` to your actual GitHub "owner/repository" before deploying.
 backend:
-  name: git-gateway
+  name: github
+  repo: your-github-username/danieloliver-racing
   branch: main
 
 # Local editing: run `npm run cms` (decap-server) alongside `npm run dev`,
-# then open http://localhost:4642/admin
+# then open http://localhost:4642/admin — bypasses OAuth, writes to your working tree.
 local_backend: true
 
 publish_mode: editorial_workflow
