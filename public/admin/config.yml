@@ -1,10 +1,10 @@
 # GitHub OAuth backend. Netlify brokers the OAuth handshake, so the only secret
 # (the GitHub OAuth app's client secret) lives in your Netlify site settings —
-# never in this repo. Anyone with push access to the repo below can log in.
-# ⚠️ Set `repo` to your actual GitHub "owner/repository" before deploying.
+# never in this repo. Only collaborators on the repo below can log in; since the
+# repo is private and owned by DOlivertech, that means just you.
 backend:
   name: github
-  repo: your-github-username/danieloliver-racing
+  repo: DOlivertech/daniel-oliver-site
   branch: main
 
 # Local editing: run `npm run cms` (decap-server) alongside `npm run dev`,

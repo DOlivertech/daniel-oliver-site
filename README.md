@@ -5,6 +5,8 @@ content managed via **Decap CMS**, deployed as a static site on **Netlify**.
 
 > No idols. Outwork everyone.
 
+📝 **Editing the site?** See [`docs/EDITING.md`](docs/EDITING.md) — a plain-English guide to the CMS.
+
 ## Stack
 
 - [Astro 5](https://astro.build) — static output, content collections (glob loaders + zod schemas)
