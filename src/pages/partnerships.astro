@@ -1,38 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import site from '../data/site.json';
+import page from '../data/pages/partnerships.json';
 
-const offers = [
-  {
-    t: 'TV + digital exposure',
-    d: 'IMSA weekends carry broadcast and streaming reach. Your brand rides on the car, the suit, and every frame of coverage.',
-    icon: 'M3 5h18v12H3zM8 21h8m-4-4v4',
-  },
-  {
-    t: 'Media production',
-    d: 'Professional photo and video from every event — content your marketing team can actually use, delivered race by race.',
-    icon: 'M15 10l4.55-2.27A1 1 0 0 1 21 8.62v6.76a1 1 0 0 1-1.45.9L15 14M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
-  },
-  {
-    t: 'Trackside presence',
-    d: 'Hospitality and paddock access at race weekends — bring clients and teams inside the sport, not just in front of it.',
-    icon: 'M12 2 3 7v13h18V7zM9 20v-6h6v6',
-  },
-  {
-    t: 'A story worth telling',
-    d: 'Sim-to-real, engineering-driven, no pedigree — plus Project Limit Break putting students inside an IMSA paddock. A narrative your audience remembers.',
-    icon: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-2.5',
-  },
-];
+const { hero, offers, limitBreak, partnersSection, deck } = page;
+const enquiryHref = `mailto:${site.email}?subject=${encodeURIComponent(hero.ctaPrimarySubject)}`;
+const deckRequestHref = `mailto:${site.email}?subject=${encodeURIComponent(deck.requestSubject)}`;
 ---
-<BaseLayout
-  title="Partnerships — Daniel Oliver Racing"
-  description="Partner with Daniel Oliver for the 2026 IMSA VP Racing SportsCar Challenge season — more than a logo on a car, we build a story together."
->
+<BaseLayout title={page.meta.title} description={page.meta.description}>
   <!-- Hero -->
   <section class="relative overflow-hidden px-6 pb-20 pt-40 sm:px-12 lg:px-20">
     <img
-      src="/images/hero/hrrcc-media-daniel-oliver-brands-hatch-39.webp"
+      src={hero.image}
       alt=""
       class="absolute inset-0 h-full w-full object-cover opacity-25"
       loading="eager"
@@ -43,32 +22,32 @@ const offers = [
     />
     <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/85 to-ink" aria-hidden="true"></div>
     <div class="relative">
-      <p class="eyebrow reveal mb-4">Partnerships</p>
+      <p class="eyebrow reveal mb-4">{hero.eyebrow}</p>
       <h1 class="h-display reveal max-w-4xl text-[clamp(2.6rem,7vw,5.2rem)] uppercase text-white" style="--reveal-delay:100ms">
-        More than a logo<br /><span class="text-gradient">on a car.</span>
+        {hero.titleLine1}<br /><span class="text-gradient">{hero.titleAccent}</span>
       </h1>
       <p class="reveal mt-6 max-w-2xl text-lg leading-relaxed text-fog" style="--reveal-delay:220ms">
-        Partnering with Daniel means building a story together — an engineer-turned-racer taking a data-driven method to the 2026 IMSA VP Racing SportsCar Challenge, and bringing students into the paddock along the way.
+        {hero.intro}
       </p>
       <div class="reveal mt-9 flex flex-wrap gap-4" style="--reveal-delay:330ms">
-        <a href={`mailto:${site.email}?subject=Partnership%20enquiry`} class="btn btn-primary">Start the conversation</a>
-        <a href="#deck" class="btn btn-ghost">Partnership deck</a>
+        <a href={enquiryHref} class="btn btn-primary">{hero.ctaPrimaryLabel}</a>
+        <a href={hero.ctaSecondaryHref} class="btn btn-ghost">{hero.ctaSecondaryLabel}</a>
       </div>
     </div>
   </section>
 
   <!-- What partners get -->
   <section class="mx-auto max-w-6xl px-6 py-20">
-    <p class="eyebrow reveal mb-3">What partners get</p>
-    <h2 class="h-display reveal text-3xl text-white sm:text-4xl" style="--reveal-delay:80ms">Real value, on and off track</h2>
+    <p class="eyebrow reveal mb-3">{offers.eyebrow}</p>
+    <h2 class="h-display reveal text-3xl text-white sm:text-4xl" style="--reveal-delay:80ms">{offers.title}</h2>
     <div class="mt-12 grid gap-5 sm:grid-cols-2">
-      {offers.map((o, i) => (
+      {offers.items.map((o, i) => (
         <div class="card reveal p-8" style={`--reveal-delay:${i * 90}ms`}>
           <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-white/5">
             <svg class="h-6 w-6 stroke-cyan" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={o.icon}/></svg>
           </div>
-          <h3 class="mt-5 font-display text-lg font-bold text-white">{o.t}</h3>
-          <p class="mt-3 text-sm leading-relaxed text-mist">{o.d}</p>
+          <h3 class="mt-5 font-display text-lg font-bold text-white">{o.title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-mist">{o.body}</p>
         </div>
       ))}
     </div>
@@ -78,15 +57,15 @@ const offers = [
   <section class="mx-auto max-w-6xl px-6 py-8">
     <div class="grad-border reveal grid gap-8 overflow-hidden rounded-3xl p-8 sm:p-12 lg:grid-cols-[1.2fr_1fr] lg:items-center">
       <div>
-        <p class="eyebrow mb-3">Project Limit Break</p>
-        <h2 class="h-display text-2xl text-white sm:text-3xl">Put students in the paddock with us</h2>
+        <p class="eyebrow mb-3">{limitBreak.eyebrow}</p>
+        <h2 class="h-display text-2xl text-white sm:text-3xl">{limitBreak.title}</h2>
         <p class="mt-4 leading-relaxed text-fog">
-          Through Limit Break Engineering, IMSA race weekends double as a student exposure program — young engineers working alongside strategists, mechanics and media crews. Partners don't just back a driver; they back the pipeline into motorsport.
+          {limitBreak.body}
         </p>
       </div>
       <img
-        src="/images/build/image-4.webp"
-        alt="Project Limit Break — working on the car in the garage"
+        src={limitBreak.image}
+        alt={limitBreak.imageAlt}
         class="aspect-[4/3] w-full rounded-2xl border border-line object-cover"
         loading="lazy"
         width="720"
@@ -97,8 +76,8 @@ const offers = [
 
   <!-- Current partners -->
   <section class="mx-auto max-w-6xl px-6 py-20">
-    <p class="eyebrow reveal mb-3">Current partners</p>
-    <h2 class="h-display reveal text-3xl text-white sm:text-4xl" style="--reveal-delay:80ms">In good company</h2>
+    <p class="eyebrow reveal mb-3">{partnersSection.eyebrow}</p>
+    <h2 class="h-display reveal text-3xl text-white sm:text-4xl" style="--reveal-delay:80ms">{partnersSection.title}</h2>
     <ul class="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
       {site.sponsors.map((s, i) => (
         <li class="reveal bg-ink-2" style={`--reveal-delay:${(i % 4) * 70}ms`}>
@@ -122,15 +101,17 @@ const offers = [
     </ul>
   </section>
 
-  <!-- CTA -->
+  <!-- Deck CTA -->
   <section id="deck" class="mx-auto max-w-4xl px-6 py-16 text-center">
-    <h2 class="h-display reveal text-3xl text-white sm:text-4xl">Let's build the story together</h2>
+    <h2 class="h-display reveal text-3xl text-white sm:text-4xl">{deck.title}</h2>
     <p class="reveal mt-4 leading-relaxed text-mist" style="--reveal-delay:100ms">
-      The full 2026 partnership deck — packages, audiences and activation ideas — is available on request.
+      {deck.body}
     </p>
     <div class="reveal mt-8 flex flex-wrap justify-center gap-4" style="--reveal-delay:200ms">
-      <a href={`mailto:${site.email}?subject=Partnership%20deck%20request`} class="btn btn-primary">Request the deck</a>
-      <a href="/contact" class="btn btn-ghost">Contact page</a>
+      {deck.url
+        ? <a href={deck.url} target="_blank" rel="noopener noreferrer" class="btn btn-primary">{deck.viewLabel}</a>
+        : <a href={deckRequestHref} class="btn btn-primary">{deck.requestLabel}</a>}
+      <a href={deck.secondaryHref} class="btn btn-ghost">{deck.secondaryLabel}</a>
     </div>
     <p class="reveal mt-6 font-mono text-xs text-mist" style="--reveal-delay:280ms">{site.email}</p>
   </section>

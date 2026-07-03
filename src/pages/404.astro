@@ -1,13 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import page from '../data/pages/notfound.json';
 ---
-<BaseLayout
-  title="404 — Off Track — Daniel Oliver Racing"
-  description="This page doesn't exist. Let's get you back on the racing line."
->
+<BaseLayout title={page.meta.title} description={page.meta.description}>
   <section class="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 text-center">
     <div class="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
-      <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[46vw] font-black leading-none text-white/[0.04] sm:text-[30vw]">404</span>
+      <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[46vw] font-black leading-none text-white/[0.04] sm:text-[30vw]">{page.ghostText}</span>
     </div>
 
     <!-- racing line skid -->
@@ -21,14 +19,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </svg>
 
     <div class="relative">
-      <p class="eyebrow mb-5">Error 404</p>
-      <h1 class="h-display text-5xl uppercase text-white sm:text-7xl">Off <span class="text-gradient">track</span></h1>
+      <p class="eyebrow mb-5">{page.eyebrow}</p>
+      <h1 class="h-display text-5xl uppercase text-white sm:text-7xl">{page.titlePrefix} <span class="text-gradient">{page.titleAccent}</span></h1>
       <p class="mx-auto mt-6 max-w-md text-lg text-fog">
-        This page ran wide and found the gravel trap. Every mistake is an experiment — let's rejoin the racing line.
+        {page.body}
       </p>
       <div class="mt-9 flex flex-wrap justify-center gap-4">
-        <a href="/" class="btn btn-primary">Back to the grid</a>
-        <a href="/media" class="btn btn-ghost">Watch the replays</a>
+        <a href={page.ctaPrimaryHref} class="btn btn-primary">{page.ctaPrimaryLabel}</a>
+        <a href={page.ctaSecondaryHref} class="btn btn-ghost">{page.ctaSecondaryLabel}</a>
       </div>
     </div>
   </section>

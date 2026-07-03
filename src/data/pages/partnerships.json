@@ -53,10 +53,12 @@
   },
   "deck": {
     "title": "Let's build the story together",
-    "body": "The full 2026 partnership deck — packages, audiences and activation ideas — is available on request.",
-    "ctaPrimaryLabel": "Request the deck",
-    "ctaPrimarySubject": "Partnership deck request",
-    "ctaSecondaryLabel": "Contact page",
-    "ctaSecondaryHref": "/contact"
+    "body": "The full 2026 partnership deck — packages, audiences and activation ideas.",
+    "url": "",
+    "viewLabel": "View the deck",
+    "requestLabel": "Request the deck",
+    "requestSubject": "Partnership deck request",
+    "secondaryLabel": "Contact page",
+    "secondaryHref": "/contact"
   }
 }

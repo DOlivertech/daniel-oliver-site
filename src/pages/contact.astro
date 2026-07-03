@@ -2,18 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import site from '../data/site.json';
+import page from '../data/pages/contact.json';
+
+const { hero, emailCard, socialsCard, partnershipCard, form } = page;
 ---
-<BaseLayout
-  title="Contact — Daniel Oliver Racing"
-  description="Get in touch with Daniel Oliver — partnerships, media, coaching and Project Limit Break enquiries."
->
+<BaseLayout title={page.meta.title} description={page.meta.description}>
   <section class="px-6 pb-14 pt-40 sm:px-12 lg:px-20">
-    <p class="eyebrow reveal mb-4">Contact</p>
+    <p class="eyebrow reveal mb-4">{hero.eyebrow}</p>
     <h1 class="h-display reveal text-[clamp(2.6rem,7vw,5.5rem)] uppercase text-white" style="--reveal-delay:100ms">
-      Get in <span class="text-gradient">touch</span>
+      {hero.titlePrefix} <span class="text-gradient">{hero.titleAccent}</span>
     </h1>
     <p class="reveal mt-6 max-w-2xl text-lg text-fog" style="--reveal-delay:200ms">
-      Partnerships, media requests, sim-to-real coaching or Project Limit Break — drop a message and I'll come back to you.
+      {hero.intro}
     </p>
   </section>
 
@@ -22,25 +22,23 @@ import site from '../data/site.json';
       <!-- Direct channels -->
       <div class="flex flex-col gap-6">
         <a href={`mailto:${site.email}`} class="card reveal group p-8">
-          <p class="eyebrow mb-3">Email</p>
+          <p class="eyebrow mb-3">{emailCard.eyebrow}</p>
           <p class="break-all font-display text-lg font-bold text-white transition-colors group-hover:text-cyan sm:text-xl">{site.email}</p>
-          <p class="mt-2 text-sm text-mist">Fastest way to reach me for anything commercial.</p>
+          <p class="mt-2 text-sm text-mist">{emailCard.blurb}</p>
         </a>
 
         <div class="card reveal p-8" style="--reveal-delay:100ms">
-          <p class="eyebrow mb-4">Socials</p>
+          <p class="eyebrow mb-4">{socialsCard.eyebrow}</p>
           <SocialLinks />
           <ul class="mt-5 space-y-1.5 font-mono text-xs text-mist">
-            <li>Instagram — @daniel.oliver25</li>
-            <li>YouTube — @DanielOliverRacing</li>
-            <li>TikTok — @danieloliverracing</li>
+            {socialsCard.handles.map((h) => <li>{h}</li>)}
           </ul>
         </div>
 
         <div class="grad-border reveal p-8" style="--reveal-delay:200ms">
-          <p class="eyebrow mb-3">Partnerships</p>
-          <p class="text-sm leading-relaxed text-fog">Looking to put your brand on the 2026 IMSA campaign?</p>
-          <a href="/partnerships" class="btn btn-ghost mt-5">Partnership info</a>
+          <p class="eyebrow mb-3">{partnershipCard.eyebrow}</p>
+          <p class="text-sm leading-relaxed text-fog">{partnershipCard.body}</p>
+          <a href={partnershipCard.ctaHref} class="btn btn-ghost mt-5">{partnershipCard.ctaLabel}</a>
         </div>
       </div>
 
@@ -60,41 +58,37 @@ import site from '../data/site.json';
         </p>
 
         <div id="form-success" class="hidden rounded-xl border border-cyan/40 bg-cyan/10 px-5 py-4 text-sm text-white" role="status">
-          Thanks — your message is in. I'll get back to you soon.
+          {form.successMessage}
         </div>
 
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="flex flex-col gap-2">
-            <label for="name" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">Name</label>
+            <label for="name" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">{form.nameLabel}</label>
             <input required type="text" id="name" name="name" autocomplete="name"
-              class="rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white placeholder:text-mist/60 focus:border-violet focus:outline-none" placeholder="Your name" />
+              class="rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white placeholder:text-mist/60 focus:border-violet focus:outline-none" placeholder={form.namePlaceholder} />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="email" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">Email</label>
+            <label for="email" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">{form.emailLabel}</label>
             <input required type="email" id="email" name="email" autocomplete="email"
-              class="rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white placeholder:text-mist/60 focus:border-violet focus:outline-none" placeholder="you@company.com" />
+              class="rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white placeholder:text-mist/60 focus:border-violet focus:outline-none" placeholder={form.emailPlaceholder} />
           </div>
         </div>
 
         <div class="flex flex-col gap-2">
-          <label for="topic" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">Topic</label>
+          <label for="topic" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">{form.topicLabel}</label>
           <select id="topic" name="topic"
             class="rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white focus:border-violet focus:outline-none">
-            <option>Partnership</option>
-            <option>Media enquiry</option>
-            <option>Sim-to-real coaching</option>
-            <option>Project Limit Break</option>
-            <option>Other</option>
+            {form.topics.map((t) => <option>{t}</option>)}
           </select>
         </div>
 
         <div class="flex flex-col gap-2">
-          <label for="message" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">Message</label>
+          <label for="message" class="font-mono text-xs uppercase tracking-[0.25em] text-mist">{form.messageLabel}</label>
           <textarea required id="message" name="message" rows="6"
-            class="resize-y rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white placeholder:text-mist/60 focus:border-violet focus:outline-none" placeholder="What's on your mind?"></textarea>
+            class="resize-y rounded-xl border border-line bg-ink/60 px-4 py-3.5 text-white placeholder:text-mist/60 focus:border-violet focus:outline-none" placeholder={form.messagePlaceholder}></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary self-start">Send message</button>
+        <button type="submit" class="btn btn-primary self-start">{form.submitLabel}</button>
       </form>
     </div>
   </section>
