@@ -1,12 +1,13 @@
 ---
 import SocialLinks from './SocialLinks.astro';
+import Signature from './Signature.astro';
 import site from '../data/site.json';
 
 const links = site.nav as { label: string; href: string; external?: boolean }[];
 const current = Astro.url.pathname;
 ---
-<header class="fixed inset-x-0 top-0 z-[70]">
-  <div class="flex items-center justify-between px-5 py-4 sm:px-8 backdrop-blur-md bg-ink/55 border-b border-white/5">
+<header class="site-header fixed inset-x-0 top-0 z-[70]" transition:persist>
+  <div class="site-header__bar flex items-center justify-between px-5 py-4 sm:px-8 backdrop-blur-md bg-ink/55 border-b border-white/5">
     <a href="/" class="flex items-center gap-3 group" aria-label={`${site.name} Racing — home`}>
       <img
         src={site.brand.monogram}
@@ -20,6 +21,9 @@ const current = Astro.url.pathname;
         <span class="font-mono text-[0.6rem] tracking-[0.32em] text-mist mt-1">{site.header.subtitle}&nbsp;·&nbsp;<span class="text-pink">{site.header.numberLabel}</span></span>
       </span>
     </a>
+
+    <!-- Persistent signature: survives navigations and re-traces on each swap -->
+    <Signature animate speed="quick" class="header-sig" size={72} />
 
     <button
       id="menu-toggle"
@@ -121,88 +125,156 @@ const current = Astro.url.pathname;
       radial-gradient(ellipse 50% 40% at 85% 15%, #ff2d871f, transparent 70%),
       radial-gradient(ellipse 55% 45% at 10% 90%, #38bdf81c, transparent 70%),
       radial-gradient(ellipse 45% 40% at 60% 60%, #8b5cf61a, transparent 70%);
+    background-size: 140% 140%;
+  }
+  .overlay-menu.open .overlay-glow {
+    animation: beam-drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes beam-drift {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
   }
   .menu-item {
     opacity: 0;
-    transform: translateY(34px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(34px) skewY(2.5deg);
+    filter: blur(6px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: 0ms;
   }
   .overlay-menu.open .menu-item {
     opacity: 1;
     transform: none;
+    filter: blur(0);
     transition-delay: calc(120ms + var(--stagger, 0ms));
   }
   @media (prefers-reduced-motion: reduce) {
-    .overlay-menu, .menu-item, .menu-line {
+    .overlay-menu, .menu-item, .menu-line, .overlay-glow {
       transition: none !important;
+      animation: none !important;
     }
-    .menu-item { transform: none; }
+    .menu-item { transform: none; filter: none; }
   }
 </style>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
-  const overlay = document.getElementById('overlay-menu');
+  // Menu wiring. The toggle button lives inside the PERSISTED header, so it is
+  // the same node across navigations — bind its click once. The overlay lives
+  // outside the header and is replaced on each swap, so re-resolve it every
+  // page-load and re-bind its links.
+  const focusablesSelector =
+    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let lastFocused: Element | null = null;
 
-  if (toggle && overlay) {
-    const focusablesSelector =
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    let lastFocused: Element | null = null;
+  const getOverlay = () => document.getElementById('overlay-menu');
+  const getToggle = () => document.getElementById('menu-toggle');
+  const getHeader = () =>
+    document.querySelector<HTMLElement>('.site-header');
 
-    function openMenu() {
-      lastFocused = document.activeElement;
-      overlay!.classList.add('open');
-      toggle!.setAttribute('aria-expanded', 'true');
-      toggle!.setAttribute('aria-label', 'Close menu');
-      document.body.classList.add('no-scroll');
-      const first = overlay!.querySelector<HTMLElement>(focusablesSelector);
-      window.setTimeout(() => first?.focus(), 150);
-      document.addEventListener('keydown', onKeydown);
+  function openMenu() {
+    const overlay = getOverlay();
+    const toggle = getToggle();
+    const header = getHeader();
+    if (!overlay || !toggle) return;
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    header?.classList.add('menu-open');
+    header?.classList.remove('is-hidden');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    document.body.classList.add('no-scroll');
+    const first = overlay.querySelector<HTMLElement>(focusablesSelector);
+    window.setTimeout(() => first?.focus(), 150);
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  function closeMenu() {
+    const overlay = getOverlay();
+    const toggle = getToggle();
+    const header = getHeader();
+    overlay?.classList.remove('open');
+    header?.classList.remove('menu-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Open menu');
+    document.body.classList.remove('no-scroll');
+    document.removeEventListener('keydown', onKeydown);
+    (lastFocused as HTMLElement | null)?.focus?.();
+  }
+
+  function onKeydown(e: KeyboardEvent) {
+    const overlay = getOverlay();
+    const toggle = getToggle();
+    if (!overlay || !toggle) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeMenu();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const nodes = [
+      toggle,
+      ...overlay.querySelectorAll<HTMLElement>(focusablesSelector),
+    ].filter(Boolean) as HTMLElement[];
+    if (!nodes.length) return;
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey && active === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function initMenu() {
+    const toggle = getToggle();
+    const overlay = getOverlay();
+    if (!toggle || !overlay) return;
+
+    // Bind the persistent toggle exactly once.
+    if (!(toggle as any).__menuBound) {
+      (toggle as any).__menuBound = true;
+      toggle.addEventListener('click', () => {
+        const isOpen = getOverlay()?.classList.contains('open');
+        isOpen ? closeMenu() : openMenu();
+      });
     }
 
-    function closeMenu() {
-      overlay!.classList.remove('open');
-      toggle!.setAttribute('aria-expanded', 'false');
-      toggle!.setAttribute('aria-label', 'Open menu');
-      document.body.classList.remove('no-scroll');
-      document.removeEventListener('keydown', onKeydown);
-      (lastFocused as HTMLElement | null)?.focus?.();
-    }
-
-    function onKeydown(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closeMenu();
-        return;
-      }
-      if (e.key !== 'Tab') return;
-      // Focus trap: cycle within overlay + toggle button
-      const nodes = [
-        toggle,
-        ...overlay!.querySelectorAll<HTMLElement>(focusablesSelector),
-      ].filter(Boolean) as HTMLElement[];
-      if (!nodes.length) return;
-      const first = nodes[0];
-      const last = nodes[nodes.length - 1];
-      const active = document.activeElement;
-      if (e.shiftKey && active === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && active === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-
-    toggle.addEventListener('click', () => {
-      const isOpen = overlay.classList.contains('open');
-      isOpen ? closeMenu() : openMenu();
-    });
-
-    // Close when a same-page anchor / internal link is chosen
+    // Re-bind fresh overlay links each navigation.
     overlay.querySelectorAll('a[href]').forEach((a) => {
+      if ((a as any).__menuLinkBound) return;
+      (a as any).__menuLinkBound = true;
       a.addEventListener('click', () => closeMenu());
     });
   }
+
+  // Re-trace the persistent header signature on every load/swap. It lives in
+  // the persisted header, so this runs after the new page content is in place.
+  function replayHeaderSig() {
+    const svg = document.querySelector<SVGSVGElement>('.header-sig');
+    const replay = (window as any).__replaySignature as
+      | ((s: SVGSVGElement) => void)
+      | undefined;
+    if (!svg || !replay) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Only trace when actually visible (display:none breaks SVG measurement).
+    if (getComputedStyle(svg).display === 'none') return;
+    replay(svg);
+  }
+
+  // Ensure a clean, closed state whenever navigation begins.
+  document.addEventListener('astro:before-swap', () => {
+    const header = getHeader();
+    getOverlay()?.classList.remove('open');
+    header?.classList.remove('menu-open');
+    document.body.classList.remove('no-scroll');
+    document.removeEventListener('keydown', onKeydown);
+  });
+
+  document.addEventListener('astro:page-load', initMenu);
+  document.addEventListener('astro:page-load', replayHeaderSig);
 </script>

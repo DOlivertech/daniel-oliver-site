@@ -24,13 +24,25 @@
   --font-mono: "Space Mono", ui-monospace, monospace;
   --font-signature: "Great Vibes", cursive;
 
+  /* ---- Easing tokens ---- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Duration scale ---- */
+  --dur-1: 180ms;
+  --dur-2: 320ms;
+  --dur-3: 480ms;
+  --dur-4: 720ms;
+  --dur-5: 900ms;
 }
 
 :root {
   --grad-accent: linear-gradient(100deg, #ff2d87 0%, #8b5cf6 48%, #38bdf8 100%);
   --grad-accent-soft: linear-gradient(100deg, #ff2d8733 0%, #8b5cf633 50%, #38bdf833 100%);
   --shadow-glow: 0 0 60px -12px #8b5cf655;
+  --header-h: 4.75rem;
 }
 
 * {
@@ -62,6 +74,12 @@ body.no-scroll {
 ::selection {
   background: var(--color-pink);
   color: #fff;
+  text-shadow: none;
+}
+::-moz-selection {
+  background: var(--color-pink);
+  color: #fff;
+  text-shadow: none;
 }
 
 /* Subtle animated grain/gradient depth on the base */
@@ -106,6 +124,7 @@ body.no-scroll {
 
 /* ---- Buttons ---- */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -116,9 +135,44 @@ body.no-scroll {
   text-transform: uppercase;
   padding: 0.95rem 1.6rem;
   border-radius: 999px;
-  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s, filter 0.3s;
+  overflow: hidden;
+  isolation: isolate;
+  /* --mx/--my set by JS for magnetic pull; default 0 */
+  transform: translate(var(--mx, 0px), calc(var(--my, 0px) + var(--btn-lift, 0px))) scale(var(--btn-scale, 1));
+  transition:
+    transform var(--dur-2) var(--ease-out-expo),
+    box-shadow var(--dur-2) var(--ease-out-expo),
+    filter var(--dur-2) var(--ease-out-expo);
   cursor: pointer;
   line-height: 1;
+}
+/* Gradient sheen sweep */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    #ffffff40 45%,
+    #ffffff70 50%,
+    #ffffff40 55%,
+    transparent 80%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.7s var(--ease-out-expo);
+  pointer-events: none;
+  opacity: 0.9;
+}
+.btn > * { position: relative; z-index: 2; }
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translateX(130%);
+}
+.btn:active {
+  --btn-scale: 0.965;
 }
 .btn-primary {
   background: var(--grad-accent);
@@ -126,7 +180,7 @@ body.no-scroll {
   box-shadow: 0 10px 40px -14px #ff2d8788;
 }
 .btn-primary:hover {
-  transform: translateY(-2px);
+  --btn-lift: -2px;
   box-shadow: 0 16px 50px -12px #8b5cf6aa;
   filter: brightness(1.08);
 }
@@ -137,18 +191,47 @@ body.no-scroll {
   backdrop-filter: blur(6px);
 }
 .btn-ghost:hover {
+  --btn-lift: -2px;
   border-color: transparent;
-  transform: translateY(-2px);
   background: var(--grad-accent-soft);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; transform: none; }
+  .btn::after { display: none; }
 }
 
 /* ---- Eyebrow / label ---- */
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--color-cyan);
+}
+/* Leading gradient line that draws in on reveal */
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  height: 1px;
+  width: 2rem;
+  flex-shrink: 0;
+  background: var(--grad-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-4) var(--ease-out-expo) 120ms;
+}
+.eyebrow.in::before,
+.reveal.in .eyebrow::before,
+.in > .eyebrow::before {
+  transform: scaleX(1);
+}
+/* When the eyebrow itself isn't a .reveal, draw immediately after paint */
+.eyebrow.eyebrow-live::before { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow::before { transform: scaleX(1); transition: none; }
 }
 
 /* Section heading treatment */
@@ -159,11 +242,13 @@ body.no-scroll {
   letter-spacing: -0.02em;
 }
 
-/* ---- Scroll reveal ---- */
+/* ---- Scroll reveal system ---- */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+  transition:
+    opacity var(--dur-5) var(--ease-out-expo),
+    transform var(--dur-5) var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
@@ -171,26 +256,108 @@ body.no-scroll {
   opacity: 1;
   transform: none;
 }
+
+/* Variant: clip unveil (images) — combines opacity + clip-path inset */
+.reveal-clip {
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(14px);
+  transition:
+    opacity var(--dur-4) var(--ease-out-quint),
+    clip-path 1s var(--ease-out-quint),
+    transform var(--dur-5) var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, clip-path, transform;
+}
+.reveal-clip.in {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: none;
+}
+
+/* Variant: scale up */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    opacity var(--dur-4) var(--ease-out-quint),
+    transform var(--dur-5) var(--ease-out-back);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal-scale.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Variant: horizontal rule draws in */
+.reveal-line {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-5) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform;
+}
+.reveal-line.in {
+  transform: scaleX(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .reveal,
+  .reveal-clip,
+  .reveal-scale,
+  .reveal-line {
     opacity: 1 !important;
     transform: none !important;
+    clip-path: none !important;
     transition: none !important;
   }
 }
 
 /* ---- Card ---- */
 .card {
+  position: relative;
   background: linear-gradient(180deg, #ffffff08, #ffffff03);
   border: 1px solid var(--color-line);
   border-radius: 1.25rem;
   overflow: hidden;
-  transition: transform 0.45s var(--ease-out-expo), border-color 0.45s, box-shadow 0.45s;
+  transition:
+    transform var(--dur-3) var(--ease-out-expo),
+    border-color var(--dur-3) var(--ease-out-expo),
+    box-shadow var(--dur-3) var(--ease-out-expo);
+}
+/* Cursor-tracked gradient glow. --gx/--gy set from JS (percent). */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out-expo);
+  background: radial-gradient(
+    22rem 22rem at var(--gx, 50%) var(--gy, 0%),
+    #8b5cf62e,
+    #ff2d8718 40%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+.card:hover::before,
+.card:focus-visible::before,
+.card:focus-within::before {
+  opacity: 1;
 }
 .card:hover {
   transform: translateY(-6px);
-  border-color: #8b5cf655;
+  border-color: #8b5cf67a;
   box-shadow: 0 24px 60px -30px #8b5cf6aa;
+}
+/* Keep real content above the glow layer */
+.card > * { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: border-color var(--dur-3); }
+  .card:hover { transform: none; }
 }
 
 /* Gradient border wrapper */
@@ -219,36 +386,31 @@ body.no-scroll {
    appends per-letter .sig-letter nodes whose glyph outlines trace on with a
    left-to-right stagger (stroke-dasharray/dashoffset), then the fill fades in. */
 .sig-base {
-  fill: #fff;
   stroke: none;
   transition: opacity 0.2s;
 }
+/* Soft glow behind the strokes for the hero/footer centerpiece. */
+.sig-glow {
+  filter: drop-shadow(0 0 22px #8b5cf655) drop-shadow(0 0 8px #ff2d8733);
+}
+/* Trace is driven by inline transitions from Signature.astro so it can be
+   replayed on navigation. Initial state = undrawn outline. Stroke paint is set
+   per-letter (gradient or white) by the script. */
 .sig-letter {
   fill: transparent;
-  stroke: #fff;
-  stroke-width: 1.3;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: var(--len, 200);
-  stroke-dashoffset: var(--len, 200);
-  animation:
-    sig-draw 0.72s cubic-bezier(0.45, 0, 0.4, 1) forwards,
-    sig-fill 0.55s ease forwards;
-  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.62s);
-}
-@keyframes sig-draw {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes sig-fill {
-  to { fill: #fff; stroke-width: 0.3; }
+  stroke-dashoffset: 200;
 }
 @media (prefers-reduced-motion: reduce) {
   .sig-letter {
-    animation: none;
-    fill: #fff;
-    stroke-width: 0.3;
-    stroke-dashoffset: 0;
+    stroke-width: 0.4 !important;
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
   }
+  /* Keep the static (gradient-filled) base visible under reduced motion. */
+  .sig-base { opacity: 1 !important; }
 }
 
 /* ---- Marquee ---- */
@@ -321,11 +483,17 @@ body.no-scroll {
   font-style: italic;
 }
 
-/* focus visibility */
+/* focus visibility — refined brand cyan ring */
 :focus-visible {
   outline: 2px solid var(--color-cyan);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px #38bdf826;
+  transition: box-shadow var(--dur-1) var(--ease-out-expo);
+}
+/* Don't double-ring rounded pill buttons awkwardly */
+.btn:focus-visible {
+  outline-offset: 3px;
 }
 
 /* skip link */
@@ -344,4 +512,231 @@ body.no-scroll {
 }
 .skip-link:focus {
   top: 1rem;
+}
+
+/* ===========================================================================
+   MOTION LAYER — scroll progress, header states, view transitions, hero
+=========================================================================== */
+
+/* ---- Scroll progress bar (fixed, very top) ---- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(var(--sp, 0));
+  transform-origin: left center;
+  background: var(--grad-accent);
+  z-index: 90;
+  pointer-events: none;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { display: none; }
+}
+
+/* ---- Site header scroll states ---- */
+.site-header {
+  transition:
+    transform var(--dur-3) var(--ease-out-expo),
+    background-color var(--dur-3) var(--ease-out-expo),
+    backdrop-filter var(--dur-3) var(--ease-out-expo),
+    border-color var(--dur-3) var(--ease-out-expo);
+  will-change: transform;
+}
+.site-header__bar {
+  transition:
+    background-color var(--dur-3) var(--ease-out-expo),
+    border-color var(--dur-3) var(--ease-out-expo),
+    box-shadow var(--dur-3) var(--ease-out-expo);
+}
+/* Deepened background once scrolled past hero threshold */
+.site-header.is-scrolled .site-header__bar {
+  background-color: #0b0b14e0;
+  border-color: #ffffff14;
+  box-shadow: 0 12px 40px -28px #000;
+}
+/* Hide on scroll-down, show on scroll-up */
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+/* Always visible when overlay menu is open */
+.site-header.menu-open {
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition: background-color var(--dur-3), backdrop-filter var(--dur-3); }
+  .site-header.is-hidden { transform: none; }
+}
+
+/* ---- Persistent header signature ---- */
+.header-sig {
+  height: 2.1rem;
+  width: auto;
+  opacity: 0.95;
+}
+@media (max-width: 640px) {
+  .header-sig { display: none; }
+}
+
+/* ---- Marquee logo micro-interactions ---- */
+.marquee__logo {
+  transition:
+    transform var(--dur-2) var(--ease-out-expo),
+    opacity var(--dur-2) var(--ease-out-expo),
+    filter var(--dur-2) var(--ease-out-expo);
+}
+.marquee__logo:hover {
+  transform: translateY(-3px);
+  opacity: 1;
+  filter: brightness(1.2) drop-shadow(0 6px 16px #8b5cf655);
+}
+
+/* ---- Astro View Transitions ---- */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 350ms;
+    animation-timing-function: var(--ease-out-quint);
+    mix-blend-mode: normal;
+  }
+  ::view-transition-old(root) {
+    animation-name: vt-fade-out;
+  }
+  ::view-transition-new(root) {
+    animation-name: vt-fade-rise;
+  }
+}
+@keyframes vt-fade-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes vt-fade-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ---- Hero media well (video-ready) ----
+   A future <video> sibling gets the same object-fit/scale-settle as the image.
+   The image acts as poster/fallback; when a video is present and playing it can
+   sit on top of the image. */
+.hero-media-well { z-index: 0; }
+.hero-video {
+  z-index: 0;
+}
+
+/* ---- Hero entrance choreography ----
+   .hero-anim marks the ready state; children carry per-part delays. */
+.hero-stage [data-hero] {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+/* Clip "mask reveal" lines: an inner span translates up inside an overflow-hidden clip */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+}
+.hero-line > span {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 0.95s var(--ease-out-quint);
+  transition-delay: var(--hero-delay, 0ms);
+}
+.hero-stage.hero-in .hero-line > span {
+  transform: translateY(0);
+}
+/* Fade/rise parts (eyebrow, intro, tagline, ctas, signature) */
+[data-hero="fade"] {
+  transform: translateY(22px);
+  transition:
+    opacity var(--dur-5) var(--ease-out-quint),
+    transform var(--dur-5) var(--ease-out-quint);
+  transition-delay: var(--hero-delay, 0ms);
+}
+.hero-stage.hero-in [data-hero] { opacity: 1; }
+.hero-stage.hero-in [data-hero="fade"] { transform: none; }
+/* Hero background image: scale settle */
+.hero-media {
+  transform: scale(1.06);
+  transition: transform 1.6s var(--ease-out-quint);
+}
+.hero-stage.hero-in .hero-media { transform: scale(1); }
+/* Ghost number drift-in */
+.hero-ghost {
+  opacity: 0;
+  transform: translateX(4%) translateY(-2%);
+  transition:
+    opacity 1.4s var(--ease-out-quint),
+    transform 1.6s var(--ease-out-quint);
+  transition-delay: 120ms;
+}
+.hero-stage.hero-in .hero-ghost {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-stage [data-hero],
+  .hero-line > span,
+  .hero-media,
+  .hero-ghost {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- Parallax hook (JS sets --py) ---- */
+.parallax {
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax { transform: none !important; }
+}
+
+/* ---- Count-up / stat entrance ---- */
+.stat-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  transition:
+    opacity var(--dur-3) var(--ease-out-quint),
+    transform var(--dur-3) var(--ease-out-back);
+  transition-delay: var(--char-delay, 0ms);
+}
+.stat-char.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stat-char { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ---- Countdown digit flip/slide ---- */
+.cd-digit {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
+  line-height: 1;
+}
+.cd-digit > .cd-cur {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.cd-digit.flip > .cd-cur {
+  animation: cd-flip 0.42s var(--ease-out-quint);
+}
+@keyframes cd-flip {
+  0% { transform: translateY(-70%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cd-digit.flip > .cd-cur { animation: none; }
 }

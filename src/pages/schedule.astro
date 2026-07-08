@@ -126,42 +126,87 @@ const countdownUnits = [
   </section>
 
   <script>
-    // Countdown to the next event.
-    const el = document.getElementById('countdown');
-    if (el) {
+    // Countdown to the next event. Digits flip/slide when they change.
+    // Re-initialised on every view-transition load; the previous interval is
+    // cleared before each swap so it never leaks or double-ticks.
+    let cdTimer = 0;
+
+    function initCountdown() {
+      const el = document.getElementById('countdown');
+      if (!el) return;
+      const reduce = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
       const target = new Date(el.dataset.date || '').getTime();
       const tba = el.dataset.tba === 'true';
       const note = document.getElementById('countdown-note');
       if (tba && note) note.classList.remove('hidden');
 
-      const units = {
+      const units: Record<string, HTMLElement | null> = {
         days: el.querySelector<HTMLElement>('[data-unit="days"]'),
         hours: el.querySelector<HTMLElement>('[data-unit="hours"]'),
         mins: el.querySelector<HTMLElement>('[data-unit="mins"]'),
         secs: el.querySelector<HTMLElement>('[data-unit="secs"]'),
       };
 
+      // Render a value as per-digit flip cells, animating only changed digits.
+      function setValue(host: HTMLElement | null, value: string) {
+        if (!host) return;
+        const chars = value.split('');
+        // Rebuild structure if digit count changed.
+        if (host.children.length !== chars.length) {
+          host.textContent = '';
+          chars.forEach((c) => {
+            const cell = document.createElement('span');
+            cell.className = 'cd-digit';
+            const cur = document.createElement('span');
+            cur.className = 'cd-cur';
+            cur.textContent = c;
+            cell.appendChild(cur);
+            host.appendChild(cell);
+          });
+          return;
+        }
+        chars.forEach((c, i) => {
+          const cell = host.children[i] as HTMLElement;
+          const cur = cell.querySelector<HTMLElement>('.cd-cur');
+          if (!cur || cur.textContent === c) return;
+          cur.textContent = c;
+          if (reduce) return;
+          cell.classList.remove('flip');
+          // reflow to allow re-triggering the animation
+          void cell.offsetWidth;
+          cell.classList.add('flip');
+        });
+      }
+
       function tick() {
         const diff = target - Date.now();
         if (Number.isNaN(target) || diff <= 0) {
-          if (units.days) units.days.textContent = '0';
-          if (units.hours) units.hours.textContent = '0';
-          if (units.mins) units.mins.textContent = '0';
-          if (units.secs) units.secs.textContent = '0';
+          setValue(units.days, '0');
+          setValue(units.hours, '00');
+          setValue(units.mins, '00');
+          setValue(units.secs, '00');
           return;
         }
         const d = Math.floor(diff / 86400000);
         const h = Math.floor((diff % 86400000) / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
-        if (units.days) units.days.textContent = String(d);
-        if (units.hours) units.hours.textContent = String(h).padStart(2, '0');
-        if (units.mins) units.mins.textContent = String(m).padStart(2, '0');
-        if (units.secs) units.secs.textContent = String(s).padStart(2, '0');
+        setValue(units.days, String(d));
+        setValue(units.hours, String(h).padStart(2, '0'));
+        setValue(units.mins, String(m).padStart(2, '0'));
+        setValue(units.secs, String(s).padStart(2, '0'));
       }
 
       tick();
-      window.setInterval(tick, 1000);
+      cdTimer = window.setInterval(tick, 1000);
     }
+
+    document.addEventListener('astro:before-swap', () => {
+      if (cdTimer) window.clearInterval(cdTimer);
+      cdTimer = 0;
+    });
+    document.addEventListener('astro:page-load', initCountdown);
   </script>
 </BaseLayout>

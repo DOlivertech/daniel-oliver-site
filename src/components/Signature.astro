@@ -1,48 +1,91 @@
 ---
-// Signature rendered as SVG text in a cursive font.
-// When `animate` is set, a script splits the text into per-letter <text> nodes
-// and traces each glyph's outline progressively (stroke-dasharray/dashoffset,
-// staggered left to right), then fades the fill in — a true handwriting
-// draw-on. No-JS and prefers-reduced-motion fall back to the static signature.
+// Animated signature — a brand centerpiece.
+// Rendered as SVG text in a cursive font. When `animate` is set, a script
+// splits the text into per-letter <text> nodes and traces each glyph's outline
+// progressively (stroke-dasharray/dashoffset, staggered left to right) using a
+// pink→violet→cyan gradient stroke, then settles the gradient FILL in — a true
+// signed-in-gold moment. The trace is REPLAYABLE: it re-runs on view-transition
+// swaps and can be triggered on demand (used by the persistent header sig).
+// No-JS and prefers-reduced-motion fall back to a static, fully drawn gradient
+// signature.
 import site from '../data/site.json';
 
 interface Props {
   animate?: boolean;
   class?: string;
   size?: number; // font size in svg units
+  /** 'cinematic' (hero/footer, slower) | 'quick' (header, ~900ms) */
+  speed?: 'cinematic' | 'quick';
+  /** 'gradient' (pink→violet→cyan brand treatment) | 'mono' (white) */
+  tone?: 'gradient' | 'mono';
+  /** add a soft glow behind the strokes */
+  glow?: boolean;
 }
-const { animate = false, class: className = '', size = 72 } = Astro.props;
+const {
+  animate = false,
+  class: className = '',
+  size = 72,
+  speed = 'cinematic',
+  tone = 'gradient',
+  glow = false,
+} = Astro.props;
+
+// Unique gradient id per instance so multiple signatures don't collide.
+const gid = `sig-grad-${Math.random().toString(36).slice(2, 8)}`;
 ---
 <svg
-  class={`signature ${className}`}
+  class={`signature ${glow ? 'sig-glow' : ''} ${className}`}
   viewBox="0 0 640 130"
   role="img"
   aria-label={`${site.signatureText} signature`}
   data-sig-animate={animate ? 'true' : undefined}
+  data-sig-speed={speed}
+  data-sig-tone={tone}
+  data-sig-grad={gid}
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
 >
+  <defs>
+    <linearGradient id={gid} x1="0" y1="0" x2="640" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff2d87" />
+      <stop offset="0.5" stop-color="#8b5cf6" />
+      <stop offset="1" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
   <text
     class="sig-base"
     x="0"
     y="92"
     font-family="'Great Vibes', cursive"
     font-size={size}
+    fill={tone === 'gradient' ? `url(#${gid})` : '#fff'}
     data-sig-base
   >{site.signatureText}</text>
 </svg>
 
 <script>
-  function buildSignature(svg: SVGSVGElement) {
-    const base = svg.querySelector<SVGTextElement>('[data-sig-base]');
-    if (!base || svg.dataset.sigBuilt) return;
-    const str = base.textContent || '';
-    if (!str.trim()) return;
+  // ---- One shared controller for every signature on the page ----
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const NS = 'http://www.w3.org/2000/svg';
+  // Build the per-letter trace nodes once. Returns true if built (or already
+  // built), false if measurement is unsupported (keep static base).
+  function buildSignature(svg: SVGSVGElement): boolean {
+    if (svg.dataset.sigBuilt) return true;
+    const base = svg.querySelector<SVGTextElement>('[data-sig-base]');
+    if (!base) return false;
+    const str = base.textContent || '';
+    if (!str.trim()) return false;
+    // display:none breaks SVG text measurement — bail (retry later when shown).
+    if (getComputedStyle(svg).display === 'none') return false;
+
     const baseX = parseFloat(base.getAttribute('x') || '0');
     const baseY = base.getAttribute('y') || '92';
     const fontSize = base.getAttribute('font-size') || '72';
+    const gid = svg.dataset.sigGrad || '';
+    const gradient = svg.dataset.sigTone !== 'mono';
+    const strokePaint = gradient && gid ? `url(#${gid})` : '#fff';
 
     let letterIndex = 0;
     const nodes: SVGTextElement[] = [];
@@ -55,8 +98,9 @@ const { animate = false, class: className = '', size = 72 } = Astro.props;
       try {
         offset = i === 0 ? 0 : base.getSubStringLength(0, i);
       } catch {
-        return; // measurement unsupported — keep static base
+        return false; // measurement unsupported — keep static base
       }
+      if (i !== 0 && offset === 0) return false; // measured to zero → not ready
 
       const t = document.createElementNS(NS, 'text') as SVGTextElement;
       t.setAttribute('class', 'sig-letter');
@@ -64,38 +108,98 @@ const { animate = false, class: className = '', size = 72 } = Astro.props;
       t.setAttribute('y', baseY);
       t.setAttribute('font-family', "'Great Vibes', cursive");
       t.setAttribute('font-size', fontSize);
+      t.setAttribute('stroke', strokePaint);
+      t.dataset.fillPaint = strokePaint;
       t.textContent = ch;
 
-      // Approximate the glyph outline length from its advance width.
       let advance = 30;
       try {
         advance = base.getSubStringLength(i, 1) || 30;
-      } catch { /* keep default */ }
+      } catch {
+        /* keep default */
+      }
       const len = Math.max(90, Math.ceil(advance * 3.6));
-      t.style.setProperty('--len', String(len));
-      t.style.setProperty('--d', `${(letterIndex * 110) / 1000}s`);
+      t.dataset.len = String(len);
+      t.dataset.i = String(letterIndex);
 
       nodes.push(t);
       letterIndex++;
     }
 
-    if (!nodes.length) return;
+    if (!nodes.length) return false;
     svg.dataset.sigBuilt = 'true';
     nodes.forEach((n) => svg.appendChild(n));
     base.style.opacity = '0';
+    return true;
   }
 
+  // Play (or replay) the trace on an already-built signature.
+  function playSignature(svg: SVGSVGElement) {
+    if (reduce()) return;
+    const letters = svg.querySelectorAll<SVGTextElement>('.sig-letter');
+    if (!letters.length) return;
+
+    const quick = svg.dataset.sigSpeed === 'quick';
+    const drawDur = quick ? 0.5 : 0.78;
+    const stagger = quick ? 0.055 : 0.12;
+    const fillLead = quick ? 0.42 : 0.66;
+
+    letters.forEach((t) => {
+      const len = parseFloat(t.dataset.len || '200');
+      const idx = parseInt(t.dataset.i || '0', 10);
+      const delay = idx * stagger;
+      const fillPaint = t.dataset.fillPaint || '#fff';
+
+      // Reset to the un-drawn state (no transition, so it snaps back).
+      t.style.transition = 'none';
+      t.style.strokeDasharray = String(len);
+      t.style.strokeDashoffset = String(len);
+      t.style.strokeWidth = quick ? '1.6' : '2';
+      t.style.fill = 'transparent';
+
+      // Force reflow so the reset takes hold, then start the transition
+      // synchronously — rAF can starve in hidden tabs / mid view-transition.
+      t.getBoundingClientRect();
+
+      t.style.transition =
+        `stroke-dashoffset ${drawDur}s cubic-bezier(0.45,0,0.4,1) ${delay}s,` +
+        `fill 0.6s ease ${delay + fillLead}s,` +
+        `stroke-width 0.6s ease ${delay + fillLead}s`;
+      t.style.strokeDashoffset = '0';
+      t.style.fill = fillPaint;
+      t.style.strokeWidth = '0.4';
+    });
+  }
+
+  // Init every animating signature. Big (cinematic) ones play on init; the
+  // persistent header one (quick) is played by the header script on nav.
   function initSignatures() {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return; // static fallback: base text stays visible
+    // Under reduced motion, leave the static gradient-filled base as-is.
+    if (reduce()) return;
     document
       .querySelectorAll<SVGSVGElement>('svg.signature[data-sig-animate]')
-      .forEach(buildSignature);
+      .forEach((svg) => {
+        const built = buildSignature(svg);
+        if (built) playSignature(svg);
+      });
   }
 
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(initSignatures);
-  } else {
-    window.addEventListener('load', initSignatures);
+  // Expose replay for other scripts (header persistence, dividers).
+  (window as any).__replaySignature = (svg: SVGSVGElement) => {
+    if (!svg) return;
+    if (buildSignature(svg)) playSignature(svg);
+  };
+  (window as any).__buildSignature = buildSignature;
+  (window as any).__playSignature = playSignature;
+
+  function boot() {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(initSignatures);
+    } else {
+      initSignatures();
+    }
   }
+
+  // Run on first load and after every view-transition swap.
+  document.addEventListener('astro:page-load', boot);
 </script>

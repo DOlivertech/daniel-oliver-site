@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import site from '../data/site.json';
@@ -32,6 +33,9 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0b0b14" />
 
+    <!-- SPA-style navigation with custom crossfade+rise transition -->
+    <ClientRouter />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Daniel Oliver Racing" />
@@ -53,6 +57,7 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     />
   </head>
   <body class="bg-depth min-h-screen">
+    <div class="scroll-progress" aria-hidden="true"></div>
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
     <main id="main">
@@ -61,12 +66,32 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     <Footer />
 
     <script>
-      // Scroll-reveal utility: IntersectionObserver adds `.in` once visible.
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const els = document.querySelectorAll('.reveal');
-      if (reduce || !('IntersectionObserver' in window)) {
-        els.forEach((el) => el.classList.add('in'));
-      } else {
+      // =====================================================================
+      // Site-wide motion runtime. Everything re-initialises on every
+      // `astro:page-load` so it survives View Transition navigations.
+      // Per-page teardown is handled via a disposer list cleared before swap.
+      // =====================================================================
+      const reduce = () =>
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const finePointer = () =>
+        window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      let disposers: Array<() => void> = [];
+      const onCleanup = (fn: () => void) => disposers.push(fn);
+
+      // ---- Scroll-reveal (variants share the same observer) ----
+      function initReveals() {
+        const els = document.querySelectorAll(
+          '.reveal, .reveal-clip, .reveal-scale, .reveal-line'
+        );
+        if (reduce() || !('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('in'));
+          // still fire stat entrance immediately
+          document
+            .querySelectorAll('[data-countup]')
+            .forEach((s) => s.classList.add('stat-lit'));
+          return;
+        }
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -79,7 +104,288 @@ const ogImageAbs = new URL(ogImage, Astro.site);
           { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
         );
         els.forEach((el) => io.observe(el));
+        // Robustness: reveal anything already within the viewport on init
+        // (covers anchor jumps / restored scroll where IO may not re-fire).
+        const vh = window.innerHeight;
+        els.forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < vh * 0.9 && r.bottom > 0) {
+            el.classList.add('in');
+            io.unobserve(el);
+          }
+        });
+        onCleanup(() => io.disconnect());
       }
+
+      // ---- Standalone eyebrow leading lines (not inside a reveal) ----
+      function initEyebrows() {
+        const eyebrows = Array.from(
+          document.querySelectorAll<HTMLElement>('.eyebrow')
+        ).filter((e) => !e.closest('.reveal') && !e.classList.contains('reveal'));
+        if (!eyebrows.length) return;
+        if (reduce() || !('IntersectionObserver' in window)) {
+          eyebrows.forEach((e) => e.classList.add('eyebrow-live'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('eyebrow-live');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+        eyebrows.forEach((e) => io.observe(e));
+        onCleanup(() => io.disconnect());
+      }
+
+      // ---- Stat entrance: numeric count-up, else letter stagger ----
+      function initStats() {
+        const stats = document.querySelectorAll<HTMLElement>('[data-countup]');
+        if (!stats.length) return;
+
+        const light = (el: HTMLElement) => {
+          if (el.dataset.lit) return;
+          el.dataset.lit = '1';
+          const raw = el.dataset.countup || el.textContent || '';
+          const numMatch = raw.match(/^(\d[\d,]*)(.*)$/);
+
+          if (!reduce() && numMatch) {
+            // Count-up for a leading integer (e.g. "2026").
+            const target = parseInt(numMatch[1].replace(/,/g, ''), 10);
+            const suffix = numMatch[2] || '';
+            const dur = 1100;
+            const start = performance.now();
+            const step = (now: number) => {
+              const t = Math.min(1, (now - start) / dur);
+              const eased = 1 - Math.pow(1 - t, 3);
+              el.textContent = String(Math.round(target * eased)) + suffix;
+              if (t < 1) requestAnimationFrame(step);
+              else el.textContent = raw;
+            };
+            requestAnimationFrame(step);
+            return;
+          }
+
+          // Letter stagger for non-numeric values.
+          if (reduce()) {
+            el.textContent = raw;
+            return;
+          }
+          el.textContent = '';
+          [...raw].forEach((ch, i) => {
+            const span = document.createElement('span');
+            span.className = 'stat-char';
+            span.textContent = ch === ' ' ? ' ' : ch;
+            span.style.setProperty('--char-delay', `${i * 45}ms`);
+            el.appendChild(span);
+            requestAnimationFrame(() =>
+              requestAnimationFrame(() => span.classList.add('in'))
+            );
+          });
+        };
+
+        if (reduce() || !('IntersectionObserver' in window)) {
+          stats.forEach(light);
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                light(entry.target as HTMLElement);
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.4 }
+        );
+        stats.forEach((s) => io.observe(s));
+        onCleanup(() => io.disconnect());
+      }
+
+      // ---- Parallax on large section images (rAF-throttled, ≤6%) ----
+      function initParallax() {
+        const nodes = Array.from(
+          document.querySelectorAll<HTMLElement>('[data-parallax]')
+        );
+        if (!nodes.length || reduce()) return;
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const vh = window.innerHeight;
+          for (const el of nodes) {
+            const r = el.getBoundingClientRect();
+            if (r.bottom < -200 || r.top > vh + 200) continue;
+            const progress = (r.top + r.height / 2 - vh / 2) / vh; // ~ -1..1
+            const max = parseFloat(el.dataset.parallax || '6');
+            const shift = Math.max(-max, Math.min(max, -progress * max));
+            const scale = el.dataset.parallaxScale || '1.08';
+            el.style.transform = `translate3d(0, ${shift}%, 0) scale(${scale})`;
+          }
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        update();
+        onCleanup(() => {
+          window.removeEventListener('scroll', onScroll);
+          window.removeEventListener('resize', onScroll);
+        });
+      }
+
+      // ---- Scroll progress bar ----
+      function initProgress() {
+        const bar = document.querySelector<HTMLElement>('.scroll-progress');
+        if (!bar || reduce()) return;
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const h =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const p = h > 0 ? Math.min(1, window.scrollY / h) : 0;
+          bar.style.setProperty('--sp', String(p));
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        update();
+        onCleanup(() => {
+          window.removeEventListener('scroll', onScroll);
+          window.removeEventListener('resize', onScroll);
+        });
+      }
+
+      // ---- Header: deepen + hide-on-down / show-on-up ----
+      function initHeader() {
+        const header = document.querySelector<HTMLElement>('.site-header');
+        if (!header) return;
+        let last = window.scrollY;
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const y = window.scrollY;
+          header.classList.toggle('is-scrolled', y > 40);
+          const menuOpen = header.classList.contains('menu-open');
+          if (!menuOpen && !reduce()) {
+            if (y > 220 && y > last + 4) header.classList.add('is-hidden');
+            else if (y < last - 4 || y < 120)
+              header.classList.remove('is-hidden');
+          } else {
+            header.classList.remove('is-hidden');
+          }
+          last = y;
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        update();
+        onCleanup(() => window.removeEventListener('scroll', onScroll));
+      }
+
+      // ---- Magnetic buttons (desktop fine-pointer only, ≤4px) ----
+      function initMagnetic() {
+        if (reduce() || !finePointer()) return;
+        const btns = Array.from(document.querySelectorAll<HTMLElement>('.btn'));
+        const handlers: Array<() => void> = [];
+        btns.forEach((btn) => {
+          const move = (e: PointerEvent) => {
+            const r = btn.getBoundingClientRect();
+            const mx = ((e.clientX - r.left) / r.width - 0.5) * 8;
+            const my = ((e.clientY - r.top) / r.height - 0.5) * 8;
+            btn.style.setProperty('--mx', `${mx.toFixed(1)}px`);
+            btn.style.setProperty('--my', `${my.toFixed(1)}px`);
+          };
+          const reset = () => {
+            btn.style.setProperty('--mx', '0px');
+            btn.style.setProperty('--my', '0px');
+          };
+          btn.addEventListener('pointermove', move);
+          btn.addEventListener('pointerleave', reset);
+          handlers.push(() => {
+            btn.removeEventListener('pointermove', move);
+            btn.removeEventListener('pointerleave', reset);
+            reset();
+          });
+        });
+        onCleanup(() => handlers.forEach((h) => h()));
+      }
+
+      // ---- Card cursor-tracked glow ----
+      function initCards() {
+        if (reduce() || !finePointer()) return;
+        const cards = Array.from(document.querySelectorAll<HTMLElement>('.card'));
+        const handlers: Array<() => void> = [];
+        cards.forEach((card) => {
+          const move = (e: PointerEvent) => {
+            const r = card.getBoundingClientRect();
+            const gx = ((e.clientX - r.left) / r.width) * 100;
+            const gy = ((e.clientY - r.top) / r.height) * 100;
+            card.style.setProperty('--gx', `${gx.toFixed(1)}%`);
+            card.style.setProperty('--gy', `${gy.toFixed(1)}%`);
+          };
+          card.addEventListener('pointermove', move);
+          handlers.push(() => card.removeEventListener('pointermove', move));
+        });
+        onCleanup(() => handlers.forEach((h) => h()));
+      }
+
+      // ---- Hero entrance choreography ----
+      function initHero() {
+        const stage = document.querySelector<HTMLElement>('.hero-stage');
+        if (!stage) return;
+        if (reduce()) {
+          stage.classList.add('hero-in');
+          return;
+        }
+        // Kick off after two frames so initial styles apply first.
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => stage.classList.add('hero-in'))
+        );
+      }
+
+      function runCleanup() {
+        disposers.forEach((fn) => {
+          try {
+            fn();
+          } catch {}
+        });
+        disposers = [];
+      }
+
+      function initAll() {
+        runCleanup();
+        initReveals();
+        initEyebrows();
+        initStats();
+        initParallax();
+        initProgress();
+        initHeader();
+        initMagnetic();
+        initCards();
+        initHero();
+      }
+
+      document.addEventListener('astro:page-load', initAll);
+      // Tear down scroll/pointer listeners before the DOM is swapped out.
+      document.addEventListener('astro:before-swap', runCleanup);
     </script>
   </body>
 </html>

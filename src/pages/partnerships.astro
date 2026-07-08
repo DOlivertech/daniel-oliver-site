@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Signature from '../components/Signature.astro';
 import site from '../data/site.json';
 import page from '../data/pages/partnerships.json';
 
@@ -10,16 +11,21 @@ const deckRequestHref = `mailto:${site.email}?subject=${encodeURIComponent(deck.
 <BaseLayout title={page.meta.title} description={page.meta.description}>
   <!-- Hero -->
   <section class="relative overflow-hidden px-6 pb-20 pt-40 sm:px-12 lg:px-20">
-    <img
-      src={hero.image}
-      alt=""
-      class="absolute inset-0 h-full w-full object-cover opacity-25"
-      loading="eager"
-      fetchpriority="high"
-      width="1920"
-      height="1080"
-      aria-hidden="true"
-    />
+    <!-- Layered media well: a background <video> can drop in as a sibling
+         before the image without reworking this markup. -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <img
+        src={hero.image}
+        alt=""
+        class="parallax absolute inset-0 h-full w-full scale-[1.08] object-cover opacity-25"
+        data-parallax="4"
+        data-parallax-scale="1.08"
+        loading="eager"
+        fetchpriority="high"
+        width="1920"
+        height="1080"
+      />
+    </div>
     <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/85 to-ink" aria-hidden="true"></div>
     <div class="relative">
       <p class="eyebrow reveal mb-4">{hero.eyebrow}</p>
@@ -101,8 +107,13 @@ const deckRequestHref = `mailto:${site.email}?subject=${encodeURIComponent(deck.
     </ul>
   </section>
 
+  <!-- Signature divider — the animated brand mark re-traces on every visit -->
+  <div class="mx-auto max-w-4xl px-6 py-6 text-center" aria-hidden="true">
+    <Signature animate glow tone="gradient" class="mx-auto w-[min(70vw,26rem)] opacity-95" />
+  </div>
+
   <!-- Deck CTA -->
-  <section id="deck" class="mx-auto max-w-4xl px-6 py-16 text-center">
+  <section id="deck" class="mx-auto max-w-4xl px-6 pb-16 pt-6 text-center">
     <h2 class="h-display reveal text-3xl text-white sm:text-4xl">{deck.title}</h2>
     <p class="reveal mt-4 leading-relaxed text-mist" style="--reveal-delay:100ms">
       {deck.body}

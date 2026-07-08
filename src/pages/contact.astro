@@ -94,9 +94,13 @@ const { hero, emailCard, socialsCard, partnershipCard, form } = page;
   </section>
 
   <script>
-    // Show success note if redirected back with ?sent=true
-    if (new URLSearchParams(window.location.search).get('sent') === 'true') {
-      document.getElementById('form-success')?.classList.remove('hidden');
+    // Show success note if redirected back with ?sent=true.
+    // Runs on each view-transition load so it works after client navigation too.
+    function initContactSuccess() {
+      if (new URLSearchParams(window.location.search).get('sent') === 'true') {
+        document.getElementById('form-success')?.classList.remove('hidden');
+      }
     }
+    document.addEventListener('astro:page-load', initContactSuccess);
   </script>
 </BaseLayout>

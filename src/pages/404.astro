@@ -10,7 +10,7 @@ import page from '../data/pages/notfound.json';
 
     <!-- racing line skid -->
     <svg class="pointer-events-none absolute inset-x-0 top-1/2 w-full opacity-30" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M-20 90 C200 90 260 30 420 30 S680 100 840 100 1080 40 1220 40" fill="none" stroke="url(#skid-grad)" stroke-width="3" stroke-dasharray="14 10"/>
+      <path class="skid-path" d="M-20 90 C200 90 260 30 420 30 S680 100 840 100 1080 40 1220 40" fill="none" stroke="url(#skid-grad)" stroke-width="3"/>
       <defs>
         <linearGradient id="skid-grad" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
           <stop stop-color="#ff2d87"/><stop offset="0.5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#38bdf8"/>
@@ -30,4 +30,42 @@ import page from '../data/pages/notfound.json';
       </div>
     </div>
   </section>
+
+  <style>
+    .skid-path {
+      stroke-dasharray: var(--skid-len, 1600);
+      stroke-dashoffset: var(--skid-len, 1600);
+    }
+    .skid-path.drawn {
+      transition: stroke-dashoffset 1.8s var(--ease-out-quint);
+      stroke-dashoffset: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skid-path { stroke-dashoffset: 0; }
+      .skid-path.drawn { transition: none; }
+    }
+  </style>
+
+  <script>
+    // Draw the skid line on load (and after view-transition swaps).
+    function initSkid() {
+      const path = document.querySelector<SVGPathElement>('.skid-path');
+      if (!path) return;
+      const reduce = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+      let len = 1600;
+      try {
+        len = path.getTotalLength() || 1600;
+      } catch {}
+      path.style.setProperty('--skid-len', String(len));
+      if (reduce) return;
+      path.classList.remove('drawn');
+      void path.getBoundingClientRect();
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => path.classList.add('drawn'))
+      );
+    }
+    document.addEventListener('astro:page-load', initSkid);
+  </script>
 </BaseLayout>

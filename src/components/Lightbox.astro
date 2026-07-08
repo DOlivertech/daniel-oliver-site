@@ -28,22 +28,57 @@
   <p id="lb-counter" class="absolute bottom-5 left-1/2 -translate-x-1/2 font-mono text-xs tracking-[0.3em] text-mist" aria-live="polite"></p>
 </div>
 
+<style>
+  .lightbox {
+    opacity: 0;
+    transition: opacity 0.32s var(--ease-out-quint);
+  }
+  .lightbox.lb-open {
+    opacity: 1;
+  }
+  .lightbox #lb-img {
+    transform: scale(0.92);
+    opacity: 0;
+    transition:
+      transform 0.4s var(--ease-out-back),
+      opacity 0.32s var(--ease-out-quint);
+  }
+  .lightbox.lb-open #lb-img {
+    transform: scale(1);
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox, .lightbox #lb-img { transition: none; }
+    .lightbox #lb-img { transform: none; }
+  }
+</style>
+
 <script>
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
-  const counter = document.getElementById('lb-counter');
-  const btnClose = document.getElementById('lb-close');
-  const btnPrev = document.getElementById('lb-prev');
-  const btnNext = document.getElementById('lb-next');
+  // Re-initialise on every view-transition load. Guard against double-binding.
+  function initLightbox() {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
+    const counter = document.getElementById('lb-counter');
+    const btnClose = document.getElementById('lb-close');
+    const btnPrev = document.getElementById('lb-prev');
+    const btnNext = document.getElementById('lb-next');
 
-  const triggers = Array.from(
-    document.querySelectorAll<HTMLElement>('[data-lightbox]')
-  );
+    const triggers = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-lightbox]')
+    );
 
-  if (lb && lbImg && triggers.length) {
+    if (!lb || !lbImg || !triggers.length) return;
+    if ((lb as any).__lbBound) return;
+    (lb as any).__lbBound = true;
+
+    const reduce = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
     let idx = 0;
     let lastFocused: Element | null = null;
     let touchX = 0;
+    let closeTimer = 0;
 
     const sources = triggers.map((t) => ({
       src: t.getAttribute('data-full') || t.querySelector('img')?.src || '',
@@ -61,19 +96,29 @@
       idx = i;
       lastFocused = document.activeElement;
       render();
+      window.clearTimeout(closeTimer);
       lb!.classList.remove('hidden');
       lb!.classList.add('flex');
       document.body.classList.add('no-scroll');
+      // Trigger the enter transition on the next frame.
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => lb!.classList.add('lb-open'))
+      );
       (btnClose as HTMLElement | null)?.focus();
       document.addEventListener('keydown', onKey);
     }
 
     function close() {
-      lb!.classList.add('hidden');
-      lb!.classList.remove('flex');
-      document.body.classList.remove('no-scroll');
+      lb!.classList.remove('lb-open');
       document.removeEventListener('keydown', onKey);
-      (lastFocused as HTMLElement | null)?.focus?.();
+      const finish = () => {
+        lb!.classList.add('hidden');
+        lb!.classList.remove('flex');
+        document.body.classList.remove('no-scroll');
+        (lastFocused as HTMLElement | null)?.focus?.();
+      };
+      if (reduce) finish();
+      else closeTimer = window.setTimeout(finish, 340);
     }
 
     function prev() { idx = (idx - 1 + sources.length) % sources.length; render(); }
@@ -84,7 +129,6 @@
       else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
       else if (e.key === 'Tab') {
-        // simple trap between the three buttons
         const nodes = [btnClose, btnPrev, btnNext].filter(Boolean) as HTMLElement[];
         const first = nodes[0], last = nodes[nodes.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -103,16 +147,16 @@
     btnPrev?.addEventListener('click', prev);
     btnNext?.addEventListener('click', next);
 
-    // click backdrop to close
     lb.addEventListener('click', (e) => {
       if (e.target === lb || (e.target as HTMLElement).tagName === 'FIGURE') close();
     });
 
-    // swipe
     lb.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
     lb.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - touchX;
       if (Math.abs(dx) > 48) (dx > 0 ? prev() : next());
     }, { passive: true });
   }
+
+  document.addEventListener('astro:page-load', initLightbox);
 </script>

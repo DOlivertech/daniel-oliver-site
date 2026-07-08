@@ -22,12 +22,14 @@ const { hero, sections, closing } = page;
   {sections.map((s, i) => (
     <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
       <div class={`grid items-center gap-10 lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
-        <div class="reveal">
-          <div class="grad-border overflow-hidden rounded-2xl">
+        <div>
+          <div class="grad-border reveal-clip overflow-hidden rounded-2xl">
             <img
               src={s.image}
               alt={s.imageAlt}
-              class="aspect-[4/3] w-full rounded-2xl object-cover"
+              class="parallax aspect-[4/3] w-full scale-[1.08] rounded-2xl object-cover"
+              data-parallax="5"
+              data-parallax-scale="1.08"
               loading="lazy"
               width="880"
               height="660"
@@ -47,7 +49,7 @@ const { hero, sections, closing } = page;
 
   <!-- Closing CTA -->
   <section class="mx-auto max-w-4xl px-6 py-20 text-center">
-    <Signature class="mx-auto mb-8 w-60 opacity-90" />
+    <Signature animate glow tone="gradient" class="mx-auto mb-8 w-[min(72vw,28rem)]" />
     <h2 class="h-display reveal text-3xl text-white sm:text-4xl">{closing.title}</h2>
     <p class="reveal mt-4 text-mist" style="--reveal-delay:100ms">{closing.subtitle}</p>
     <div class="reveal mt-8 flex flex-wrap justify-center gap-4" style="--reveal-delay:200ms">

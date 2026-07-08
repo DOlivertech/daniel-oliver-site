@@ -34,23 +34,29 @@ const fmt = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', ye
       {images.map((src, i) => (
         <button
           type="button"
-          class="gallery-item reveal group relative block w-full overflow-hidden rounded-xl border border-transparent transition-colors hover:border-violet/40 focus-visible:border-cyan"
+          class="gallery-item reveal-scale group relative block w-full overflow-hidden rounded-xl border border-transparent transition-colors hover:border-violet/40 focus-visible:border-cyan"
           data-lightbox
           data-full={src}
           data-index={i}
           style={`--reveal-delay:${(i % 6) * 60}ms`}
           aria-label={`${page.detail.openPhotoLabel} ${i + 1} / ${images.length}`}
         >
-          <img
-            src={src}
-            alt={`${title} — photo ${i + 1}`}
-            loading="lazy"
-            decoding="async"
-            width="600"
-            height="400"
-            class="h-auto w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-          <span class="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-ink/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true"></span>
+          <span class="gallery-frame block overflow-hidden rounded-xl">
+            <img
+              src={src}
+              alt={`${title} — photo ${i + 1}`}
+              loading="lazy"
+              decoding="async"
+              width="600"
+              height="400"
+              class="gallery-img h-auto w-full rounded-xl object-cover"
+            />
+          </span>
+          <span class="gallery-overlay pointer-events-none absolute inset-0 rounded-xl" aria-hidden="true"></span>
+          <span class="gallery-caption pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-2 px-4 pb-3 pt-8" aria-hidden="true">
+            <span class="font-mono text-[0.6rem] tracking-[0.3em] text-white/90">{String(i + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}</span>
+            <svg class="ml-auto h-4 w-4 stroke-white/90" viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-8 8M3 21l8-8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
         </button>
       ))}
     </div>
@@ -69,6 +75,46 @@ const fmt = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', ye
     .gallery-item {
       margin-bottom: 1rem;
       break-inside: avoid;
+      cursor: zoom-in;
+    }
+    .gallery-frame { line-height: 0; }
+    .gallery-img {
+      transition: transform 0.6s var(--ease-out-quint);
+      will-change: transform;
+    }
+    .gallery-item:hover .gallery-img,
+    .gallery-item:focus-visible .gallery-img {
+      transform: scale(1.055);
+    }
+    .gallery-overlay {
+      background: linear-gradient(
+        to top,
+        #0b0b14cc 0%,
+        #8b5cf61a 40%,
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-out-quint);
+    }
+    .gallery-item:hover .gallery-overlay,
+    .gallery-item:focus-visible .gallery-overlay {
+      opacity: 1;
+    }
+    .gallery-caption {
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 0.4s var(--ease-out-quint),
+        transform 0.4s var(--ease-out-quint);
+    }
+    .gallery-item:hover .gallery-caption,
+    .gallery-item:focus-visible .gallery-caption {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gallery-img, .gallery-overlay, .gallery-caption { transition: none; }
+      .gallery-item:hover .gallery-img { transform: none; }
     }
   </style>
 </BaseLayout>

@@ -25,48 +25,57 @@ const { hero, about, simReal } = page;
 ---
 <BaseLayout title={page.meta.title} description={site.bioShort} ogImage={hero.image}>
   <!-- ============================ HERO ============================ -->
-  <section class="relative flex min-h-[100svh] items-end overflow-hidden">
-    <img
-      src={hero.image}
-      alt={hero.imageAlt}
-      class="absolute inset-0 h-full w-full object-cover object-[70%_30%]"
-      loading="eager"
-      fetchpriority="high"
-      width="1920"
-      height="1280"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25" aria-hidden="true"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent" aria-hidden="true"></div>
+  <section class="hero-stage relative flex min-h-[100svh] items-end overflow-hidden">
+    <!-- Layered media well: a background <video> (absolute, object-cover) can be
+         dropped in here as a sibling BEFORE the image; the image is the poster/
+         fallback and stays behind the overlays. -->
+    <div class="hero-media-well pointer-events-none absolute inset-0 -z-0 overflow-hidden" aria-hidden="true">
+      <!-- Higgsfield background video slots in here later, e.g.:
+           <video class="hero-media hero-video absolute inset-0 h-full w-full object-cover object-[70%_30%]"
+                  autoplay muted loop playsinline preload="metadata"
+                  poster={hero.image}></video> -->
+      <img
+        src={hero.image}
+        alt={hero.imageAlt}
+        class="hero-media absolute inset-0 h-full w-full object-cover object-[70%_30%]"
+        loading="eager"
+        fetchpriority="high"
+        width="1920"
+        height="1280"
+      />
+    </div>
+    <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/55 to-ink/25" aria-hidden="true"></div>
+    <div class="absolute inset-0 z-[1] bg-gradient-to-r from-ink/70 via-transparent to-transparent" aria-hidden="true"></div>
 
     <!-- Giant ghost number -->
-    <div class="pointer-events-none absolute -right-6 top-16 select-none font-display text-[38vw] font-black leading-none text-white/[0.045] sm:text-[26vw]" aria-hidden="true">{hero.ghostText}</div>
+    <div class="hero-ghost pointer-events-none absolute -right-6 top-16 select-none font-display text-[38vw] font-black leading-none text-white/[0.045] sm:text-[26vw]" aria-hidden="true">{hero.ghostText}</div>
 
     <div class="relative z-10 w-full px-6 pb-24 pt-40 sm:px-12 lg:px-20">
-      <p class="eyebrow reveal mb-5" style="--reveal-delay:100ms">
+      <p class="eyebrow mb-5" data-hero="fade" style="--hero-delay:120ms">
         <span class="text-pink">{hero.eyebrowNumber}</span>&nbsp;&nbsp;·&nbsp;&nbsp;{site.tagline}
       </p>
 
-      <h1 class="h-display reveal text-[clamp(3rem,10vw,7.5rem)] uppercase text-white" style="--reveal-delay:200ms">
-        {hero.titleLine1}<br />
-        <span class="text-gradient">{hero.titleLine2}</span>
+      <h1 class="h-display text-[clamp(3rem,10vw,7.5rem)] uppercase text-white" data-hero>
+        <span class="hero-line" style="--hero-delay:260ms"><span>{hero.titleLine1}</span></span>
+        <span class="hero-line" style="--hero-delay:340ms"><span class="text-gradient">{hero.titleLine2}</span></span>
       </h1>
 
-      <p class="reveal mt-6 max-w-xl text-lg leading-relaxed text-fog" style="--reveal-delay:320ms">
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-fog" data-hero="fade" style="--hero-delay:520ms">
         {hero.intro}
       </p>
 
-      <p class="reveal mt-5 font-mono text-xs uppercase tracking-[0.35em] text-fog" style="--reveal-delay:380ms">
+      <p class="mt-5 font-mono text-xs uppercase tracking-[0.35em] text-fog" data-hero="fade" style="--hero-delay:600ms">
         {hero.taglinePrefix} <span class="text-gradient font-bold">{hero.taglineAccent}</span>
       </p>
 
-      <div class="reveal mt-9 flex flex-wrap items-center gap-4" style="--reveal-delay:430ms">
+      <div class="mt-9 flex flex-wrap items-center gap-4" data-hero="fade" style="--hero-delay:680ms">
         <a href={hero.ctaPrimaryHref} class="btn btn-primary">{hero.ctaPrimaryLabel}</a>
         <a href={hero.ctaSecondaryHref} class="btn btn-ghost">{hero.ctaSecondaryLabel}</a>
       </div>
 
-      <div class="reveal mt-12 flex items-end justify-between gap-6" style="--reveal-delay:540ms">
-        <Signature animate class="w-56 sm:w-72" />
-        <a href="#stats" class="group hidden flex-col items-center gap-2 pb-1 sm:flex" aria-label="Scroll to content">
+      <div class="mt-14 flex items-end justify-between gap-6" data-hero="fade" style="--hero-delay:820ms">
+        <Signature animate glow tone="gradient" class="w-[min(60vw,34rem)]" />
+        <a href="#stats" class="group hidden flex-col items-center gap-2 pb-2 sm:flex" aria-label="Scroll to content">
           <span class="font-mono text-[0.62rem] tracking-[0.35em] text-mist">{hero.scrollLabel}</span>
           <span class="scroll-cue block h-10 w-px bg-gradient-to-b from-pink via-violet to-transparent"></span>
         </a>
@@ -80,7 +89,7 @@ const { hero, about, simReal } = page;
       {page.stats.map((s, i) => (
         <div class="reveal flex flex-col items-center gap-1 px-4 py-8 text-center" style={`--reveal-delay:${i * 90}ms`}>
           <dt class="order-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-mist">{s.label}</dt>
-          <dd class="order-1 font-display text-2xl font-bold text-gradient sm:text-3xl">{s.value}</dd>
+          <dd class="order-1 font-display text-2xl font-bold text-gradient sm:text-3xl" data-countup={s.value}>{s.value}</dd>
         </div>
       ))}
     </dl>
@@ -90,11 +99,13 @@ const { hero, about, simReal } = page;
   <section class="mx-auto max-w-6xl px-6 py-24 sm:py-32">
     <div class="grid items-center gap-12 lg:grid-cols-2">
       <div class="reveal relative">
-        <div class="grad-border overflow-hidden rounded-2xl">
+        <div class="grad-border reveal-clip overflow-hidden rounded-2xl">
           <img
             src={about.image}
             alt={about.imageAlt}
-            class="aspect-[4/5] w-full rounded-2xl object-cover"
+            class="parallax aspect-[4/5] w-full scale-[1.08] rounded-2xl object-cover"
+            data-parallax="5"
+            data-parallax-scale="1.08"
             loading="lazy"
             width="800"
             height="1000"
@@ -268,7 +279,7 @@ const { hero, about, simReal } = page;
             <img
               src={s.logo}
               alt={dup === 0 ? `${s.name} logo` : ''}
-              class="h-10 w-auto max-w-[9rem] object-contain opacity-60 transition-opacity hover:opacity-100 sm:h-12"
+              class="marquee__logo h-10 w-auto max-w-[9rem] object-contain opacity-60 sm:h-12"
               loading="lazy"
               width="180"
               height="48"
