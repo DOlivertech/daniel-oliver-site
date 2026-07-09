@@ -10,20 +10,26 @@ There are two ways in:
 
 ---
 
-## Option A — Edit locally (no login needed)
+## Option A — Edit locally with **live preview** (no login needed)
 
-Open Terminal, go to the project folder, and run these **two** commands in **two separate
-Terminal tabs** (each keeps running):
+Open Terminal, go to the project folder, and run **one** command:
 
 ```bash
-npm run dev      # Tab 1 — the website itself
-npm run cms      # Tab 2 — the editor's save engine
+npm run edit     # starts the editor + the live website together
 ```
 
-Then open **http://localhost:4642/admin/index.html** in your browser.
+Then open two tabs in your browser:
 
-You'll go straight into the editor (no login locally). When you save, changes are written
-right into the project files. To make them live afterwards:
+- **http://localhost:4642/admin/index.html** — the editor
+- **http://localhost:4642** — your real website
+
+You'll go straight into the editor (no login locally). **Every time you Save in the CMS, the
+website tab refreshes itself with your change** — so you see exactly how it'll look, on the
+real site, as you go. (Save shows the preview; Publish/commit is what makes it public.)
+
+Press `Ctrl + C` in the Terminal to stop both when you're done.
+
+To make your local edits live afterwards:
 
 ```bash
 git add -A
@@ -33,7 +39,9 @@ git push
 
 That push publishes them (see "How publishing works" below).
 
-> Tip: the `/index.html` on the end matters **only** locally. On the live site it's just `/admin`.
+> Tips: the `/index.html` matters **only** locally — on the live site it's just `/admin`.
+> If you'd rather run the two pieces separately, `npm run dev` (website) and `npm run cms`
+> (editor's save engine) in two tabs does the same thing.
 
 ---
 

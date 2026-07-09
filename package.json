@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "cms": "npx decap-server",
+    "edit": "concurrently -k -n cms,site -c magenta,cyan \"npm run cms\" \"npm run dev\"",
     "verify:hero": "node scripts/verify-hero.mjs",
     "verify:reveals": "node scripts/verify-reveals.mjs"
   },
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
+    "concurrently": "^9.2.3",
     "playwright": "^1.61.1",
     "tailwindcss": "^4.0.0"
   }
