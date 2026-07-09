@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "About — Daniel Oliver Racing",
-    "description": "From sim racing and software engineering to an FIA international licence in six months. The full story — and the road to IMSA 2026."
+    "description": "From a 2025 sim racing championship — won at the first attempt — and software engineering to an FIA international licence in six months. The full story, and the road to IMSA 2026."
   },
   "hero": {
     "ghostText": "DO",
     "eyebrow": "About",
     "titleLine1": "Engineered,",
     "titleAccent": "not inherited.",
-    "intro": "Racing driver and software engineer. This is how a sim rig and an engineer's mindset became an FIA licence, a Praga campaign, and a 2026 IMSA debut."
+    "intro": "Racing driver and software engineer. This is how a sim rig and an engineer's mindset became a 2025 sim racing title at the first attempt, an FIA licence, a Praga campaign, and a 2026 IMSA debut."
   },
   "sections": [
     {
@@ -18,7 +18,8 @@
       "imageAlt": "Daniel Oliver focused in his race suit before a test session at Sebring",
       "body": [
         "Most racing drivers are handed a kart before they can spell their own name. Daniel Oliver wasn't. There's no family team in his past, no racing dynasty, no childhood trophy shelf.",
-        "He came to motorsport as a software engineer who fell in love with sim racing — and refused to accept that the simulator was where the story had to end. What he lacked in pedigree he made up for in method: break the problem down, measure everything, iterate relentlessly."
+        "He came to motorsport as a software engineer who fell in love with sim racing — and refused to accept that the simulator was where the story had to end. What he lacked in pedigree he made up for in method: break the problem down, measure everything, iterate relentlessly.",
+        "The method proved itself early. In 2025, at his very first attempt, Daniel took a sim racing championship title — a clean, first-season win that turned the approach from theory into track record and set the tone for everything that followed."
       ],
       "imagePosition": "50% 28%"
     },

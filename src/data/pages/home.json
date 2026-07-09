@@ -21,6 +21,10 @@
   },
   "stats": [
     {
+      "value": "2025",
+      "label": "Sim Racing Champion"
+    },
+    {
       "value": "FIA",
       "label": "International Licence"
     },
@@ -31,10 +35,6 @@
     {
       "value": "2026",
       "label": "IMSA VP Challenge"
-    },
-    {
-      "value": "Praga",
-      "label": "Cup UK"
     }
   ],
   "about": {
