@@ -33,6 +33,8 @@
       "series": "Series",
       "result": "Result"
     },
-    "photosLabel": "Photos →"
+    "photosLabel": "Photos →",
+    "completedLabel": "Completed",
+    "pendingResultLabel": "Result to come"
   }
 }

@@ -379,6 +379,8 @@ collections:
             fields:
               - { name: titlePrefix, label: Title Prefix, widget: string }
               - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: completedLabel, label: "Completed badge text", widget: string }
+              - { name: pendingResultLabel, label: "Text when a result isn't entered yet", widget: string }
               - name: headers
                 label: Table Headers
                 widget: object

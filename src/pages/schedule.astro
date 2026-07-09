@@ -127,7 +127,7 @@ const countdownUnits = [
                     <rect x="6" y="9" width="3" height="3"/><rect x="12" y="9" width="3" height="3"/>
                   </g>
                 </svg>
-                Completed
+                {page.past.completedLabel}
               </span>
               <span class="font-mono text-xs text-mist">{fmt(e.data.date)}</span>
             </div>
@@ -146,7 +146,7 @@ const countdownUnits = [
                   {e.data.result}
                 </span>
               ) : (
-                <span class="font-mono text-xs uppercase tracking-[0.2em] text-mist">Result to come</span>
+                <span class="font-mono text-xs uppercase tracking-[0.2em] text-mist">{page.past.pendingResultLabel}</span>
               )}
               {e.data.link && (
                 <a href={e.data.link} class="shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{page.past.photosLabel}</a>
