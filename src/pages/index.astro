@@ -105,7 +105,7 @@ const { hero, about, simReal } = page;
           glow
           loop
           tone="gradient"
-          class="hero-autograph w-[min(72vw,38rem)] sm:-mb-4"
+          class="hero-autograph w-[88vw] sm:w-[min(72vw,38rem)] sm:-mb-4"
         />
       </div>
     </div>
@@ -363,6 +363,12 @@ const { hero, about, simReal } = page;
     :global(.hero-autograph) {
       transform: rotate(-4deg);
       transform-origin: bottom right;
+    }
+    /* On mobile the signature renders small, so thicken the pen line and drop
+       the tilt a touch so the write-on reads clearly. */
+    @media (max-width: 640px) {
+      :global(.hero-autograph) { transform: rotate(-3deg); }
+      :global(.hero-autograph .sig-path) { stroke-width: 11; }
     }
     .hero-video.is-playing {
       opacity: 1;

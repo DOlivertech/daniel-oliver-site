@@ -7,11 +7,11 @@
     "eyebrow": "Contact",
     "titlePrefix": "Get in",
     "titleAccent": "touch",
-    "intro": "Partnerships, media requests, sim-to-real coaching or Project Limit Break — drop a message and I'll come back to you."
+    "intro": "Partnerships, media requests, sim-to-real coaching or Project Limit Break — send a message and Daniel's team will come back to you."
   },
   "emailCard": {
     "eyebrow": "Email",
-    "blurb": "Fastest way to reach me for anything commercial."
+    "blurb": "Fastest way to reach Daniel for anything commercial."
   },
   "socialsCard": {
     "eyebrow": "Socials",
@@ -28,13 +28,19 @@
     "ctaHref": "/partnerships"
   },
   "form": {
-    "successMessage": "Thanks — your message is in. I'll get back to you soon.",
+    "successMessage": "Thanks — your message is in. Daniel will be in touch soon.",
     "nameLabel": "Name",
     "namePlaceholder": "Your name",
     "emailLabel": "Email",
     "emailPlaceholder": "you@company.com",
     "topicLabel": "Topic",
-    "topics": ["Partnership", "Media enquiry", "Sim-to-real coaching", "Project Limit Break", "Other"],
+    "topics": [
+      "Partnership",
+      "Media enquiry",
+      "Sim-to-real coaching",
+      "Project Limit Break",
+      "Other"
+    ],
     "messageLabel": "Message",
     "messagePlaceholder": "What's on your mind?",
     "submitLabel": "Send message"

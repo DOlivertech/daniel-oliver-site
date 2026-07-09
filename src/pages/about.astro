@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Signature from '../components/Signature.astro';
+import site from '../data/site.json';
 import page from '../data/pages/about.json';
 
 const { hero, sections, closing } = page;
@@ -8,7 +9,7 @@ const { hero, sections, closing } = page;
 <BaseLayout title={page.meta.title} description={page.meta.description}>
   <!-- Page hero -->
   <section class="relative overflow-hidden px-6 pb-16 pt-40 sm:px-12 lg:px-20">
-    <div class="pointer-events-none absolute -right-10 top-10 select-none font-display text-[30vw] font-black leading-none text-white/[0.04] sm:text-[18vw]" aria-hidden="true">{hero.ghostText}</div>
+    <img src={site.brand.monogram} alt="" aria-hidden="true" class="pointer-events-none absolute -right-14 top-6 h-[38vw] w-auto select-none opacity-[0.05] sm:h-[22vw]" />
     <p class="eyebrow reveal mb-4">{hero.eyebrow}</p>
     <h1 class="h-display reveal max-w-4xl text-[clamp(2.6rem,7vw,5.5rem)] uppercase text-white" style="--reveal-delay:100ms">
       {hero.titleLine1}<br /><span class="text-gradient">{hero.titleAccent}</span>

@@ -551,8 +551,10 @@ body.no-scroll {
 .header-sig .sig-path {
   stroke-width: 15;
 }
+/* Keep the signature visible (and animating) on mobile too, just smaller. */
 @media (max-width: 640px) {
-  .header-sig { display: none; }
+  .header-sig { height: 1.9rem; }
+  .header-sig .sig-path { stroke-width: 18; }
 }
 
 /* ---- Marquee logo micro-interactions ---- */
