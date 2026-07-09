@@ -40,8 +40,23 @@ const countdownUnits = [
   { key: 'mins', label: cd.mins },
   { key: 'secs', label: cd.secs },
 ];
+
+// SportsEvent schema for each race so events can surface in search.
+const eventsLd = [...upcoming, ...past].map((e) => ({
+  '@type': 'SportsEvent',
+  name: e.data.title,
+  sport: 'Auto racing',
+  startDate: e.data.date.toISOString().slice(0, 10),
+  eventStatus:
+    e.data.status === 'completed'
+      ? 'https://schema.org/EventScheduled'
+      : 'https://schema.org/EventScheduled',
+  location: { '@type': 'Place', name: e.data.circuit, address: e.data.location },
+  performer: { '@type': 'Person', name: 'Daniel Oliver' },
+  ...(e.data.series ? { superEvent: { '@type': 'Event', name: e.data.series } } : {}),
+}));
 ---
-<BaseLayout title={page.meta.title} description={page.meta.description}>
+<BaseLayout title={page.meta.title} description={page.meta.description} structuredData={eventsLd}>
   <section class="px-6 pb-14 pt-40 sm:px-12 lg:px-20">
     <p class="eyebrow reveal mb-4">{page.hero.eyebrow}</p>
     <h1 class="h-display reveal text-[clamp(2.6rem,7vw,5.5rem)] uppercase text-white" style="--reveal-delay:100ms">

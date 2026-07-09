@@ -10,16 +10,52 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  /** Extra schema.org JSON-LD objects for this page (Article, Event, …). */
+  structuredData?: Record<string, unknown>[];
 }
 
 const {
   title = 'Daniel Oliver Racing',
   description = site.bioShort,
   ogImage = site.heroImage,
+  ogImageAlt = 'Daniel Oliver',
+  ogType = 'website',
+  structuredData = [],
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageAbs = new URL(ogImage, Astro.site);
+const origin = new URL(Astro.site!).origin;
+
+// Global entity graph — tells search engines this is the official site of the
+// person "Daniel Oliver", linked to his verified social profiles (sameAs).
+const person = {
+  '@type': 'Person',
+  '@id': `${origin}/#daniel-oliver`,
+  name: 'Daniel Oliver',
+  alternateName: 'Daniel Oliver Racing',
+  url: `${origin}/`,
+  image: new URL(site.heroImage, Astro.site).href,
+  jobTitle: 'Racing Driver',
+  description: site.bioShort,
+  knowsAbout: ['Motorsport', 'Endurance Racing', 'Sim Racing', 'Software Engineering', 'Data Analysis'],
+  sameAs: [site.socials.instagram, site.socials.youtube, site.socials.tiktok].filter(Boolean),
+};
+const website = {
+  '@type': 'WebSite',
+  '@id': `${origin}/#website`,
+  url: `${origin}/`,
+  name: 'Daniel Oliver Racing',
+  description: site.bioShort,
+  inLanguage: 'en',
+  publisher: { '@id': `${origin}/#daniel-oliver` },
+};
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [person, website, ...structuredData],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -29,8 +65,12 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta name="author" content="Daniel Oliver" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0b0b14" />
 
@@ -38,16 +78,22 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     <ClientRouter />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Daniel Oliver Racing" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <!-- schema.org structured data (Person + WebSite + per-page) -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Fonts: display (Unbounded), body (Space Grotesk), mono (Space Mono), signature (Great Vibes) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

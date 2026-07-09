@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Keep the CMS admin out of search results
+Disallow: /admin/
+
+Sitemap: https://danieloliverracing.com/sitemap-index.xml

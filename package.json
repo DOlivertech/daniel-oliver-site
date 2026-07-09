@@ -10,13 +10,16 @@
     "cms": "npx decap-server",
     "edit": "concurrently -k -n cms,site -c magenta,cyan \"npm run cms\" \"npm run dev\"",
     "verify:hero": "node scripts/verify-hero.mjs",
-    "verify:reveals": "node scripts/verify-reveals.mjs"
+    "verify:reveals": "node scripts/verify-reveals.mjs",
+    "verify:a11y": "node scripts/a11y.mjs"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "^5.0.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
+    "axe-core": "^4.12.1",
     "concurrently": "^9.2.3",
     "playwright": "^1.61.1",
     "tailwindcss": "^4.0.0"

@@ -11,11 +11,32 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const fmt = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const abs = (p: string) => new URL(p, Astro.site).href;
+const articleLd = {
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.excerpt,
+  ...(post.data.cover ? { image: [abs(post.data.cover)] } : {}),
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: { '@type': 'Person', name: 'Daniel Oliver', url: abs('/') },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Daniel Oliver Racing',
+    logo: { '@type': 'ImageObject', url: abs('/favicon.png') },
+  },
+  mainEntityOfPage: abs(Astro.url.pathname),
+  ...(post.data.tags?.length ? { keywords: post.data.tags.join(', ') } : {}),
+};
 ---
 <BaseLayout
   title={`${post.data.title} — Daniel Oliver Racing`}
   description={post.data.excerpt}
   ogImage={post.data.cover}
+  ogImageAlt={post.data.title}
+  ogType="article"
+  structuredData={[articleLd]}
 >
   <article class="pb-24 pt-40">
     <header class="mx-auto max-w-3xl px-6">
@@ -39,7 +60,7 @@ const fmt = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 
       <figure class="reveal mx-auto mt-12 max-w-4xl px-6" style="--reveal-delay:300ms">
         <img
           src={post.data.cover}
-          alt=""
+          alt={post.data.title}
           class="aspect-[16/9] w-full rounded-2xl border border-line object-cover"
           loading="eager"
           fetchpriority="high"
