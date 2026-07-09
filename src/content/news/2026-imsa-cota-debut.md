@@ -11,8 +11,23 @@ draft: false
 
 It's official — Daniel Oliver makes his **IMSA debut** in the **Airbnb Endurance Challenge** at the **Circuit of the Americas** in Austin, Texas, joining **Performance Tech Motorsports** aboard the **No. 38 Ligier JS P320** and sharing the LMP3 with co-driver **Martin Bruhat**.
 
+<figure>
+  <img src="/images/galleries/sebring-test-2026/sebring-corner-2.webp" alt="The No. 38 Performance Tech Motorsports Ligier JS P320 LMP3 hard on track during testing at Sebring" width="1500" height="1000" loading="lazy" />
+  <figcaption>The No. 38 Ligier JS P320 on track — Sebring test, 2026</figcaption>
+</figure>
+
 COTA delivers the full experience for this one: all 3.4 miles of the Grand Prix circuit and a two-hour endurance format — a real step up from sprint racing, and exactly the kind of stage Daniel's sim-to-real journey has been pointed at from the start.
 
+<figure>
+  <img src="/images/galleries/sebring-test-2026/sebring-track-1.webp" alt="Side profile of the red No. 38 Ligier LMP3 with D. Oliver on the cockpit, testing at Sebring" width="1500" height="1000" loading="lazy" />
+  <figcaption>Daniel's name on the No. 38 LMP3 — side profile at Sebring</figcaption>
+</figure>
+
 Announcing the entry, IMSA noted that Performance Tech Motorsports "make an LMP3 return with their … No. 38 Ligier JS P320" — with Bruhat and Daniel in the seat.
+
+<figure>
+  <img src="/images/galleries/sebring-test-2026/sebring-corner-1.webp" alt="The No. 38 Ligier LMP3 sweeping through a corner during the Sebring test" width="1500" height="1000" loading="lazy" />
+  <figcaption>Dialling in the LMP3 through the Sebring corners</figcaption>
+</figure>
 
 Green flag is Saturday, with the race streaming live on IMSA's official YouTube channel. This is the one Daniel has been working toward. More to come — the full calendar lives on the [schedule](/schedule).
