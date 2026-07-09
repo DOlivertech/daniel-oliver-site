@@ -26,19 +26,18 @@ const { hero, about, simReal } = page;
 ---
 <BaseLayout title={page.meta.title} description={site.bioShort} ogImage={hero.image}>
   <!-- ============================ HERO ============================ -->
-  <section class="hero-stage relative flex min-h-[100svh] items-end overflow-hidden">
-    <!-- Layered media well: a background <video> (absolute, object-cover) can be
-         dropped in here as a sibling BEFORE the image; the image is the poster/
-         fallback and stays behind the overlays. -->
-    <!-- Media well. Mobile: full-bleed, face kept high & clear of the text
-         block. Desktop (lg+): split hero — the portrait owns the right ~62%
-         with a soft fade into the ink left column, so the name typography
-         never covers the face. -->
-    <div class="hero-media-well pointer-events-none absolute inset-0 -z-0 overflow-hidden lg:left-[38%]" aria-hidden="true">
+  <section class="hero-stage relative overflow-hidden lg:flex lg:min-h-[100svh] lg:items-end">
+    <!-- Media well.
+         < lg: STACKED — the portrait is its own top panel (face fully visible,
+         fade seam into ink below) and the text flows underneath, so text can
+         never sit over the face at any small/medium viewport.
+         lg+: SPLIT — the portrait owns the right ~62% with a soft fade into
+         the ink left column; typography owns the left. -->
+    <div class="hero-media-well pointer-events-none relative h-[46svh] min-h-[19rem] overflow-hidden lg:absolute lg:inset-y-0 lg:left-[38%] lg:right-0 lg:h-auto lg:min-h-0" aria-hidden="true">
       <img
         src={hero.image}
         alt={hero.imageAlt}
-        class="hero-media absolute inset-0 h-full w-full object-cover object-[44%_12%] lg:object-[50%_25%]"
+        class="hero-media absolute inset-0 h-full w-full object-cover object-[44%_18%] lg:object-[50%_25%]"
         loading="eager"
         fetchpriority="high"
         width="2000"
@@ -46,7 +45,7 @@ const { hero, about, simReal } = page;
       />
       {hero.video && (
         <video
-          class="hero-video absolute inset-0 h-full w-full object-cover object-[44%_12%] lg:object-[50%_25%] opacity-0 transition-opacity duration-1000"
+          class="hero-video absolute inset-0 h-full w-full object-cover object-[44%_18%] lg:object-[50%_25%] opacity-0 transition-opacity duration-1000"
           autoplay
           muted
           loop
@@ -56,11 +55,11 @@ const { hero, about, simReal } = page;
           src={hero.video}
         ></video>
       )}
-      <!-- blend seam into the left text column on desktop -->
+      <!-- seams: fade into ink below the panel (stacked) / into the left column (split) -->
+      <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-ink lg:hidden"></div>
       <div class="absolute inset-y-0 left-0 hidden w-56 bg-gradient-to-r from-ink to-transparent lg:block"></div>
+      <div class="absolute inset-0 hidden bg-gradient-to-t from-ink via-ink/35 to-ink/10 lg:block"></div>
     </div>
-    <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/55 to-ink/25" aria-hidden="true"></div>
-    <div class="absolute inset-0 z-[1] bg-gradient-to-r from-ink/70 via-transparent to-transparent" aria-hidden="true"></div>
 
     <!-- Giant ghost number -->
     <div class="hero-ghost pointer-events-none absolute -right-6 top-16 select-none font-display text-[38vw] font-black leading-none text-white/[0.045] sm:text-[26vw]" aria-hidden="true">{hero.ghostText}</div>
@@ -68,7 +67,7 @@ const { hero, about, simReal } = page;
     <!-- ambient racing-line light layer -->
     <RacingLines variant="hero" class="mix-blend-screen" />
 
-    <div class="relative z-10 w-full px-6 pb-14 pt-40 sm:px-12 sm:pb-24 lg:px-20 lg:max-w-[62%]">
+    <div class="relative z-10 w-full px-6 pb-14 pt-6 sm:px-12 sm:pb-24 sm:pt-8 lg:px-20 lg:pt-40 lg:max-w-[62%]">
       <p class="eyebrow mb-3 sm:mb-5" data-hero="fade" style="--hero-delay:120ms">
         <span class="text-pink">{hero.eyebrowNumber}</span>&nbsp;&nbsp;·&nbsp;&nbsp;{site.tagline}
       </p>
