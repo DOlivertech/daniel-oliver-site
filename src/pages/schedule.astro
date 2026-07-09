@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TrackMap from '../components/TrackMap.astro';
+import Flag from '../components/Flag.astro';
 import { trackById } from '../lib/tracks';
 import page from '../data/pages/schedule.json';
 
@@ -39,7 +40,7 @@ const hasResult = (r?: string) => Boolean(r && r.trim() && r.trim() !== '—');
 // track id when set, else fall back to the free-text circuit field.
 const resolveTrack = (e: (typeof events)[number]) => {
   const t = trackById(e.data.track);
-  return { id: e.data.track, name: t?.name ?? e.data.circuit, flag: t?.flag ?? '' };
+  return { id: e.data.track, name: t?.name ?? e.data.circuit, flag: t?.flag ?? '', iso: t?.iso ?? '' };
 };
 
 const cd = page.countdownLabels;
@@ -97,7 +98,7 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
               <p class="eyebrow mb-4">{page.next.eyebrow}</p>
               <h2 class="h-display max-w-3xl text-3xl text-white sm:text-5xl">{next.data.title}</h2>
               <p class="mt-4 font-mono text-sm text-mist">
-                {resolveTrack(next).flag && <span class="mr-1 not-italic">{resolveTrack(next).flag}</span>}{resolveTrack(next).name} · {next.data.location} · <span class="text-cyan">{next.data.dateLabel ?? fmt(next.data.date)}</span>
+                {resolveTrack(next).iso && <Flag iso={resolveTrack(next).iso} title={resolveTrack(next).name} class="mr-2 h-3.5" />}{resolveTrack(next).name} · {next.data.location} · <span class="text-cyan">{next.data.dateLabel ?? fmt(next.data.date)}</span>
               </p>
 
               <div
@@ -134,7 +135,7 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
             <span class="font-mono text-xs tracking-[0.3em] text-cyan">R{String(i + 1).padStart(2, '0')}</span>
             <div>
               <h3 class="font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
-              <p class="mt-1 font-mono text-xs text-mist">{resolveTrack(e).flag && <span class="mr-1 not-italic">{resolveTrack(e).flag}</span>}{resolveTrack(e).name} · {e.data.location} · {e.data.series}</p>
+              <p class="mt-1 font-mono text-xs text-mist">{resolveTrack(e).iso && <Flag iso={resolveTrack(e).iso} title={resolveTrack(e).name} class="mr-1.5 h-3" />}{resolveTrack(e).name} · {e.data.location} · {e.data.series}</p>
             </div>
           </div>
           <span class="relative shrink-0 rounded-full border border-violet/40 bg-violet/10 px-4 py-2 font-mono text-xs tracking-widest text-white">
@@ -173,7 +174,7 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
             </div>
 
             <h3 class="relative mt-3 font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
-            <p class="relative mt-1.5 font-mono text-xs text-mist">{resolveTrack(e).flag && <span class="mr-1 not-italic">{resolveTrack(e).flag}</span>}{resolveTrack(e).name} · {e.data.series}</p>
+            <p class="relative mt-1.5 font-mono text-xs text-mist">{resolveTrack(e).iso && <Flag iso={resolveTrack(e).iso} title={resolveTrack(e).name} class="mr-1.5 h-3" />}{resolveTrack(e).name} · {e.data.series}</p>
 
             <div class="relative mt-5 flex items-center justify-between gap-4 border-t border-line/60 pt-4">
               {hasResult(e.data.result) ? (

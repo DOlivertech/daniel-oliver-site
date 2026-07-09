@@ -5,6 +5,7 @@ export interface Track {
   name: string;
   country: string;
   flag: string;
+  iso: string;
   viewBox?: string;
   path?: string;
 }

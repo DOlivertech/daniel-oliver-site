@@ -1,0 +1,23 @@
+---
+// Renders a real SVG country flag (bundled in /public/images/flags/{iso}.svg).
+// Used instead of flag emoji, which don't render on Windows (they show "US",
+// "GB", …). Pass the ISO-2 code (lowercase). Height comes from `class`
+// (default h-3.5); width stays auto so the flag keeps its aspect ratio.
+interface Props {
+  iso?: string | null;
+  title?: string;
+  class?: string;
+}
+const { iso, title = '', class: className = 'h-3.5' } = Astro.props;
+---
+{iso && (
+  <img
+    src={`/images/flags/${iso}.svg`}
+    alt={title ? `${title} flag` : ''}
+    width="20"
+    height="15"
+    loading="lazy"
+    decoding="async"
+    class={`inline-block w-auto shrink-0 rounded-[3px] align-[-0.15em] ring-1 ring-white/15 ${className}`}
+  />
+)}

@@ -75,7 +75,10 @@ const tracks = racingTracks
   .map((t) => {
     const flag = flagOf(t.country);
     if (!flag) unmapped.add(t.country);
-    const rec = { id: t.id, name: t.name, country: t.country, flag };
+    const iso = (ISO[t.country] || '').toLowerCase();
+    // `flag` (emoji) kept as a fallback; `iso` drives the SVG flag images
+    // (emoji flags don't render on Windows — they show "US", "GB", …).
+    const rec = { id: t.id, name: t.name, country: t.country, flag, iso };
     const ol = trackOutlines[t.id];
     if (ol && Array.isArray(ol.coordinates) && ol.coordinates.length > 8) {
       const { path, viewBox } = outlineToPath(ol.coordinates);
