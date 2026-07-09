@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TrackMap from '../components/TrackMap.astro';
+import { trackById } from '../lib/tracks';
 import page from '../data/pages/schedule.json';
 
 const events = await getCollection('events');
@@ -32,6 +34,13 @@ const tierStyle: Record<string, string> = {
   bronze: 'bg-[#fb923c]/12 text-[#fdba74] border-[#fb923c]/35',
 };
 const hasResult = (r?: string) => Boolean(r && r.trim() && r.trim() !== '—');
+
+// Resolve an event's track: display name + country flag come from the CMS
+// track id when set, else fall back to the free-text circuit field.
+const resolveTrack = (e: (typeof events)[number]) => {
+  const t = trackById(e.data.track);
+  return { id: e.data.track, name: t?.name ?? e.data.circuit, flag: t?.flag ?? '' };
+};
 
 const cd = page.countdownLabels;
 const countdownUnits = [
@@ -72,11 +81,12 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
     <section class="mx-auto max-w-6xl px-6 pb-16">
       <div class="grad-border reveal relative overflow-hidden rounded-3xl p-8 sm:p-12">
         <div class="pointer-events-none absolute inset-0 opacity-40" style="background: radial-gradient(ellipse 55% 90% at 85% 20%, #ff2d8730, transparent 65%), radial-gradient(ellipse 50% 80% at 10% 90%, #38bdf825, transparent 65%);" aria-hidden="true"></div>
+        <TrackMap id={next.data.track} class="pointer-events-none absolute right-6 top-6 h-28 w-28 opacity-70 sm:right-10 sm:top-10 sm:h-36 sm:w-36" />
         <div class="relative">
           <p class="eyebrow mb-4">{page.next.eyebrow}</p>
           <h2 class="h-display max-w-3xl text-3xl text-white sm:text-5xl">{next.data.title}</h2>
           <p class="mt-4 font-mono text-sm text-mist">
-            {next.data.circuit} · {next.data.location} · <span class="text-cyan">{next.data.dateLabel ?? fmt(next.data.date)}</span>
+            {resolveTrack(next).flag && <span class="mr-1 not-italic">{resolveTrack(next).flag}</span>}{resolveTrack(next).name} · {next.data.location} · <span class="text-cyan">{next.data.dateLabel ?? fmt(next.data.date)}</span>
           </p>
 
           <div
@@ -105,15 +115,16 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
     <h2 class="h-display reveal mb-8 text-2xl text-white sm:text-3xl">{page.upcoming.titlePrefix} <span class="text-gradient">{page.upcoming.titleAccent}</span></h2>
     <ol class="space-y-4">
       {upcoming.map((e, i) => (
-        <li class="card reveal flex flex-col gap-4 px-7 py-6 sm:flex-row sm:items-center sm:justify-between" style={`--reveal-delay:${i * 90}ms`}>
-          <div class="flex items-center gap-5">
+        <li class="card reveal relative flex flex-col gap-4 overflow-hidden px-7 py-6 sm:flex-row sm:items-center sm:justify-between" style={`--reveal-delay:${i * 90}ms`}>
+          <TrackMap id={e.data.track} class="pointer-events-none absolute -right-2 top-1/2 h-24 w-24 -translate-y-1/2 opacity-[0.18] sm:right-28 sm:h-28 sm:w-28" />
+          <div class="relative flex items-center gap-5">
             <span class="font-mono text-xs tracking-[0.3em] text-cyan">R{String(i + 1).padStart(2, '0')}</span>
             <div>
               <h3 class="font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
-              <p class="mt-1 font-mono text-xs text-mist">{e.data.circuit} · {e.data.location} · {e.data.series}</p>
+              <p class="mt-1 font-mono text-xs text-mist">{resolveTrack(e).flag && <span class="mr-1 not-italic">{resolveTrack(e).flag}</span>}{resolveTrack(e).name} · {e.data.location} · {e.data.series}</p>
             </div>
           </div>
-          <span class="shrink-0 rounded-full border border-violet/40 bg-violet/10 px-4 py-2 font-mono text-xs tracking-widest text-white">
+          <span class="relative shrink-0 rounded-full border border-violet/40 bg-violet/10 px-4 py-2 font-mono text-xs tracking-widest text-white">
             {e.data.dateLabel ?? fmt(e.data.date)}
           </span>
         </li>
@@ -130,7 +141,8 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
         return (
           <li class="card reveal relative overflow-hidden p-6" style={`--reveal-delay:${i * 80}ms`}>
             {/* checkered-flag corner wash — the "race finished" motif */}
-            <div class="pointer-events-none absolute -right-3 -top-3 h-24 w-24 rotate-6 opacity-[0.06]" style="background: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%) 0 0 / 13px 13px;" aria-hidden="true"></div>
+            <div class="pointer-events-none absolute -right-3 -top-3 h-24 w-24 rotate-6 opacity-[0.06]" style="position:absolute; background: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%) 0 0 / 13px 13px;" aria-hidden="true"></div>
+            <TrackMap id={e.data.track} class="pointer-events-none absolute -bottom-3 -right-3 h-24 w-24 opacity-25" />
 
             <div class="relative flex items-center gap-2">
               <span class="inline-flex items-center gap-1.5 rounded-full border border-[#34d399]/35 bg-[#34d399]/12 px-2.5 py-1 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#6ee7b7]">
@@ -148,7 +160,7 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
             </div>
 
             <h3 class="relative mt-3 font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
-            <p class="relative mt-1.5 font-mono text-xs text-mist">{e.data.circuit} · {e.data.series}</p>
+            <p class="relative mt-1.5 font-mono text-xs text-mist">{resolveTrack(e).flag && <span class="mr-1 not-italic">{resolveTrack(e).flag}</span>}{resolveTrack(e).name} · {e.data.series}</p>
 
             <div class="relative mt-5 flex items-center justify-between gap-4 border-t border-line/60 pt-4">
               {hasResult(e.data.result) ? (

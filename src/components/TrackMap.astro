@@ -1,0 +1,33 @@
+---
+// Renders a circuit outline (from src/data/tracks.json) as a subtle corner
+// overlay for event cards. Renders nothing if the track has no drawn map.
+import { trackById } from '../lib/tracks';
+
+interface Props {
+  id?: string | null;
+  class?: string;
+}
+const { id, class: className = '' } = Astro.props;
+const track = trackById(id);
+const gid = `tm-${Math.random().toString(36).slice(2, 8)}`;
+---
+{track?.path && (
+  <svg
+    class={`track-map ${className}`}
+    style="position:absolute"
+    viewBox={track.viewBox}
+    fill="none"
+    role="img"
+    aria-label={`${track.name} circuit map`}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id={gid} x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#ff2d87" />
+        <stop offset="0.5" stop-color="#8b5cf6" />
+        <stop offset="1" stop-color="#38bdf8" />
+      </linearGradient>
+    </defs>
+    <path d={track.path} stroke={`url(#${gid})`} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+)}

@@ -4,6 +4,7 @@ date: 2026-05-09
 circuit: "Circuit of the Americas"
 location: "Austin, Texas"
 series: "IMSA Airbnb Endurance Challenge"
+track: "cota"
 status: "completed"
 result: "—"
 link: "/news/2026-imsa-cota-debut"

@@ -58,6 +58,7 @@ scripts/            # Playwright verification scripts (dev-only, not shipped)
 - **Brand motion (credit-free):** `RacingLines.astro` (gradient racing-line beams + comets, in hero & menu) and `AmbientAurora.astro` (fixed drifting glow behind every page).
 - **Hero** (`index.astro`): split layout at `lg+` (portrait right ~62%, type left) and **stacked** below `lg` (portrait panel on top, text under) so text never overlaps the face. `hero.video` (in `home.json`) is an optional CMS background-video slot layered over the image — currently empty (awaiting a Higgsfield clip); poster/reduced-motion fallbacks already wired.
 - **Completed events** (`schedule.astro`): past events render as cards with a checkered-flag COMPLETED badge; `result` P1/P2/P3 → gold/silver/bronze medal via the `podium()` classifier.
+- **Track maps + flags** (`TrackMap.astro`, `src/lib/tracks.ts`, `src/data/tracks.json`): events have an optional `track` id (CMS dropdown). `trackById()` resolves it to a country flag (shown in the meta line) + a projected SVG circuit outline overlaid in a card corner. `tracks.json` (222 tracks, ~34 with drawn maps) is regenerated from the sibling `track-manager-pro` repo via `node scripts/build-tracks.mjs` — don't hand-edit it. `TrackMap` sets `position:absolute` inline on purpose: the global `.card > *{position:relative}` rule has equal specificity to Tailwind's `.absolute` and would otherwise win by source order (same reason the checkered wash div carries an inline `position:absolute`).
 
 ## Gotchas (hard-won — read before touching)
 

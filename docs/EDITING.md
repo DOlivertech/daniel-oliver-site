@@ -85,11 +85,16 @@ Images and upload — drag to reorder. The lightbox and photo counts update them
 Your race calendar (drives the **Schedule** page and the "next race" countdown). Each event has:
 - **Title**, **Date**, and an optional **Date label** (use this for vague dates like `TBA · 2026`)
 - **Circuit**, **Location**, **Series**
+- **Track** (optional dropdown) — pick the circuit here and the card automatically shows that
+  track's **country flag** and, where available, a **drawn track-map outline** in the corner. The
+  chosen track's name also becomes the displayed circuit name. Leave it blank to just use the free-text
+  **Circuit** field with no flag or map.
 - **Status** — `upcoming` or `completed`
 - **Result** (optional, for past races) and **Link** (optional, e.g. to a gallery)
 
 The homepage automatically shows the soonest `upcoming` event with a live countdown, and the
-Schedule page splits everything into Upcoming vs. Past.
+Schedule page splits everything into Upcoming vs. Past. Not every track in the dropdown has a drawn
+map (about 30 do) — the rest still show the country flag.
 
 ### Site Settings
 Global things that appear on **every** page — edit once, changes everywhere:

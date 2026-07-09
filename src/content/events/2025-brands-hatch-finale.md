@@ -4,6 +4,7 @@ date: 2025-06-08
 circuit: "Brands Hatch"
 location: "Kent, UK"
 series: "Praga Cup UK"
+track: "brands-hatch"
 status: "completed"
 result: "—"
 link: "/media/brands-hatch-uk-tour-finale"

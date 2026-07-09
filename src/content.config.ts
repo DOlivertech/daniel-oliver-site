@@ -36,6 +36,7 @@ const events = defineCollection({
     status: z.enum(['upcoming', 'completed']),
     result: z.string().optional(),
     link: z.string().optional(),
+    track: z.string().optional(),
   }),
 });
 

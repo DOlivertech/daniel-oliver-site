@@ -4,6 +4,7 @@ date: 2024-09-14
 circuit: "Silverstone National Circuit"
 location: "Northamptonshire, UK"
 series: "Praga Cup UK"
+track: "silverstone"
 status: "completed"
 result: "—"
 link: "/media/silverstone-national-equipe-sports"
