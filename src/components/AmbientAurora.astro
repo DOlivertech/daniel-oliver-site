@@ -1,0 +1,60 @@
+---
+// AmbientAurora — site-wide fixed background glow field. Two ultra-dim brand
+// gradient blobs drifting on 50–70s cycles behind every page, so no view is
+// ever fully static. Compositor-only (transform), fixed so it costs nothing
+// on scroll, hidden for reduced motion (static tint remains via bg-depth).
+---
+<div class="aurora" aria-hidden="true">
+  <div class="aurora-blob aurora-a"></div>
+  <div class="aurora-blob aurora-b"></div>
+  <div class="aurora-blob aurora-c"></div>
+</div>
+
+<style>
+  .aurora {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .aurora-blob {
+    position: absolute;
+    width: 55vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(110px);
+    will-change: transform;
+  }
+  .aurora-a {
+    top: -22vw;
+    left: -18vw;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.075), transparent 62%);
+    animation: aurora-a 58s ease-in-out infinite alternate;
+  }
+  .aurora-b {
+    bottom: -25vw;
+    right: -16vw;
+    background: radial-gradient(circle, rgba(255, 45, 135, 0.055), transparent 62%);
+    animation: aurora-b 66s ease-in-out infinite alternate;
+  }
+  .aurora-c {
+    top: 30%;
+    left: 55%;
+    width: 38vw;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.05), transparent 62%);
+    animation: aurora-c 74s ease-in-out infinite alternate;
+  }
+  @keyframes aurora-a {
+    to { transform: translate(12vw, 10vh) scale(1.18); }
+  }
+  @keyframes aurora-b {
+    to { transform: translate(-10vw, -12vh) scale(1.12); }
+  }
+  @keyframes aurora-c {
+    to { transform: translate(-14vw, 14vh) scale(0.85); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aurora-blob { animation: none; }
+  }
+</style>

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import AmbientAurora from '../components/AmbientAurora.astro';
 import site from '../data/site.json';
 
 interface Props {
@@ -57,6 +58,7 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     />
   </head>
   <body class="bg-depth min-h-screen">
+    <AmbientAurora />
     <div class="scroll-progress" aria-hidden="true"></div>
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />

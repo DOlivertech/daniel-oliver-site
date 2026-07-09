@@ -167,6 +167,7 @@ collections:
             widget: object
             fields:
               - { name: image, label: Hero Image, widget: image }
+              - { name: video, label: "Hero Background Video (optional)", widget: file, required: false, hint: "MP4/WebM loop layered over the hero image. Leave empty to use the still image only. The image stays as poster/fallback (slow connections, reduced-motion users)." }
               - { name: imageAlt, label: Hero Image Alt Text, widget: string }
               - { name: ghostText, label: "Ghost Background Text (big watermark)", widget: string }
               - { name: eyebrowNumber, label: Eyebrow Number, widget: string }

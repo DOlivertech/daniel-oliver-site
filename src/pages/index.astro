@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Signature from '../components/Signature.astro';
+import RacingLines from '../components/RacingLines.astro';
 import site from '../data/site.json';
 import page from '../data/pages/home.json';
 
@@ -30,25 +31,36 @@ const { hero, about, simReal } = page;
          dropped in here as a sibling BEFORE the image; the image is the poster/
          fallback and stays behind the overlays. -->
     <div class="hero-media-well pointer-events-none absolute inset-0 -z-0 overflow-hidden" aria-hidden="true">
-      <!-- Higgsfield background video slots in here later, e.g.:
-           <video class="hero-media hero-video absolute inset-0 h-full w-full object-cover object-[70%_30%]"
-                  autoplay muted loop playsinline preload="metadata"
-                  poster={hero.image}></video> -->
       <img
         src={hero.image}
         alt={hero.imageAlt}
-        class="hero-media absolute inset-0 h-full w-full object-cover object-[70%_30%]"
+        class="hero-media absolute inset-0 h-full w-full object-cover object-[68%_22%]"
         loading="eager"
         fetchpriority="high"
-        width="1920"
-        height="1280"
+        width="2000"
+        height="3000"
       />
+      {hero.video && (
+        <video
+          class="hero-video absolute inset-0 h-full w-full object-cover object-[68%_22%] opacity-0 transition-opacity duration-1000"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster={hero.image}
+          src={hero.video}
+        ></video>
+      )}
     </div>
     <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/55 to-ink/25" aria-hidden="true"></div>
     <div class="absolute inset-0 z-[1] bg-gradient-to-r from-ink/70 via-transparent to-transparent" aria-hidden="true"></div>
 
     <!-- Giant ghost number -->
     <div class="hero-ghost pointer-events-none absolute -right-6 top-16 select-none font-display text-[38vw] font-black leading-none text-white/[0.045] sm:text-[26vw]" aria-hidden="true">{hero.ghostText}</div>
+
+    <!-- ambient racing-line light layer -->
+    <RacingLines variant="hero" class="mix-blend-screen" />
 
     <div class="relative z-10 w-full px-6 pb-24 pt-40 sm:px-12 lg:px-20">
       <p class="eyebrow mb-5" data-hero="fade" style="--hero-delay:120ms">
@@ -73,12 +85,19 @@ const { hero, about, simReal } = page;
         <a href={hero.ctaSecondaryHref} class="btn btn-ghost">{hero.ctaSecondaryLabel}</a>
       </div>
 
-      <div class="mt-14 flex items-end justify-between gap-6" data-hero="fade" style="--hero-delay:820ms">
-        <Signature animate glow tone="gradient" class="w-[min(60vw,34rem)]" />
-        <a href="#stats" class="group hidden flex-col items-center gap-2 pb-2 sm:flex" aria-label="Scroll to content">
+      <div class="mt-10 flex items-end justify-between gap-6" data-hero="fade" style="--hero-delay:820ms">
+        <a href="#stats" class="group hidden flex-col items-center gap-2 pb-4 sm:flex" aria-label="Scroll to content">
           <span class="font-mono text-[0.62rem] tracking-[0.35em] text-mist">{hero.scrollLabel}</span>
           <span class="scroll-cue block h-10 w-px bg-gradient-to-b from-pink via-violet to-transparent"></span>
         </a>
+        <!-- the autograph: signed bottom-right like a poster, slightly tilted -->
+        <Signature
+          animate
+          glow
+          loop
+          tone="gradient"
+          class="hero-autograph w-[min(72vw,38rem)] sm:-mb-4"
+        />
       </div>
     </div>
   </section>
@@ -147,9 +166,13 @@ const { hero, about, simReal } = page;
           <path d="M60 0H0v60" fill="none" stroke="#8b5cf6" stroke-width="0.5" opacity="0.35"/>
         </pattern>
       </defs>
-      <rect width="1200" height="400" fill="url(#grid)"/>
+      <g class="tele-grid-pan">
+        <rect width="1320" height="400" fill="url(#grid)"/>
+      </g>
       <path class="tele-line" d="M0 300 L90 300 C130 300 140 120 180 120 L260 120 C300 120 310 260 350 260 L430 260 C470 260 480 80 530 80 L610 80 C650 80 660 300 700 300 L780 300 C820 300 830 150 880 150 L960 150 C1000 150 1010 240 1050 240 L1200 240"
         fill="none" stroke="url(#tele-grad)" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="tele-comet" pathLength="1000" d="M0 300 L90 300 C130 300 140 120 180 120 L260 120 C300 120 310 260 350 260 L430 260 C470 260 480 80 530 80 L610 80 C650 80 660 300 700 300 L780 300 C820 300 830 150 880 150 L960 150 C1000 150 1010 240 1050 240 L1200 240"
+        fill="none" stroke="url(#tele-grad)" stroke-width="4" stroke-linecap="round"/>
     </svg>
 
     <div class="relative mx-auto max-w-6xl px-6">
@@ -291,6 +314,14 @@ const { hero, about, simReal } = page;
   </section>
 
   <style>
+    /* Autograph tilt — like a signature signed across the corner of a poster */
+    :global(.hero-autograph) {
+      transform: rotate(-4deg);
+      transform-origin: bottom right;
+    }
+    .hero-video.is-playing {
+      opacity: 1;
+    }
     .scroll-cue {
       animation: cue 2s ease-in-out infinite;
       transform-origin: top;
@@ -308,9 +339,29 @@ const { hero, about, simReal } = page;
       0% { stroke-dashoffset: 3200; }
       70%, 100% { stroke-dashoffset: 0; }
     }
+    /* live data pulse riding the trace */
+    .tele-comet {
+      stroke-dasharray: 30 970;
+      stroke-dashoffset: 1030;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.9));
+      animation: tele-comet 5.5s linear infinite;
+    }
+    @keyframes tele-comet {
+      to { stroke-dashoffset: -970; }
+    }
+    /* grid pans one 60px cell per cycle → seamless loop */
+    .tele-grid-pan {
+      animation: tele-pan 4s linear infinite;
+    }
+    @keyframes tele-pan {
+      to { transform: translateX(-60px); }
+    }
     @media (prefers-reduced-motion: reduce) {
       .scroll-cue { animation: none; }
       .tele-line { animation: none; stroke-dashoffset: 0; }
+      .tele-comet { display: none; }
+      .tele-grid-pan { animation: none; }
     }
     .line-clamp-3 {
       display: -webkit-box;
@@ -319,4 +370,22 @@ const { hero, about, simReal } = page;
       overflow: hidden;
     }
   </style>
+
+  <script>
+    // Hero background video: fade in once actually playing; never run under
+    // reduced motion (the poster/image simply remains).
+    function initHeroVideo() {
+      const v = document.querySelector<HTMLVideoElement>('.hero-video');
+      if (!v) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        v.pause();
+        v.remove();
+        return;
+      }
+      const reveal = () => v.classList.add('is-playing');
+      if (!v.paused && v.currentTime > 0) reveal();
+      else v.addEventListener('playing', reveal, { once: true });
+    }
+    document.addEventListener('astro:page-load', initHeroVideo);
+  </script>
 </BaseLayout>

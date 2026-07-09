@@ -1,0 +1,141 @@
+---
+// RacingLines — ambient brand-motion layer. Sweeping racing-line curves in the
+// pink→violet→cyan gradient, each carrying a traveling light "comet" pulse,
+// plus two soft drifting glow orbs. Pure CSS/SVG animation (compositor-only):
+// no JS per frame. A tiny shared script pauses animations while offscreen.
+// Reduced motion: comets/orbs hidden, faint static lines remain.
+interface Props {
+  /** 'hero' = bolder, lines sweep low; 'menu' = dimmer, full-field */
+  variant?: 'hero' | 'menu';
+  class?: string;
+}
+const { variant = 'hero', class: className = '' } = Astro.props;
+const gid = `rl-grad-${Math.random().toString(36).slice(2, 8)}`;
+---
+<div
+  class={`racing-lines pointer-events-none absolute inset-0 overflow-hidden rl-${variant} ${className}`}
+  aria-hidden="true"
+>
+  <svg class="h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id={gid} x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#ff2d87" />
+        <stop offset="0.5" stop-color="#8b5cf6" />
+        <stop offset="1" stop-color="#38bdf8" />
+      </linearGradient>
+    </defs>
+
+    <!-- base racing lines (faint, static-ish drift) -->
+    <path class="rl-base" pathLength="1000" stroke={`url(#${gid})`}
+      d="M-40 690 C 260 690 340 520 640 520 S 1020 700 1240 700 1480 560 1480 560" />
+    <path class="rl-base rl-base-2" pathLength="1000" stroke={`url(#${gid})`}
+      d="M-40 800 C 360 800 420 620 760 620 S 1120 790 1480 740" />
+    <path class="rl-base rl-base-3" pathLength="1000" stroke={`url(#${gid})`}
+      d="M-40 560 C 220 560 320 420 620 420 S 1060 580 1480 430" />
+
+    <!-- traveling light comets (same geometry, bright short dash) -->
+    <path class="rl-comet" pathLength="1000" stroke={`url(#${gid})`}
+      d="M-40 690 C 260 690 340 520 640 520 S 1020 700 1240 700 1480 560 1480 560" />
+    <path class="rl-comet rl-comet-2" pathLength="1000" stroke={`url(#${gid})`}
+      d="M-40 800 C 360 800 420 620 760 620 S 1120 790 1480 740" />
+    <path class="rl-comet rl-comet-3" pathLength="1000" stroke={`url(#${gid})`}
+      d="M-40 560 C 220 560 320 420 620 420 S 1060 580 1480 430" />
+  </svg>
+
+  <!-- drifting glow orbs -->
+  <div class="rl-orb rl-orb-pink"></div>
+  <div class="rl-orb rl-orb-cyan"></div>
+</div>
+
+<style>
+  .racing-lines { z-index: 2; }
+
+  .rl-base {
+    stroke-width: 1.4;
+    opacity: 0.16;
+    stroke-linecap: round;
+    stroke-dasharray: 14 10;
+    animation: rl-drift 26s linear infinite;
+  }
+  .rl-base-2 { opacity: 0.11; animation-duration: 34s; animation-direction: reverse; }
+  .rl-base-3 { opacity: 0.09; animation-duration: 42s; }
+
+  .rl-comet {
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-dasharray: 46 954;      /* short bright pulse on a normalized 1000-unit path */
+    stroke-dashoffset: 1000;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.9));
+    animation: rl-comet 9s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+  .rl-comet-2 { animation-duration: 13s; animation-delay: 3.2s; opacity: 0.6; }
+  .rl-comet-3 { animation-duration: 11s; animation-delay: 6.1s; opacity: 0.5; }
+
+  @keyframes rl-drift {
+    to { stroke-dashoffset: -1000; }
+  }
+  @keyframes rl-comet {
+    0%   { stroke-dashoffset: 1046; }
+    72%, 100% { stroke-dashoffset: -954; }  /* pulse exits, holds dark, loops */
+  }
+
+  .rl-orb {
+    position: absolute;
+    width: 44vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(90px);
+    will-change: transform;
+  }
+  .rl-orb-pink {
+    left: -12vw;
+    bottom: -18vw;
+    background: radial-gradient(circle, rgba(255, 45, 135, 0.14), transparent 65%);
+    animation: rl-orb-a 38s ease-in-out infinite alternate;
+  }
+  .rl-orb-cyan {
+    right: -14vw;
+    top: -16vw;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.12), transparent 65%);
+    animation: rl-orb-b 46s ease-in-out infinite alternate;
+  }
+  @keyframes rl-orb-a {
+    to { transform: translate(9vw, -7vw) scale(1.15); }
+  }
+  @keyframes rl-orb-b {
+    to { transform: translate(-8vw, 9vw) scale(0.9); }
+  }
+
+  /* ---- variants ---- */
+  .rl-menu .rl-base { opacity: 0.1; }
+  .rl-menu .rl-comet { opacity: 0.45; stroke-width: 2; }
+  .rl-menu .rl-orb { display: none; } /* the menu has its own glow field */
+
+  /* ---- offscreen pause hook (class set by script) ---- */
+  .racing-lines.rl-paused :is(.rl-base, .rl-comet, .rl-orb) {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rl-base { animation: none; }
+    .rl-comet, .rl-orb { display: none; }
+  }
+</style>
+
+<script>
+  // Pause all racing-line layers that are offscreen (battery/CPU courtesy).
+  function initRacingLines() {
+    const layers = document.querySelectorAll<HTMLElement>('.racing-lines');
+    if (!layers.length || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) =>
+          (e.target as HTMLElement).classList.toggle('rl-paused', !e.isIntersecting)
+        ),
+      { threshold: 0.02 }
+    );
+    layers.forEach((l) => io.observe(l));
+  }
+  document.addEventListener('astro:page-load', initRacingLines);
+</script>

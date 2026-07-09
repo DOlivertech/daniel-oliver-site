@@ -20,6 +20,8 @@ interface Props {
   tone?: 'gradient' | 'mono';
   /** add a soft glow behind the strokes */
   glow?: boolean;
+  /** keep it alive: re-trace periodically while visible (never static) */
+  loop?: boolean;
 }
 const {
   animate = false,
@@ -28,6 +30,7 @@ const {
   speed = 'cinematic',
   tone = 'gradient',
   glow = false,
+  loop = false,
 } = Astro.props;
 
 // Unique gradient id per instance so multiple signatures don't collide.
@@ -39,6 +42,7 @@ const gid = `sig-grad-${Math.random().toString(36).slice(2, 8)}`;
   role="img"
   aria-label={`${site.signatureText} signature`}
   data-sig-animate={animate ? 'true' : undefined}
+  data-sig-loop={loop ? 'true' : undefined}
   data-sig-speed={speed}
   data-sig-tone={tone}
   data-sig-grad={gid}
@@ -192,11 +196,51 @@ const gid = `sig-grad-${Math.random().toString(36).slice(2, 8)}`;
   (window as any).__buildSignature = buildSignature;
   (window as any).__playSignature = playSignature;
 
+  // ---- Living signatures: periodically re-trace [data-sig-loop] instances
+  // while they're on screen (tab visible, motion allowed). One shared timer.
+  let loopTimer: number | undefined;
+  let loopIO: IntersectionObserver | undefined;
+  const visibleLoopers = new Set<SVGSVGElement>();
+
+  function initSignatureLoop() {
+    if (loopTimer) { clearInterval(loopTimer); loopTimer = undefined; }
+    loopIO?.disconnect();
+    visibleLoopers.clear();
+    if (reduce()) return;
+
+    const loopers = document.querySelectorAll<SVGSVGElement>(
+      'svg.signature[data-sig-loop]'
+    );
+    if (!loopers.length) return;
+
+    loopIO = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const svg = e.target as SVGSVGElement;
+          if (e.isIntersecting) visibleLoopers.add(svg);
+          else visibleLoopers.delete(svg);
+        }),
+      { threshold: 0.4 }
+    );
+    loopers.forEach((svg) => loopIO!.observe(svg));
+
+    loopTimer = window.setInterval(() => {
+      if (document.hidden || reduce()) return;
+      visibleLoopers.forEach((svg) => {
+        if (buildSignature(svg)) playSignature(svg);
+      });
+    }, 12000);
+  }
+
   function boot() {
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(initSignatures);
+      document.fonts.ready.then(() => {
+        initSignatures();
+        initSignatureLoop();
+      });
     } else {
       initSignatures();
+      initSignatureLoop();
     }
   }
 

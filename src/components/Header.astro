@@ -1,6 +1,7 @@
 ---
 import SocialLinks from './SocialLinks.astro';
 import Signature from './Signature.astro';
+import RacingLines from './RacingLines.astro';
 import site from '../data/site.json';
 
 const links = site.nav as { label: string; href: string; external?: boolean }[];
@@ -51,6 +52,7 @@ const current = Astro.url.pathname;
 >
   <div class="overlay-bg absolute inset-0 bg-ink/95 backdrop-blur-xl"></div>
   <div class="overlay-glow pointer-events-none absolute inset-0 opacity-60" aria-hidden="true"></div>
+  <RacingLines variant="menu" />
 
   <div class="relative flex h-full flex-col overflow-y-auto px-6 pt-28 pb-10 sm:px-14 lg:px-24">
     <nav aria-label="Main navigation">
