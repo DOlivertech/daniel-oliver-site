@@ -1,211 +1,151 @@
 ---
-// Animated signature — a brand centerpiece.
-// Rendered as SVG text in a cursive font. When `animate` is set, a script
-// splits the text into per-letter <text> nodes and traces each glyph's outline
-// progressively (stroke-dasharray/dashoffset, staggered left to right) using a
-// pink→violet→cyan gradient stroke, then settles the gradient FILL in — a true
-// signed-in-gold moment. The trace is REPLAYABLE: it re-runs on view-transition
-// swaps and can be triggered on demand (used by the persistent header sig).
-// No-JS and prefers-reduced-motion fall back to a static, fully drawn gradient
-// signature.
-import site from '../data/site.json';
+// Animated signature — Daniel Oliver's real autograph, traced to a single SVG
+// centreline path from a scan. The path is drawn on with stroke-dasharray so it
+// looks like it's being written (left-to-right, since the sub-strokes are
+// ordered by x). Replayable: re-runs on view-transition swaps (used by the
+// persistent header sig) and can loop periodically as a "living" mark.
+// No-JS / prefers-reduced-motion fall back to the fully-drawn signature.
+import sig from '../data/signature.json';
 
 interface Props {
   animate?: boolean;
   class?: string;
-  size?: number; // font size in svg units
-  /** 'cinematic' (hero/footer, slower) | 'quick' (header, ~900ms) */
+  /** 'cinematic' (hero, slower hand) | 'quick' (header, ~1.1s) */
   speed?: 'cinematic' | 'quick';
-  /** 'gradient' (pink→violet→cyan brand treatment) | 'mono' (white) */
+  /** 'gradient' (pink→violet→cyan) | 'mono' (white) */
   tone?: 'gradient' | 'mono';
-  /** add a soft glow behind the strokes */
   glow?: boolean;
-  /** keep it alive: re-trace periodically while visible (never static) */
+  /** re-write itself periodically while visible */
   loop?: boolean;
 }
 const {
   animate = false,
   class: className = '',
-  size = 72,
   speed = 'cinematic',
   tone = 'gradient',
   glow = false,
   loop = false,
 } = Astro.props;
 
-// Unique gradient id per instance so multiple signatures don't collide.
 const gid = `sig-grad-${Math.random().toString(36).slice(2, 8)}`;
+const [tx, ty] = sig.translate as [number, number];
+const stroke = tone === 'mono' ? '#fff' : `url(#${gid})`;
 ---
 <svg
   class={`signature ${glow ? 'sig-glow' : ''} ${className}`}
-  viewBox="0 0 640 130"
+  viewBox={sig.viewBox}
   role="img"
-  aria-label={`${site.signatureText} signature`}
-  data-sig-animate={animate ? 'true' : undefined}
-  data-sig-loop={loop ? 'true' : undefined}
-  data-sig-speed={speed}
-  data-sig-tone={tone}
-  data-sig-grad={gid}
+  aria-label="Daniel Oliver signature"
   fill="none"
+  data-sig-animate={animate ? 'true' : undefined}
+  data-sig-speed={speed}
+  data-sig-loop={loop ? 'true' : undefined}
   xmlns="http://www.w3.org/2000/svg"
 >
   <defs>
-    <linearGradient id={gid} x1="0" y1="0" x2="640" y2="0" gradientUnits="userSpaceOnUse">
+    <linearGradient id={gid} x1="0" y1="0" x2={sig.viewBox.split(' ')[2]} y2="0" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#ff2d87" />
       <stop offset="0.5" stop-color="#8b5cf6" />
       <stop offset="1" stop-color="#38bdf8" />
     </linearGradient>
   </defs>
-  <text
-    class="sig-base"
-    x="0"
-    y="92"
-    font-family="'Great Vibes', cursive"
-    font-size={size}
-    fill={tone === 'gradient' ? `url(#${gid})` : '#fff'}
-    data-sig-base
-  >{site.signatureText}</text>
+  <g transform={`translate(${tx}, ${ty})`}>
+    <path
+      class="sig-path"
+      d={sig.d}
+      stroke={stroke}
+      stroke-width="6.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
 </svg>
 
+<style>
+  /* Animatable reveal edge (left → right). @property lets us transition a
+     custom property used inside the mask gradient. */
+  @property --sig-reveal {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 120;
+  }
+  .signature {
+    display: block;
+    overflow: visible;
+    /* Soft-edged left-to-right ink reveal: everything left of the edge is
+       opaque, a ~7% band fades to transparent = the "wet pen tip". */
+    --sig-reveal: 120; /* default: fully written */
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sig-reveal) * 1%), transparent calc((var(--sig-reveal) + 7) * 1%));
+    mask-image: linear-gradient(90deg, #000 calc(var(--sig-reveal) * 1%), transparent calc((var(--sig-reveal) + 7) * 1%));
+  }
+  /* Animated instances start un-written; JS animates the edge across. */
+  .signature[data-sig-animate] { --sig-reveal: -8; }
+  /* No-JS: show the finished signature (can't animate a custom prop). */
+  @media (scripting: none) {
+    .signature { --sig-reveal: 120 !important; }
+  }
+  .sig-path { stroke-width: 6.5; }
+
+  /* Soft brand glow that breathes, so the mark never reads as static. */
+  .sig-glow {
+    filter: drop-shadow(0 0 20px #8b5cf655) drop-shadow(0 0 7px #ff2d8733);
+    animation: sig-breathe 5.5s ease-in-out infinite alternate;
+  }
+  @keyframes sig-breathe {
+    from { filter: drop-shadow(0 0 14px #8b5cf640) drop-shadow(0 0 5px #ff2d8726); }
+    to   { filter: drop-shadow(0 0 28px #8b5cf680) drop-shadow(0 0 11px #ff2d8755) drop-shadow(0 0 34px #38bdf826); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sig-glow { animation: none; }
+    .signature { --sig-reveal: 120 !important; } /* fully written, no motion */
+  }
+</style>
+
 <script>
-  // ---- One shared controller for every signature on the page ----
-  const NS = 'http://www.w3.org/2000/svg';
   const reduce = () =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Build the per-letter trace nodes once. Returns true if built (or already
-  // built), false if measurement is unsupported (keep static base).
-  function buildSignature(svg: SVGSVGElement): boolean {
-    if (svg.dataset.sigBuilt) return true;
-    const base = svg.querySelector<SVGTextElement>('[data-sig-base]');
-    if (!base) return false;
-    const str = base.textContent || '';
-    if (!str.trim()) return false;
-    // display:none breaks SVG text measurement — bail (retry later when shown).
-    if (getComputedStyle(svg).display === 'none') return false;
-
-    const baseX = parseFloat(base.getAttribute('x') || '0');
-    const baseY = base.getAttribute('y') || '92';
-    const fontSize = base.getAttribute('font-size') || '72';
-    const gid = svg.dataset.sigGrad || '';
-    const gradient = svg.dataset.sigTone !== 'mono';
-    const strokePaint = gradient && gid ? `url(#${gid})` : '#fff';
-
-    let letterIndex = 0;
-    const nodes: SVGTextElement[] = [];
-
-    for (let i = 0; i < str.length; i++) {
-      const ch = str[i];
-      if (ch === ' ') continue;
-
-      let offset = 0;
-      try {
-        offset = i === 0 ? 0 : base.getSubStringLength(0, i);
-      } catch {
-        return false; // measurement unsupported — keep static base
-      }
-      if (i !== 0 && offset === 0) return false; // measured to zero → not ready
-
-      const t = document.createElementNS(NS, 'text') as SVGTextElement;
-      t.setAttribute('class', 'sig-letter');
-      t.setAttribute('x', String(baseX + offset));
-      t.setAttribute('y', baseY);
-      t.setAttribute('font-family', "'Great Vibes', cursive");
-      t.setAttribute('font-size', fontSize);
-      t.setAttribute('stroke', strokePaint);
-      t.dataset.fillPaint = strokePaint;
-      t.textContent = ch;
-
-      let advance = 30;
-      try {
-        advance = base.getSubStringLength(i, 1) || 30;
-      } catch {
-        /* keep default */
-      }
-      const len = Math.max(90, Math.ceil(advance * 3.6));
-      t.dataset.len = String(len);
-      t.dataset.i = String(letterIndex);
-
-      nodes.push(t);
-      letterIndex++;
-    }
-
-    if (!nodes.length) return false;
-    svg.dataset.sigBuilt = 'true';
-    nodes.forEach((n) => svg.appendChild(n));
-    base.style.opacity = '0';
-    return true;
-  }
-
-  // Play (or replay) the trace on an already-built signature.
+  // Play (or replay) the left-to-right "being written" reveal.
   function playSignature(svg: SVGSVGElement) {
-    if (reduce()) return;
-    const letters = svg.querySelectorAll<SVGTextElement>('.sig-letter');
-    if (!letters.length) return;
-
+    if (reduce()) {
+      svg.style.setProperty('--sig-reveal', '120');
+      return;
+    }
     const quick = svg.dataset.sigSpeed === 'quick';
-    const drawDur = quick ? 0.5 : 0.78;
-    const stagger = quick ? 0.055 : 0.12;
-    const fillLead = quick ? 0.42 : 0.66;
+    const dur = quick ? 1.4 : 2.6; // seconds — the "hand speed"
 
-    letters.forEach((t) => {
-      const len = parseFloat(t.dataset.len || '200');
-      const idx = parseInt(t.dataset.i || '0', 10);
-      const delay = idx * stagger;
-      const fillPaint = t.dataset.fillPaint || '#fff';
-
-      // Reset to the un-drawn state (no transition, so it snaps back).
-      t.style.transition = 'none';
-      t.style.strokeDasharray = String(len);
-      t.style.strokeDashoffset = String(len);
-      t.style.strokeWidth = quick ? '1.6' : '2';
-      t.style.fill = 'transparent';
-
-      // Force reflow so the reset takes hold, then start the transition
-      // synchronously — rAF can starve in hidden tabs / mid view-transition.
-      t.getBoundingClientRect();
-
-      t.style.transition =
-        `stroke-dashoffset ${drawDur}s cubic-bezier(0.45,0,0.4,1) ${delay}s,` +
-        `fill 0.6s ease ${delay + fillLead}s,` +
-        `stroke-width 0.6s ease ${delay + fillLead}s`;
-      t.style.strokeDashoffset = '0';
-      t.style.fill = fillPaint;
-      t.style.strokeWidth = '0.4';
-    });
+    // Reset to fully un-written (edge off the left), no transition.
+    svg.style.transition = 'none';
+    svg.style.setProperty('--sig-reveal', '-8');
+    // Force reflow so the reset applies before animating forward.
+    svg.getBoundingClientRect();
+    svg.style.transition = `--sig-reveal ${dur}s cubic-bezier(0.65, 0, 0.35, 1)`;
+    svg.style.setProperty('--sig-reveal', '120');
   }
 
-  // Init every animating signature. Big (cinematic) ones play on init; the
-  // persistent header one (quick) is played by the header script on nav.
+  // Draw every animating signature now (called on load + after swaps).
   function initSignatures() {
-    // Under reduced motion, leave the static gradient-filled base as-is.
-    if (reduce()) return;
     document
       .querySelectorAll<SVGSVGElement>('svg.signature[data-sig-animate]')
-      .forEach((svg) => {
-        const built = buildSignature(svg);
-        if (built) playSignature(svg);
-      });
+      .forEach(playSignature);
   }
 
-  // Expose replay for other scripts (header persistence, dividers).
+  // Expose replay for the persistent header signature (re-writes on each nav).
   (window as any).__replaySignature = (svg: SVGSVGElement) => {
-    if (!svg) return;
-    if (buildSignature(svg)) playSignature(svg);
+    if (svg) playSignature(svg);
   };
-  (window as any).__buildSignature = buildSignature;
-  (window as any).__playSignature = playSignature;
 
-  // ---- Living signatures: periodically re-trace [data-sig-loop] instances
-  // while they're on screen (tab visible, motion allowed). One shared timer.
+  // ---- Living signatures: re-write [data-sig-loop] instances periodically
+  // while on screen (tab visible, motion allowed). One shared timer + observer.
   let loopTimer: number | undefined;
   let loopIO: IntersectionObserver | undefined;
-  const visibleLoopers = new Set<SVGSVGElement>();
+  const visible = new Set<SVGSVGElement>();
 
   function initSignatureLoop() {
     if (loopTimer) { clearInterval(loopTimer); loopTimer = undefined; }
     loopIO?.disconnect();
-    visibleLoopers.clear();
+    visible.clear();
     if (reduce()) return;
 
     const loopers = document.querySelectorAll<SVGSVGElement>(
@@ -217,8 +157,8 @@ const gid = `sig-grad-${Math.random().toString(36).slice(2, 8)}`;
       (entries) =>
         entries.forEach((e) => {
           const svg = e.target as SVGSVGElement;
-          if (e.isIntersecting) visibleLoopers.add(svg);
-          else visibleLoopers.delete(svg);
+          if (e.isIntersecting) visible.add(svg);
+          else visible.delete(svg);
         }),
       { threshold: 0.4 }
     );
@@ -226,24 +166,14 @@ const gid = `sig-grad-${Math.random().toString(36).slice(2, 8)}`;
 
     loopTimer = window.setInterval(() => {
       if (document.hidden || reduce()) return;
-      visibleLoopers.forEach((svg) => {
-        if (buildSignature(svg)) playSignature(svg);
-      });
-    }, 12000);
+      visible.forEach(playSignature);
+    }, 11000);
   }
 
   function boot() {
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        initSignatures();
-        initSignatureLoop();
-      });
-    } else {
-      initSignatures();
-      initSignatureLoop();
-    }
+    initSignatures();
+    initSignatureLoop();
   }
 
-  // Run on first load and after every view-transition swap.
   document.addEventListener('astro:page-load', boot);
 </script>

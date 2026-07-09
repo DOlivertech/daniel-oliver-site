@@ -380,47 +380,8 @@ body.no-scroll {
   pointer-events: none;
 }
 
-/* ---- Signature SVG draw-on ----
-   .sig-base is the full static signature (default rendering; no-JS and
-   reduced-motion fallback). When animating, the script hides the base and
-   appends per-letter .sig-letter nodes whose glyph outlines trace on with a
-   left-to-right stagger (stroke-dasharray/dashoffset), then the fill fades in. */
-.sig-base {
-  stroke: none;
-  transition: opacity 0.2s;
-}
-/* Soft glow behind the strokes for the hero/footer centerpiece — breathes
-   slowly so the signature never reads as static. */
-.sig-glow {
-  filter: drop-shadow(0 0 22px #8b5cf655) drop-shadow(0 0 8px #ff2d8733);
-  animation: sig-breathe 5.5s ease-in-out infinite alternate;
-}
-@keyframes sig-breathe {
-  from { filter: drop-shadow(0 0 16px #8b5cf640) drop-shadow(0 0 6px #ff2d8726); }
-  to   { filter: drop-shadow(0 0 30px #8b5cf680) drop-shadow(0 0 12px #ff2d8755) drop-shadow(0 0 40px #38bdf826); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sig-glow { animation: none; }
-}
-/* Trace is driven by inline transitions from Signature.astro so it can be
-   replayed on navigation. Initial state = undrawn outline. Stroke paint is set
-   per-letter (gradient or white) by the script. */
-.sig-letter {
-  fill: transparent;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dashoffset: 200;
-}
-@media (prefers-reduced-motion: reduce) {
-  .sig-letter {
-    stroke-width: 0.4 !important;
-    stroke-dashoffset: 0 !important;
-    transition: none !important;
-  }
-  /* Keep the static (gradient-filled) base visible under reduced motion. */
-  .sig-base { opacity: 1 !important; }
-}
+/* ---- Signature ---- (write-on animation lives in Signature.astro, which
+   traces Daniel's real autograph path with stroke-dasharray.) */
 
 /* ---- Marquee ---- */
 .marquee {

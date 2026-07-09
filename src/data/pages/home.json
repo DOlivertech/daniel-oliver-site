@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "Daniel Oliver Racing — #25 | Racing Driver × Software Engineer"
+    "title": "Daniel Oliver Racing | Racing Driver × Software Engineer"
   },
   "hero": {
     "image": "/images/2026/hero-helmet-walk.webp",
     "video": "",
     "imageAlt": "Daniel Oliver in his blue and pink helmet, visor raised, on the pit lane at Sebring",
-    "ghostText": "25",
-    "eyebrowNumber": "#25",
+    "ghostText": "DO",
+    "eyebrowNumber": "",
     "titleLine1": "Daniel",
     "titleLine2": "Oliver",
     "intro": "Every lap is a dataset. Every mistake, an experiment. From the simulator to an FIA international licence in six months — and in 2026, the IMSA VP Racing SportsCar Challenge.",
@@ -47,7 +47,7 @@
     "ctaHref": "/about",
     "image": "/images/2026/hero-cockpit.webp",
     "imageAlt": "Daniel Oliver in the cockpit of the #38 IMSA prototype at Sebring",
-    "badge": "#25"
+    "badge": "2026"
   },
   "simReal": {
     "eyebrow": "Methodology",

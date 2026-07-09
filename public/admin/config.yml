@@ -69,7 +69,9 @@ collections:
         label: Status
         widget: select
         options: [upcoming, completed]
-      - { name: result, label: Result, widget: string, required: false }
+        default: upcoming
+        hint: "Switch to 'completed' after the race — it moves to the Completed section with a checkered-flag badge."
+      - { name: result, label: Result, widget: string, required: false, hint: "Finishing position, e.g. P1, 2nd, DNF. P1/P2/P3 get a gold/silver/bronze medal. Leave blank for 'Result to come'." }
       - { name: link, label: "Link (e.g. gallery URL)", widget: string, required: false }
       - { name: body, label: Notes, widget: markdown, required: false }
 
@@ -81,7 +83,6 @@ collections:
         file: src/data/site.json
         fields:
           - { name: name, label: Name, widget: string }
-          - { name: number, label: Race Number, widget: string }
           - { name: tagline, label: Tagline, widget: string }
           - { name: signatureText, label: "Signature Text (traced by the animated signature)", widget: string }
           - { name: heroImage, label: Hero Image, widget: image }
@@ -96,13 +97,6 @@ collections:
               - { name: monogram, label: DO Monogram, widget: image }
               - { name: wordmarkHorizontal, label: Horizontal Wordmark, widget: image }
               - { name: wordmarkLaser, label: Laser Wordmark, widget: image }
-          - name: header
-            label: Header
-            widget: object
-            fields:
-              - { name: title, label: Title, widget: string }
-              - { name: subtitle, label: Subtitle, widget: string }
-              - { name: numberLabel, label: Number Label, widget: string }
           - name: nav
             label: Navigation Links
             widget: list
@@ -127,7 +121,6 @@ collections:
               - { name: partnersCtaLabel, label: Partners CTA Label, widget: string }
               - { name: partnersCtaHref, label: Partners CTA Link, widget: string }
               - { name: blurbPrefix, label: Blurb Prefix, widget: string }
-              - { name: blurbNumber, label: Blurb Number, widget: string }
               - { name: blurbSuffix, label: Blurb Suffix, widget: string }
               - { name: taglinePrefix, label: Tagline Prefix, widget: string }
               - { name: taglineAccent, label: Tagline Accent, widget: string }

@@ -69,7 +69,7 @@ const { hero, about, simReal } = page;
 
     <div class="relative z-10 w-full px-6 pb-14 pt-6 sm:px-12 sm:pb-24 sm:pt-8 lg:px-20 lg:pt-40 lg:max-w-[62%]">
       <p class="eyebrow mb-3 sm:mb-5" data-hero="fade" style="--hero-delay:120ms">
-        <span class="text-pink">{hero.eyebrowNumber}</span>&nbsp;&nbsp;·&nbsp;&nbsp;{site.tagline}
+        {hero.eyebrowNumber && <><span class="text-pink">{hero.eyebrowNumber}</span>&nbsp;&nbsp;·&nbsp;&nbsp;</>}{site.tagline}
       </p>
 
       <h1 class="h-display text-[clamp(2.6rem,10vw,7.5rem)] uppercase text-white" data-hero>

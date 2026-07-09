@@ -17,6 +17,22 @@ const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 const isTBA = (e: (typeof events)[number]) => Boolean(e.data.dateLabel?.includes('TBA'));
 
+// Classify a result string into a podium tier for medal styling.
+const podium = (r?: string): 'gold' | 'silver' | 'bronze' | null => {
+  if (!r) return null;
+  const s = r.toLowerCase();
+  if (/(^|[^0-9])(p ?1|1st|first|win|won|victory|🥇)([^0-9]|$)/.test(s)) return 'gold';
+  if (/(^|[^0-9])(p ?2|2nd|second|🥈)([^0-9]|$)/.test(s)) return 'silver';
+  if (/(^|[^0-9])(p ?3|3rd|third|🥉)([^0-9]|$)/.test(s)) return 'bronze';
+  return null;
+};
+const tierStyle: Record<string, string> = {
+  gold: 'bg-[#fbbf24]/12 text-[#fcd34d] border-[#fbbf24]/35',
+  silver: 'bg-[#cbd5e1]/12 text-[#e2e8f0] border-[#cbd5e1]/35',
+  bronze: 'bg-[#fb923c]/12 text-[#fdba74] border-[#fb923c]/35',
+};
+const hasResult = (r?: string) => Boolean(r && r.trim() && r.trim() !== '—');
+
 const cd = page.countdownLabels;
 const countdownUnits = [
   { key: 'days', label: cd.days },
@@ -90,39 +106,56 @@ const countdownUnits = [
     </ol>
   </section>
 
-  <!-- Past events -->
+  <!-- Completed events -->
   <section class="mx-auto max-w-6xl px-6 py-16">
     <h2 class="h-display reveal mb-8 text-2xl text-white sm:text-3xl">{page.past.titlePrefix} <span class="text-gradient">{page.past.titleAccent}</span></h2>
-    <div class="reveal overflow-x-auto rounded-2xl border border-line">
-      <table class="w-full min-w-[640px] text-left">
-        <thead>
-          <tr class="border-b border-line bg-ink-2/70 font-mono text-[0.62rem] uppercase tracking-[0.25em] text-mist">
-            <th class="px-6 py-4 font-normal">{page.past.headers.date}</th>
-            <th class="px-6 py-4 font-normal">{page.past.headers.event}</th>
-            <th class="px-6 py-4 font-normal">{page.past.headers.circuit}</th>
-            <th class="px-6 py-4 font-normal">{page.past.headers.series}</th>
-            <th class="px-6 py-4 font-normal">{page.past.headers.result}</th>
-            <th class="px-6 py-4 font-normal"><span class="sr-only">Gallery</span></th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-line/60">
-          {past.map((e) => (
-            <tr class="transition-colors hover:bg-white/[0.03]">
-              <td class="whitespace-nowrap px-6 py-5 font-mono text-xs text-mist">{fmt(e.data.date)}</td>
-              <td class="px-6 py-5 font-display text-sm font-bold text-white">{e.data.title}</td>
-              <td class="px-6 py-5 text-sm text-fog">{e.data.circuit}</td>
-              <td class="px-6 py-5 font-mono text-xs text-mist">{e.data.series}</td>
-              <td class="px-6 py-5 font-mono text-sm text-cyan">{e.data.result ?? '—'}</td>
-              <td class="px-6 py-5 text-right">
-                {e.data.link && (
-                  <a href={e.data.link} class="font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{page.past.photosLabel}</a>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <ol class="grid gap-4 sm:grid-cols-2">
+      {past.map((e, i) => {
+        const tier = podium(e.data.result);
+        return (
+          <li class="card reveal relative overflow-hidden p-6" style={`--reveal-delay:${i * 80}ms`}>
+            {/* checkered-flag corner wash — the "race finished" motif */}
+            <div class="pointer-events-none absolute -right-3 -top-3 h-24 w-24 rotate-6 opacity-[0.06]" style="background: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%) 0 0 / 13px 13px;" aria-hidden="true"></div>
+
+            <div class="relative flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 rounded-full border border-[#34d399]/35 bg-[#34d399]/12 px-2.5 py-1 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#6ee7b7]">
+                <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill="none" aria-hidden="true">
+                  <path d="M4 2.5v15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <g fill="currentColor">
+                    <rect x="6" y="3" width="3" height="3"/><rect x="12" y="3" width="3" height="3"/>
+                    <rect x="9" y="6" width="3" height="3"/><rect x="15" y="6" width="1.5" height="3"/>
+                    <rect x="6" y="9" width="3" height="3"/><rect x="12" y="9" width="3" height="3"/>
+                  </g>
+                </svg>
+                Completed
+              </span>
+              <span class="font-mono text-xs text-mist">{fmt(e.data.date)}</span>
+            </div>
+
+            <h3 class="relative mt-3 font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
+            <p class="relative mt-1.5 font-mono text-xs text-mist">{e.data.circuit} · {e.data.series}</p>
+
+            <div class="relative mt-5 flex items-center justify-between gap-4 border-t border-line/60 pt-4">
+              {hasResult(e.data.result) ? (
+                <span class={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 font-display text-sm font-bold ${tier ? tierStyle[tier] : 'border-cyan/30 bg-cyan/10 text-cyan'}`}>
+                  {tier && (
+                    <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <path d="M8 21h8m-4-4v4m5-17H7v4a5 5 0 0 0 10 0V4zm0 1h3v2a3 3 0 0 1-3 3m-7-5H4v2a3 3 0 0 0 3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  )}
+                  {e.data.result}
+                </span>
+              ) : (
+                <span class="font-mono text-xs uppercase tracking-[0.2em] text-mist">Result to come</span>
+              )}
+              {e.data.link && (
+                <a href={e.data.link} class="shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{page.past.photosLabel}</a>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
   </section>
 
   <script>

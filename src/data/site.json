@@ -1,6 +1,5 @@
 {
   "name": "Daniel Oliver",
-  "number": "25",
   "tagline": "Racing Driver × Software Engineer",
   "signatureText": "Daniel Oliver",
   "heroImage": "/images/hero/emsphotocam-1.webp",
@@ -13,20 +12,40 @@
     "wordmarkHorizontal": "/images/brand/do-horizontal-wht.webp",
     "wordmarkLaser": "/images/brand/do-laser-logo.webp"
   },
-  "header": {
-    "title": "DANIEL OLIVER",
-    "subtitle": "RACING",
-    "numberLabel": "#25"
-  },
   "nav": [
-    { "label": "Home", "href": "/" },
-    { "label": "About", "href": "/about" },
-    { "label": "Media", "href": "/media" },
-    { "label": "Blog", "href": "/blog" },
-    { "label": "Schedule", "href": "/schedule" },
-    { "label": "Partnerships", "href": "/partnerships" },
-    { "label": "Store", "href": "https://www.danieloliverracing.com/store", "external": true },
-    { "label": "Contact", "href": "/contact" }
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Media",
+      "href": "/media"
+    },
+    {
+      "label": "Blog",
+      "href": "/blog"
+    },
+    {
+      "label": "Schedule",
+      "href": "/schedule"
+    },
+    {
+      "label": "Partnerships",
+      "href": "/partnerships"
+    },
+    {
+      "label": "Store",
+      "href": "https://www.danieloliverracing.com/store",
+      "external": true
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
   ],
   "menu": {
     "followLabel": "Follow the journey",
@@ -36,18 +55,17 @@
   "footer": {
     "partnersEyebrow": "Powered by",
     "partnersHeadingPrefix": "The partners behind",
-    "partnersHeadingAccent": "#25",
+    "partnersHeadingAccent": "Daniel",
     "partnersCtaLabel": "Partner with Daniel",
     "partnersCtaHref": "/partnerships",
-    "blurbPrefix": "Racing Driver × Software Engineer.",
-    "blurbNumber": "#25",
-    "blurbSuffix": "— data-driven from sim to grid.",
+    "blurbPrefix": "Racing driver × software engineer.",
+    "blurbSuffix": "Data-driven, from sim to grid.",
     "taglinePrefix": "No idols.",
     "taglineAccent": "Outwork everyone.",
     "followLabel": "Follow",
     "storeLabel": "Store ↗",
     "copyright": "Daniel Oliver Racing. All rights reserved.",
-    "motto": "DO · #25 · SIM → REAL"
+    "motto": "DO · SIM → REAL"
   },
   "socials": {
     "instagram": "https://instagram.com/daniel.oliver25",
@@ -55,13 +73,45 @@
     "tiktok": "https://tiktok.com/@danieloliverracing"
   },
   "sponsors": [
-    { "name": "Race Control", "logo": "/images/sponsors/racecontrol-stacked.webp", "url": "#" },
-    { "name": "Elite Detail Pros", "logo": "/images/sponsors/elite-detail-pros.webp", "url": "#" },
-    { "name": "Monza Detail Works", "logo": "/images/sponsors/monza.webp", "url": "#" },
-    { "name": "Nick's Auto Transport", "logo": "/images/sponsors/nicks.webp", "url": "#" },
-    { "name": "Demia Motorsports", "logo": "/images/sponsors/demia-motorsports-banner.webp", "url": "#" },
-    { "name": "Sim Racing Nation", "logo": "/images/sponsors/plb.webp", "url": "#" },
-    { "name": "PLB SimToReal", "logo": "/images/sponsors/plb-simtoreal.webp", "url": "#" },
-    { "name": "Forseti", "logo": "/images/sponsors/forseti.webp", "url": "#" }
+    {
+      "name": "Race Control",
+      "logo": "/images/sponsors/racecontrol-stacked.webp",
+      "url": "#"
+    },
+    {
+      "name": "Elite Detail Pros",
+      "logo": "/images/sponsors/elite-detail-pros.webp",
+      "url": "#"
+    },
+    {
+      "name": "Monza Detail Works",
+      "logo": "/images/sponsors/monza.webp",
+      "url": "#"
+    },
+    {
+      "name": "Nick's Auto Transport",
+      "logo": "/images/sponsors/nicks.webp",
+      "url": "#"
+    },
+    {
+      "name": "Demia Motorsports",
+      "logo": "/images/sponsors/demia-motorsports-banner.webp",
+      "url": "#"
+    },
+    {
+      "name": "Sim Racing Nation",
+      "logo": "/images/sponsors/plb.webp",
+      "url": "#"
+    },
+    {
+      "name": "PLB SimToReal",
+      "logo": "/images/sponsors/plb-simtoreal.webp",
+      "url": "#"
+    },
+    {
+      "name": "Forseti",
+      "logo": "/images/sponsors/forseti.webp",
+      "url": "#"
+    }
   ]
 }

@@ -9,18 +9,14 @@ const current = Astro.url.pathname;
 ---
 <header class="site-header fixed inset-x-0 top-0 z-[70]" transition:persist>
   <div class="site-header__bar flex items-center justify-between px-5 py-4 sm:px-8 backdrop-blur-md bg-ink/55 border-b border-white/5">
-    <a href="/" class="flex items-center gap-3 group" aria-label={`${site.name} Racing — home`}>
+    <a href="/" class="flex items-center gap-3 group" aria-label={`${site.name} — home`}>
       <img
         src={site.brand.monogram}
-        alt="DO monogram"
+        alt={`${site.name} monogram`}
         width="300"
         height="169"
         class="h-9 w-auto transition-transform duration-300 group-hover:scale-105"
       />
-      <span class="hidden sm:flex flex-col leading-none">
-        <span class="font-display text-[0.82rem] font-bold tracking-wide text-white">{site.header.title}</span>
-        <span class="font-mono text-[0.6rem] tracking-[0.32em] text-mist mt-1">{site.header.subtitle}&nbsp;·&nbsp;<span class="text-pink">{site.header.numberLabel}</span></span>
-      </span>
     </a>
 
     <!-- Persistent signature: survives navigations and re-traces on each swap -->
@@ -86,7 +82,7 @@ const current = Astro.url.pathname;
       <div class="flex flex-col items-start gap-3 sm:items-end">
         <img
           src={site.brand.wordmarkHorizontal}
-          alt={`${site.name} ${site.number} wordmark`}
+          alt={`${site.name} wordmark`}
           width="1280"
           height="720"
           class="h-16 w-auto opacity-90 sm:h-20"

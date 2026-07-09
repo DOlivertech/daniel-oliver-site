@@ -49,16 +49,19 @@ const f = site.footer;
 
     <div class="flex flex-col gap-10 py-12 md:flex-row md:items-start md:justify-between">
       <div class="max-w-sm">
-        <img
-          src={site.brand.wordmarkLaser}
-          alt={`${site.name} ${site.number} wordmark`}
-          width="1500"
-          height="844"
-          class="-my-8 h-40 w-auto max-w-full object-contain sm:-my-10 sm:h-48"
-          loading="lazy"
-        />
+        <div class="mb-5 flex items-center gap-3">
+          <img
+            src={site.brand.monogram}
+            alt={`${site.name} monogram`}
+            width="300"
+            height="169"
+            class="h-9 w-auto"
+            loading="lazy"
+          />
+          <span class="font-display text-xl font-black uppercase tracking-tight text-gradient">{site.name}</span>
+        </div>
         <p class="text-sm leading-relaxed text-mist">
-          {f.blurbPrefix} <span class="text-pink font-semibold">{f.blurbNumber}</span> {f.blurbSuffix}
+          {f.blurbPrefix} {f.blurbSuffix}
         </p>
         <p class="mt-3 font-mono text-[0.62rem] uppercase tracking-[0.3em] text-fog">{f.taglinePrefix} <span class="text-gradient font-bold">{f.taglineAccent}</span></p>
       </div>
