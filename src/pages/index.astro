@@ -30,11 +30,15 @@ const { hero, about, simReal } = page;
     <!-- Layered media well: a background <video> (absolute, object-cover) can be
          dropped in here as a sibling BEFORE the image; the image is the poster/
          fallback and stays behind the overlays. -->
-    <div class="hero-media-well pointer-events-none absolute inset-0 -z-0 overflow-hidden" aria-hidden="true">
+    <!-- Media well. Mobile: full-bleed, face kept high & clear of the text
+         block. Desktop (lg+): split hero — the portrait owns the right ~62%
+         with a soft fade into the ink left column, so the name typography
+         never covers the face. -->
+    <div class="hero-media-well pointer-events-none absolute inset-0 -z-0 overflow-hidden lg:left-[38%]" aria-hidden="true">
       <img
         src={hero.image}
         alt={hero.imageAlt}
-        class="hero-media absolute inset-0 h-full w-full object-cover object-[68%_22%]"
+        class="hero-media absolute inset-0 h-full w-full object-cover object-[44%_12%] lg:object-[50%_25%]"
         loading="eager"
         fetchpriority="high"
         width="2000"
@@ -42,7 +46,7 @@ const { hero, about, simReal } = page;
       />
       {hero.video && (
         <video
-          class="hero-video absolute inset-0 h-full w-full object-cover object-[68%_22%] opacity-0 transition-opacity duration-1000"
+          class="hero-video absolute inset-0 h-full w-full object-cover object-[44%_12%] lg:object-[50%_25%] opacity-0 transition-opacity duration-1000"
           autoplay
           muted
           loop
@@ -52,6 +56,8 @@ const { hero, about, simReal } = page;
           src={hero.video}
         ></video>
       )}
+      <!-- blend seam into the left text column on desktop -->
+      <div class="absolute inset-y-0 left-0 hidden w-56 bg-gradient-to-r from-ink to-transparent lg:block"></div>
     </div>
     <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/55 to-ink/25" aria-hidden="true"></div>
     <div class="absolute inset-0 z-[1] bg-gradient-to-r from-ink/70 via-transparent to-transparent" aria-hidden="true"></div>
@@ -62,30 +68,30 @@ const { hero, about, simReal } = page;
     <!-- ambient racing-line light layer -->
     <RacingLines variant="hero" class="mix-blend-screen" />
 
-    <div class="relative z-10 w-full px-6 pb-24 pt-40 sm:px-12 lg:px-20">
-      <p class="eyebrow mb-5" data-hero="fade" style="--hero-delay:120ms">
+    <div class="relative z-10 w-full px-6 pb-14 pt-40 sm:px-12 sm:pb-24 lg:px-20 lg:max-w-[62%]">
+      <p class="eyebrow mb-3 sm:mb-5" data-hero="fade" style="--hero-delay:120ms">
         <span class="text-pink">{hero.eyebrowNumber}</span>&nbsp;&nbsp;·&nbsp;&nbsp;{site.tagline}
       </p>
 
-      <h1 class="h-display text-[clamp(3rem,10vw,7.5rem)] uppercase text-white" data-hero>
+      <h1 class="h-display text-[clamp(2.6rem,10vw,7.5rem)] uppercase text-white" data-hero>
         <span class="hero-line" style="--hero-delay:260ms"><span>{hero.titleLine1}</span></span>
         <span class="hero-line" style="--hero-delay:340ms"><span class="text-gradient">{hero.titleLine2}</span></span>
       </h1>
 
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-fog" data-hero="fade" style="--hero-delay:520ms">
+      <p class="mt-4 max-w-xl text-base leading-relaxed text-fog sm:mt-6 sm:text-lg" data-hero="fade" style="--hero-delay:520ms">
         {hero.intro}
       </p>
 
-      <p class="mt-5 font-mono text-xs uppercase tracking-[0.35em] text-fog" data-hero="fade" style="--hero-delay:600ms">
+      <p class="mt-3 font-mono text-xs uppercase tracking-[0.35em] text-fog sm:mt-5" data-hero="fade" style="--hero-delay:600ms">
         {hero.taglinePrefix} <span class="text-gradient font-bold">{hero.taglineAccent}</span>
       </p>
 
-      <div class="mt-9 flex flex-wrap items-center gap-4" data-hero="fade" style="--hero-delay:680ms">
+      <div class="mt-6 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4" data-hero="fade" style="--hero-delay:680ms">
         <a href={hero.ctaPrimaryHref} class="btn btn-primary">{hero.ctaPrimaryLabel}</a>
         <a href={hero.ctaSecondaryHref} class="btn btn-ghost">{hero.ctaSecondaryLabel}</a>
       </div>
 
-      <div class="mt-10 flex items-end justify-between gap-6" data-hero="fade" style="--hero-delay:820ms">
+      <div class="mt-6 flex items-end justify-between gap-6 sm:mt-10" data-hero="fade" style="--hero-delay:820ms">
         <a href="#stats" class="group hidden flex-col items-center gap-2 pb-4 sm:flex" aria-label="Scroll to content">
           <span class="font-mono text-[0.62rem] tracking-[0.35em] text-mist">{hero.scrollLabel}</span>
           <span class="scroll-cue block h-10 w-px bg-gradient-to-b from-pink via-violet to-transparent"></span>
