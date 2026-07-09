@@ -32,6 +32,234 @@ collections:
       - { name: excerpt, label: Excerpt, widget: text }
       - { name: cover, label: Cover Image, widget: image, required: false }
       - { name: tags, label: Tags, widget: list, default: [] }
+      - name: track
+        label: Track
+        widget: select
+        required: false
+        hint: "Optional. Associate this post with a circuit to show its outline, flag and name at the top of the post."
+        options:
+          - { label: "Adria International Raceway", value: "adria" }
+          - { label: "Ahvenisto Circuit", value: "ahvenisto" }
+          - { label: "Alastaro Circuit", value: "alastaro" }
+          - { label: "Albert Park Circuit", value: "melbourne" }
+          - { label: "Anderstorp Raceway", value: "anderstorp" }
+          - { label: "Anglesey Circuit", value: "anglesey-circuit" }
+          - { label: "Atlanta Motorsports Park", value: "atlanta-motorsports-park" }
+          - { label: "Atlantic Motorsport Park", value: "atlantic-motorsport-park" }
+          - { label: "Auto Club Speedway", value: "auto-club-speedway" }
+          - { label: "Autobahn Country Club", value: "autobahn-country-club" }
+          - { label: "Autodrom Most", value: "most" }
+          - { label: "Autodromo di Varano de' Melegari", value: "varano" }
+          - { label: "Autódromo do Estoril", value: "estoril" }
+          - { label: "Autodromo Enzo e Dino Ferrari", value: "imola" }
+          - { label: "Autódromo Hermanos Rodríguez", value: "mexico" }
+          - { label: "Autódromo Hermanos Rodríguez Club", value: "autodromo-hermanos-rodriguez" }
+          - { label: "Autódromo Internacional Ayrton Senna", value: "goiania" }
+          - { label: "Autódromo Internacional de Curitiba", value: "curitiba" }
+          - { label: "Autódromo Internacional de Tarumã", value: "taruma" }
+          - { label: "Autódromo Internacional do Algarve", value: "portimao" }
+          - { label: "Autódromo Internacional Nelson Piquet", value: "jacarepagua" }
+          - { label: "Autódromo José Carlos Pace", value: "interlagos" }
+          - { label: "Autódromo Miguel E. Abed", value: "autodromo-miguel-e-abed" }
+          - { label: "Autodromo Nazionale Monza", value: "monza" }
+          - { label: "Autódromo Oscar y Juan Gálvez", value: "buenos-aires" }
+          - { label: "Autódromo Potosino", value: "autodromo-potosino" }
+          - { label: "Autódromo Roberto José Mouras", value: "la-plata" }
+          - { label: "Autódromo San Juan Villicum", value: "san-juan-villicum" }
+          - { label: "Autódromo Termas de Río Hondo", value: "termas-de-rio-hondo" }
+          - { label: "Autodromo Vallelunga", value: "vallelunga" }
+          - { label: "Automotodrom Brno", value: "brno" }
+          - { label: "Autopolis", value: "autopolis" }
+          - { label: "Bahrain International Circuit", value: "bahrain" }
+          - { label: "Baku City Circuit", value: "baku" }
+          - { label: "Barber Motorsports Park", value: "barber" }
+          - { label: "BeaveRun Motorsports Complex", value: "beaverun-motorsports-complex" }
+          - { label: "Beijing Goldenport Park Circuit", value: "beijing-goldenport" }
+          - { label: "Big Willow", value: "big-willow" }
+          - { label: "Bira Circuit", value: "bira-circuit" }
+          - { label: "Blackhawk Farms Raceway", value: "blackhawk-farms-raceway" }
+          - { label: "Bluegrass Motorsport", value: "bluegrass-motorsport" }
+          - { label: "BotniARing", value: "botniaring" }
+          - { label: "Brainerd International Raceway", value: "brainerd-international-raceway" }
+          - { label: "Brands Hatch", value: "brands-hatch" }
+          - { label: "Bristol Motor Speedway", value: "bristol" }
+          - { label: "Buttonwillow Raceway Park", value: "buttonwillow-raceway" }
+          - { label: "Cadwell Park", value: "cadwell-park" }
+          - { label: "Canadian Tire Motorsport Park", value: "mosport" }
+          - { label: "Carolina Motorsports Park", value: "carolina-motorsports-park" }
+          - { label: "Castle Combe Circuit", value: "castle-combe" }
+          - { label: "Chang International Circuit", value: "chang-international-circuit" }
+          - { label: "Charlotte Motor Speedway", value: "charlotte" }
+          - { label: "Chuckwalla Valley Raceway", value: "chuckwalla-valley-raceway" }
+          - { label: "Circuit Bugatti Le Mans", value: "le-mans-motogp" }
+          - { label: "Circuit d'Albi", value: "albi" }
+          - { label: "Circuit de Barcelona-Catalunya", value: "barcelona" }
+          - { label: "Circuit de Croix-en-Ternois", value: "croix-en-ternois" }
+          - { label: "Circuit de Dijon-Prenois", value: "dijon-prenois" }
+          - { label: "Circuit de la Sarthe", value: "le-mans" }
+          - { label: "Circuit de Lédenon", value: "ledenon" }
+          - { label: "Circuit de Nevers Magny-Cours", value: "magny-cours" }
+          - { label: "Circuit de Nogaro", value: "nogaro" }
+          - { label: "Circuit de Spa-Francorchamps", value: "spa" }
+          - { label: "Circuit Gilles Villeneuve", value: "canada" }
+          - { label: "Circuit Mont-Tremblant", value: "mont-tremblant" }
+          - { label: "Circuit of the Americas (COTA)", value: "cota" }
+          - { label: "Circuit Park Zandvoort Club", value: "zandvoort-club" }
+          - { label: "Circuit Paul Ricard", value: "paul-ricard" }
+          - { label: "Circuit Ricardo Tormo", value: "valencia-motogp" }
+          - { label: "Circuit Zandvoort", value: "zandvoort" }
+          - { label: "Circuit Zolder", value: "zolder" }
+          - { label: "Circuito de Almería", value: "almeria" }
+          - { label: "Circuito de Cartagena", value: "cartagena" }
+          - { label: "Circuito de Jerez", value: "jerez" }
+          - { label: "Circuito de Navarra", value: "navarra" }
+          - { label: "Circuito del Jarama", value: "jarama" }
+          - { label: "Circuito di Binetto", value: "binetto" }
+          - { label: "Club Motorsports", value: "club-motorsports" }
+          - { label: "Croft Circuit", value: "croft-circuit" }
+          - { label: "Dakota County Technical College Motorsports", value: "dakota-county-technical-college" }
+          - { label: "Daytona International Speedway", value: "daytona" }
+          - { label: "Donington Park", value: "donnington-park" }
+          - { label: "Dover Motor Speedway", value: "dover" }
+          - { label: "Dubai Autodrome", value: "dubai-autodrome" }
+          - { label: "Dubai Kartdrome", value: "dubai-kartdrome" }
+          - { label: "Eagles Canyon Raceway", value: "eagles-canyon-raceway" }
+          - { label: "East London Grand Prix Circuit", value: "east-london" }
+          - { label: "Ebisu Circuit", value: "ebisu" }
+          - { label: "Everland Speedway", value: "everland-speedway" }
+          - { label: "Exhibition Place", value: "toronto" }
+          - { label: "Finger Lakes Racing", value: "finger-lakes-racing" }
+          - { label: "Fuji Speedway", value: "fuji-speedway" }
+          - { label: "G2 Motorsports Park", value: "g2-motorsports-park" }
+          - { label: "Gingerman Raceway", value: "gingerman-raceway" }
+          - { label: "Grand Bend Motorplex", value: "grand-bend" }
+          - { label: "Grattan Raceway", value: "grattan-raceway" }
+          - { label: "Hallett Motor Racing Circuit", value: "hallett-motor-racing-circuit" }
+          - { label: "Hampton Downs Motorsport Park", value: "hampton-downs" }
+          - { label: "Harris Hill Raceway", value: "harris-hill-raceway" }
+          - { label: "Hastings Raceway", value: "hastings-raceway" }
+          - { label: "Heartland Motorsports Park", value: "heartland-motorsports-park" }
+          - { label: "Hidden Valley Raceway", value: "hidden-valley" }
+          - { label: "High Plains Raceway", value: "high-plains-raceway" }
+          - { label: "Highlands Motorsport Park", value: "highlands-motorsport-park" }
+          - { label: "Hockenheimring", value: "hockenheimring" }
+          - { label: "Homestead-Miami Speedway", value: "homestead" }
+          - { label: "Hungaroring", value: "hungaroring" }
+          - { label: "Indianapolis Motor Speedway", value: "indianapolis" }
+          - { label: "Inje Speedium", value: "inje-speedium" }
+          - { label: "Iowa Speedway", value: "iowa-speedway" }
+          - { label: "Istanbul Park", value: "istanbul" }
+          - { label: "Jeddah Corniche Circuit", value: "saudi-arabia" }
+          - { label: "Kansas Speedway", value: "kansas" }
+          - { label: "Killarney International Raceway", value: "killarney" }
+          - { label: "Knockhill Racing Circuit", value: "knockhill" }
+          - { label: "Korean International Circuit", value: "korean-international-circuit" }
+          - { label: "Kyalami Grand Prix Circuit", value: "kyalami" }
+          - { label: "Lakeside Park", value: "lakeside" }
+          - { label: "Las Vegas Street Circuit", value: "las-vegas" }
+          - { label: "Lausitzring", value: "lausitzring" }
+          - { label: "Lime Rock Park", value: "lime-rock-park" }
+          - { label: "Long Beach Street Circuit", value: "long-beach" }
+          - { label: "Lusail International Circuit", value: "qatar" }
+          - { label: "Mallala Motor Sport Park", value: "mallala" }
+          - { label: "Mallory Park", value: "mallory-park" }
+          - { label: "Manfeild Circuit Chris Amon", value: "manfeild" }
+          - { label: "Mantorp Park", value: "mantorp-park" }
+          - { label: "Marina Bay Street Circuit", value: "singapore" }
+          - { label: "Martinsville Speedway", value: "martinsville" }
+          - { label: "Miami International Autodrome", value: "miami" }
+          - { label: "Michigan International Speedway", value: "michigan" }
+          - { label: "Mid-America Motorplex", value: "mid-america-motorplex" }
+          - { label: "Mid-Ohio Sports Car Course", value: "mid-ohio" }
+          - { label: "Mine Circuit", value: "mine" }
+          - { label: "Misano World Circuit Marco Simoncelli", value: "misano" }
+          - { label: "Monaco Grand Prix", value: "monaco" }
+          - { label: "Monticello Motor Club", value: "monticello-motor-club" }
+          - { label: "Moroso Motorsports Park", value: "moroso-motorsports-park" }
+          - { label: "MotorLand Aragón", value: "aragon" }
+          - { label: "Motorsport Arena Oschersleben", value: "oschersleben" }
+          - { label: "Motorsport Park Hastings", value: "motorsport-park-hastings" }
+          - { label: "Motorsport Ranch", value: "motorsport-ranch" }
+          - { label: "MSR Houston", value: "msr-houston" }
+          - { label: "Mugello Circuit", value: "mugello" }
+          - { label: "Nelson Ledges Road Course", value: "nelson-ledges-road-course" }
+          - { label: "New Hampshire Motor Speedway", value: "new-hampshire-motor-speedway" }
+          - { label: "New Jersey Motorsports Park", value: "new-jersey-motorsports-park" }
+          - { label: "Nürburgring GP-Strecke", value: "nurburgring-gp" }
+          - { label: "Nürburgring Nordschleife", value: "nurburgring-nordschleife" }
+          - { label: "Okayama International Circuit", value: "okayama" }
+          - { label: "Ordos International Circuit", value: "ordos" }
+          - { label: "Oulton Park", value: "oulton-park" }
+          - { label: "Palm Beach International Raceway", value: "palm-beach-international-raceway" }
+          - { label: "Palmer Motorsports Park", value: "palmer-motorsports-park" }
+          - { label: "Pannonia Ring", value: "pannonia-ring" }
+          - { label: "Pembrey Circuit", value: "pembrey-circuit" }
+          - { label: "Phillip Island Grand Prix Circuit", value: "phillip-island" }
+          - { label: "Phoenix Raceway", value: "phoenix" }
+          - { label: "Pikes Peak International Raceway", value: "pikes-peak-international-raceway" }
+          - { label: "Pittsburgh International Race Complex", value: "pittsburgh-international-race-complex" }
+          - { label: "Pocono Raceway", value: "pocono" }
+          - { label: "Portland International Raceway", value: "portland" }
+          - { label: "Pueblo Motorsports Park", value: "pueblo-motorsports-park" }
+          - { label: "Pukekohe Park Raceway", value: "pukekohe" }
+          - { label: "Putnam Park Road Course", value: "putnam-park-road-course" }
+          - { label: "Queensland Raceway", value: "queensland-raceway" }
+          - { label: "Red Bull Ring", value: "red-bull-ring" }
+          - { label: "Red Star Raceway", value: "red-star-raceway" }
+          - { label: "Richmond Raceway", value: "richmond" }
+          - { label: "Road America", value: "road-america" }
+          - { label: "Road Atlanta", value: "road-atlanta" }
+          - { label: "Rockingham Motor Speedway", value: "rockingham-motor-speedway" }
+          - { label: "Roebling Road Raceway", value: "roebling-road-raceway" }
+          - { label: "Rudskogen Motorsenter", value: "rudskogen" }
+          - { label: "Sachsenring", value: "sachsenring" }
+          - { label: "Salzburgring", value: "salzburgring" }
+          - { label: "Sandown Raceway", value: "sandown" }
+          - { label: "Sebring International Raceway", value: "sebring-international-raceway" }
+          - { label: "Sentul International Circuit", value: "sentul" }
+          - { label: "Sepang International Circuit", value: "sepang" }
+          - { label: "Shanghai International Circuit", value: "shanghai" }
+          - { label: "Shanghai International Circuit", value: "shanghai-international-circuit" }
+          - { label: "Shannonville Motorsport Park", value: "shannonville" }
+          - { label: "Silverstone Circuit", value: "silverstone" }
+          - { label: "Slovakia Ring", value: "slovakia-ring" }
+          - { label: "Snetterton Circuit", value: "snetterton" }
+          - { label: "Sochi Autodrom", value: "sochi" }
+          - { label: "Sonoma Raceway", value: "sonoma" }
+          - { label: "Sportsland SUGO", value: "sugo" }
+          - { label: "Spring Mountain Motorsports Ranch", value: "spring-mountain-motorsports" }
+          - { label: "Streets of St. Petersburg", value: "st-petersburg" }
+          - { label: "Streets of Willow Springs", value: "streets-of-willow" }
+          - { label: "Summit Point Raceway", value: "summit-point-raceway" }
+          - { label: "Suzuka International Racing Course", value: "suzuka" }
+          - { label: "Sydney Motorsport Park", value: "eastern-creek" }
+          - { label: "Symmons Plains Raceway", value: "symmons-plains" }
+          - { label: "Talladega Superspeedway", value: "talladega" }
+          - { label: "Teretonga Park", value: "teretonga" }
+          - { label: "Texas Motor Speedway", value: "texas-motor-speedway" }
+          - { label: "The Glen at Watkins Glen", value: "the-glen" }
+          - { label: "Thermal Club", value: "thermal-club" }
+          - { label: "Thompson Speedway Motorsports Park", value: "thompson-speedway-motorsports-park" }
+          - { label: "Thruxton Circuit", value: "thruxton" }
+          - { label: "Thunderhill Raceway Park", value: "thunderhill-raceway" }
+          - { label: "Tsukuba Circuit", value: "tsukuba" }
+          - { label: "TT Circuit Assen", value: "assen" }
+          - { label: "TT Circuit Assen Club", value: "assen-club" }
+          - { label: "Twin Ring Motegi", value: "motegi" }
+          - { label: "Utah Motorsports Campus", value: "miller-motorsports-park" }
+          - { label: "Velopark", value: "velopark" }
+          - { label: "Virginia International Raceway", value: "virginia-international-raceway" }
+          - { label: "Wakefield Park", value: "wakefield-park" }
+          - { label: "Wanneroo Raceway", value: "barbagallo" }
+          - { label: "Waterford Hills Road Racing", value: "waterford-hills-road-racing" }
+          - { label: "Watkins Glen International", value: "watkins-glen" }
+          - { label: "WeatherTech Raceway Laguna Seca", value: "laguna-seca" }
+          - { label: "Willow Springs International Raceway", value: "willow-springs" }
+          - { label: "Winton Motor Raceway", value: "winton" }
+          - { label: "World Wide Technology Raceway", value: "gateway" }
+          - { label: "Yas Marina Circuit", value: "abu-dhabi" }
+          - { label: "Zhuhai International Circuit", value: "zhuhai" }
+          - { label: "Zwartkops Raceway", value: "zwartkops" }
       - { name: draft, label: Draft, widget: boolean, default: false }
       - { name: body, label: Body, widget: markdown }
 
@@ -47,6 +275,234 @@ collections:
       - { name: excerpt, label: Excerpt, widget: text }
       - { name: cover, label: Cover Image, widget: image, required: false }
       - { name: tags, label: Tags, widget: list, default: [] }
+      - name: track
+        label: Track
+        widget: select
+        required: false
+        hint: "Optional. Associate this post with a circuit to show its outline, flag and name at the top of the post."
+        options:
+          - { label: "Adria International Raceway", value: "adria" }
+          - { label: "Ahvenisto Circuit", value: "ahvenisto" }
+          - { label: "Alastaro Circuit", value: "alastaro" }
+          - { label: "Albert Park Circuit", value: "melbourne" }
+          - { label: "Anderstorp Raceway", value: "anderstorp" }
+          - { label: "Anglesey Circuit", value: "anglesey-circuit" }
+          - { label: "Atlanta Motorsports Park", value: "atlanta-motorsports-park" }
+          - { label: "Atlantic Motorsport Park", value: "atlantic-motorsport-park" }
+          - { label: "Auto Club Speedway", value: "auto-club-speedway" }
+          - { label: "Autobahn Country Club", value: "autobahn-country-club" }
+          - { label: "Autodrom Most", value: "most" }
+          - { label: "Autodromo di Varano de' Melegari", value: "varano" }
+          - { label: "Autódromo do Estoril", value: "estoril" }
+          - { label: "Autodromo Enzo e Dino Ferrari", value: "imola" }
+          - { label: "Autódromo Hermanos Rodríguez", value: "mexico" }
+          - { label: "Autódromo Hermanos Rodríguez Club", value: "autodromo-hermanos-rodriguez" }
+          - { label: "Autódromo Internacional Ayrton Senna", value: "goiania" }
+          - { label: "Autódromo Internacional de Curitiba", value: "curitiba" }
+          - { label: "Autódromo Internacional de Tarumã", value: "taruma" }
+          - { label: "Autódromo Internacional do Algarve", value: "portimao" }
+          - { label: "Autódromo Internacional Nelson Piquet", value: "jacarepagua" }
+          - { label: "Autódromo José Carlos Pace", value: "interlagos" }
+          - { label: "Autódromo Miguel E. Abed", value: "autodromo-miguel-e-abed" }
+          - { label: "Autodromo Nazionale Monza", value: "monza" }
+          - { label: "Autódromo Oscar y Juan Gálvez", value: "buenos-aires" }
+          - { label: "Autódromo Potosino", value: "autodromo-potosino" }
+          - { label: "Autódromo Roberto José Mouras", value: "la-plata" }
+          - { label: "Autódromo San Juan Villicum", value: "san-juan-villicum" }
+          - { label: "Autódromo Termas de Río Hondo", value: "termas-de-rio-hondo" }
+          - { label: "Autodromo Vallelunga", value: "vallelunga" }
+          - { label: "Automotodrom Brno", value: "brno" }
+          - { label: "Autopolis", value: "autopolis" }
+          - { label: "Bahrain International Circuit", value: "bahrain" }
+          - { label: "Baku City Circuit", value: "baku" }
+          - { label: "Barber Motorsports Park", value: "barber" }
+          - { label: "BeaveRun Motorsports Complex", value: "beaverun-motorsports-complex" }
+          - { label: "Beijing Goldenport Park Circuit", value: "beijing-goldenport" }
+          - { label: "Big Willow", value: "big-willow" }
+          - { label: "Bira Circuit", value: "bira-circuit" }
+          - { label: "Blackhawk Farms Raceway", value: "blackhawk-farms-raceway" }
+          - { label: "Bluegrass Motorsport", value: "bluegrass-motorsport" }
+          - { label: "BotniARing", value: "botniaring" }
+          - { label: "Brainerd International Raceway", value: "brainerd-international-raceway" }
+          - { label: "Brands Hatch", value: "brands-hatch" }
+          - { label: "Bristol Motor Speedway", value: "bristol" }
+          - { label: "Buttonwillow Raceway Park", value: "buttonwillow-raceway" }
+          - { label: "Cadwell Park", value: "cadwell-park" }
+          - { label: "Canadian Tire Motorsport Park", value: "mosport" }
+          - { label: "Carolina Motorsports Park", value: "carolina-motorsports-park" }
+          - { label: "Castle Combe Circuit", value: "castle-combe" }
+          - { label: "Chang International Circuit", value: "chang-international-circuit" }
+          - { label: "Charlotte Motor Speedway", value: "charlotte" }
+          - { label: "Chuckwalla Valley Raceway", value: "chuckwalla-valley-raceway" }
+          - { label: "Circuit Bugatti Le Mans", value: "le-mans-motogp" }
+          - { label: "Circuit d'Albi", value: "albi" }
+          - { label: "Circuit de Barcelona-Catalunya", value: "barcelona" }
+          - { label: "Circuit de Croix-en-Ternois", value: "croix-en-ternois" }
+          - { label: "Circuit de Dijon-Prenois", value: "dijon-prenois" }
+          - { label: "Circuit de la Sarthe", value: "le-mans" }
+          - { label: "Circuit de Lédenon", value: "ledenon" }
+          - { label: "Circuit de Nevers Magny-Cours", value: "magny-cours" }
+          - { label: "Circuit de Nogaro", value: "nogaro" }
+          - { label: "Circuit de Spa-Francorchamps", value: "spa" }
+          - { label: "Circuit Gilles Villeneuve", value: "canada" }
+          - { label: "Circuit Mont-Tremblant", value: "mont-tremblant" }
+          - { label: "Circuit of the Americas (COTA)", value: "cota" }
+          - { label: "Circuit Park Zandvoort Club", value: "zandvoort-club" }
+          - { label: "Circuit Paul Ricard", value: "paul-ricard" }
+          - { label: "Circuit Ricardo Tormo", value: "valencia-motogp" }
+          - { label: "Circuit Zandvoort", value: "zandvoort" }
+          - { label: "Circuit Zolder", value: "zolder" }
+          - { label: "Circuito de Almería", value: "almeria" }
+          - { label: "Circuito de Cartagena", value: "cartagena" }
+          - { label: "Circuito de Jerez", value: "jerez" }
+          - { label: "Circuito de Navarra", value: "navarra" }
+          - { label: "Circuito del Jarama", value: "jarama" }
+          - { label: "Circuito di Binetto", value: "binetto" }
+          - { label: "Club Motorsports", value: "club-motorsports" }
+          - { label: "Croft Circuit", value: "croft-circuit" }
+          - { label: "Dakota County Technical College Motorsports", value: "dakota-county-technical-college" }
+          - { label: "Daytona International Speedway", value: "daytona" }
+          - { label: "Donington Park", value: "donnington-park" }
+          - { label: "Dover Motor Speedway", value: "dover" }
+          - { label: "Dubai Autodrome", value: "dubai-autodrome" }
+          - { label: "Dubai Kartdrome", value: "dubai-kartdrome" }
+          - { label: "Eagles Canyon Raceway", value: "eagles-canyon-raceway" }
+          - { label: "East London Grand Prix Circuit", value: "east-london" }
+          - { label: "Ebisu Circuit", value: "ebisu" }
+          - { label: "Everland Speedway", value: "everland-speedway" }
+          - { label: "Exhibition Place", value: "toronto" }
+          - { label: "Finger Lakes Racing", value: "finger-lakes-racing" }
+          - { label: "Fuji Speedway", value: "fuji-speedway" }
+          - { label: "G2 Motorsports Park", value: "g2-motorsports-park" }
+          - { label: "Gingerman Raceway", value: "gingerman-raceway" }
+          - { label: "Grand Bend Motorplex", value: "grand-bend" }
+          - { label: "Grattan Raceway", value: "grattan-raceway" }
+          - { label: "Hallett Motor Racing Circuit", value: "hallett-motor-racing-circuit" }
+          - { label: "Hampton Downs Motorsport Park", value: "hampton-downs" }
+          - { label: "Harris Hill Raceway", value: "harris-hill-raceway" }
+          - { label: "Hastings Raceway", value: "hastings-raceway" }
+          - { label: "Heartland Motorsports Park", value: "heartland-motorsports-park" }
+          - { label: "Hidden Valley Raceway", value: "hidden-valley" }
+          - { label: "High Plains Raceway", value: "high-plains-raceway" }
+          - { label: "Highlands Motorsport Park", value: "highlands-motorsport-park" }
+          - { label: "Hockenheimring", value: "hockenheimring" }
+          - { label: "Homestead-Miami Speedway", value: "homestead" }
+          - { label: "Hungaroring", value: "hungaroring" }
+          - { label: "Indianapolis Motor Speedway", value: "indianapolis" }
+          - { label: "Inje Speedium", value: "inje-speedium" }
+          - { label: "Iowa Speedway", value: "iowa-speedway" }
+          - { label: "Istanbul Park", value: "istanbul" }
+          - { label: "Jeddah Corniche Circuit", value: "saudi-arabia" }
+          - { label: "Kansas Speedway", value: "kansas" }
+          - { label: "Killarney International Raceway", value: "killarney" }
+          - { label: "Knockhill Racing Circuit", value: "knockhill" }
+          - { label: "Korean International Circuit", value: "korean-international-circuit" }
+          - { label: "Kyalami Grand Prix Circuit", value: "kyalami" }
+          - { label: "Lakeside Park", value: "lakeside" }
+          - { label: "Las Vegas Street Circuit", value: "las-vegas" }
+          - { label: "Lausitzring", value: "lausitzring" }
+          - { label: "Lime Rock Park", value: "lime-rock-park" }
+          - { label: "Long Beach Street Circuit", value: "long-beach" }
+          - { label: "Lusail International Circuit", value: "qatar" }
+          - { label: "Mallala Motor Sport Park", value: "mallala" }
+          - { label: "Mallory Park", value: "mallory-park" }
+          - { label: "Manfeild Circuit Chris Amon", value: "manfeild" }
+          - { label: "Mantorp Park", value: "mantorp-park" }
+          - { label: "Marina Bay Street Circuit", value: "singapore" }
+          - { label: "Martinsville Speedway", value: "martinsville" }
+          - { label: "Miami International Autodrome", value: "miami" }
+          - { label: "Michigan International Speedway", value: "michigan" }
+          - { label: "Mid-America Motorplex", value: "mid-america-motorplex" }
+          - { label: "Mid-Ohio Sports Car Course", value: "mid-ohio" }
+          - { label: "Mine Circuit", value: "mine" }
+          - { label: "Misano World Circuit Marco Simoncelli", value: "misano" }
+          - { label: "Monaco Grand Prix", value: "monaco" }
+          - { label: "Monticello Motor Club", value: "monticello-motor-club" }
+          - { label: "Moroso Motorsports Park", value: "moroso-motorsports-park" }
+          - { label: "MotorLand Aragón", value: "aragon" }
+          - { label: "Motorsport Arena Oschersleben", value: "oschersleben" }
+          - { label: "Motorsport Park Hastings", value: "motorsport-park-hastings" }
+          - { label: "Motorsport Ranch", value: "motorsport-ranch" }
+          - { label: "MSR Houston", value: "msr-houston" }
+          - { label: "Mugello Circuit", value: "mugello" }
+          - { label: "Nelson Ledges Road Course", value: "nelson-ledges-road-course" }
+          - { label: "New Hampshire Motor Speedway", value: "new-hampshire-motor-speedway" }
+          - { label: "New Jersey Motorsports Park", value: "new-jersey-motorsports-park" }
+          - { label: "Nürburgring GP-Strecke", value: "nurburgring-gp" }
+          - { label: "Nürburgring Nordschleife", value: "nurburgring-nordschleife" }
+          - { label: "Okayama International Circuit", value: "okayama" }
+          - { label: "Ordos International Circuit", value: "ordos" }
+          - { label: "Oulton Park", value: "oulton-park" }
+          - { label: "Palm Beach International Raceway", value: "palm-beach-international-raceway" }
+          - { label: "Palmer Motorsports Park", value: "palmer-motorsports-park" }
+          - { label: "Pannonia Ring", value: "pannonia-ring" }
+          - { label: "Pembrey Circuit", value: "pembrey-circuit" }
+          - { label: "Phillip Island Grand Prix Circuit", value: "phillip-island" }
+          - { label: "Phoenix Raceway", value: "phoenix" }
+          - { label: "Pikes Peak International Raceway", value: "pikes-peak-international-raceway" }
+          - { label: "Pittsburgh International Race Complex", value: "pittsburgh-international-race-complex" }
+          - { label: "Pocono Raceway", value: "pocono" }
+          - { label: "Portland International Raceway", value: "portland" }
+          - { label: "Pueblo Motorsports Park", value: "pueblo-motorsports-park" }
+          - { label: "Pukekohe Park Raceway", value: "pukekohe" }
+          - { label: "Putnam Park Road Course", value: "putnam-park-road-course" }
+          - { label: "Queensland Raceway", value: "queensland-raceway" }
+          - { label: "Red Bull Ring", value: "red-bull-ring" }
+          - { label: "Red Star Raceway", value: "red-star-raceway" }
+          - { label: "Richmond Raceway", value: "richmond" }
+          - { label: "Road America", value: "road-america" }
+          - { label: "Road Atlanta", value: "road-atlanta" }
+          - { label: "Rockingham Motor Speedway", value: "rockingham-motor-speedway" }
+          - { label: "Roebling Road Raceway", value: "roebling-road-raceway" }
+          - { label: "Rudskogen Motorsenter", value: "rudskogen" }
+          - { label: "Sachsenring", value: "sachsenring" }
+          - { label: "Salzburgring", value: "salzburgring" }
+          - { label: "Sandown Raceway", value: "sandown" }
+          - { label: "Sebring International Raceway", value: "sebring-international-raceway" }
+          - { label: "Sentul International Circuit", value: "sentul" }
+          - { label: "Sepang International Circuit", value: "sepang" }
+          - { label: "Shanghai International Circuit", value: "shanghai" }
+          - { label: "Shanghai International Circuit", value: "shanghai-international-circuit" }
+          - { label: "Shannonville Motorsport Park", value: "shannonville" }
+          - { label: "Silverstone Circuit", value: "silverstone" }
+          - { label: "Slovakia Ring", value: "slovakia-ring" }
+          - { label: "Snetterton Circuit", value: "snetterton" }
+          - { label: "Sochi Autodrom", value: "sochi" }
+          - { label: "Sonoma Raceway", value: "sonoma" }
+          - { label: "Sportsland SUGO", value: "sugo" }
+          - { label: "Spring Mountain Motorsports Ranch", value: "spring-mountain-motorsports" }
+          - { label: "Streets of St. Petersburg", value: "st-petersburg" }
+          - { label: "Streets of Willow Springs", value: "streets-of-willow" }
+          - { label: "Summit Point Raceway", value: "summit-point-raceway" }
+          - { label: "Suzuka International Racing Course", value: "suzuka" }
+          - { label: "Sydney Motorsport Park", value: "eastern-creek" }
+          - { label: "Symmons Plains Raceway", value: "symmons-plains" }
+          - { label: "Talladega Superspeedway", value: "talladega" }
+          - { label: "Teretonga Park", value: "teretonga" }
+          - { label: "Texas Motor Speedway", value: "texas-motor-speedway" }
+          - { label: "The Glen at Watkins Glen", value: "the-glen" }
+          - { label: "Thermal Club", value: "thermal-club" }
+          - { label: "Thompson Speedway Motorsports Park", value: "thompson-speedway-motorsports-park" }
+          - { label: "Thruxton Circuit", value: "thruxton" }
+          - { label: "Thunderhill Raceway Park", value: "thunderhill-raceway" }
+          - { label: "Tsukuba Circuit", value: "tsukuba" }
+          - { label: "TT Circuit Assen", value: "assen" }
+          - { label: "TT Circuit Assen Club", value: "assen-club" }
+          - { label: "Twin Ring Motegi", value: "motegi" }
+          - { label: "Utah Motorsports Campus", value: "miller-motorsports-park" }
+          - { label: "Velopark", value: "velopark" }
+          - { label: "Virginia International Raceway", value: "virginia-international-raceway" }
+          - { label: "Wakefield Park", value: "wakefield-park" }
+          - { label: "Wanneroo Raceway", value: "barbagallo" }
+          - { label: "Waterford Hills Road Racing", value: "waterford-hills-road-racing" }
+          - { label: "Watkins Glen International", value: "watkins-glen" }
+          - { label: "WeatherTech Raceway Laguna Seca", value: "laguna-seca" }
+          - { label: "Willow Springs International Raceway", value: "willow-springs" }
+          - { label: "Winton Motor Raceway", value: "winton" }
+          - { label: "World Wide Technology Raceway", value: "gateway" }
+          - { label: "Yas Marina Circuit", value: "abu-dhabi" }
+          - { label: "Zhuhai International Circuit", value: "zhuhai" }
+          - { label: "Zwartkops Raceway", value: "zwartkops" }
       - { name: sourceUrl, label: "Source link (optional — e.g. an IMSA article)", widget: string, required: false }
       - { name: sourceLabel, label: "Source credit (optional — e.g. 'IMSA.com — Author, date')", widget: string, required: false }
       - { name: draft, label: Draft, widget: boolean, default: false }

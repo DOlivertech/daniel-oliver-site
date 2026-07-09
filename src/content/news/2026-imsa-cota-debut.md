@@ -4,6 +4,7 @@ date: 2026-05-05
 excerpt: "Daniel Oliver makes his IMSA debut in the Airbnb Endurance Challenge at Circuit of the Americas — sharing Performance Tech Motorsports' No. 38 Ligier LMP3 with co-driver Martin Bruhat."
 cover: /images/galleries/sebring-test-2026/cockpit-d-oliver.webp
 tags: ["IMSA", "Debut", "COTA"]
+track: "cota"
 sourceUrl: "https://www.imsa.com/news/2026/05/05/imsa-airbnb-endurance-challenge-heads-to-austin/"
 sourceLabel: "IMSA.com — Tony DiZinno, May 5, 2026"
 draft: false

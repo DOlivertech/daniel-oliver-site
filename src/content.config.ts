@@ -9,6 +9,7 @@ const posts = defineCollection({
     excerpt: z.string(),
     cover: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    track: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -48,6 +49,7 @@ const news = defineCollection({
     excerpt: z.string(),
     cover: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    track: z.string().optional(),
     draft: z.boolean().default(false),
     sourceUrl: z.string().optional(),
     sourceLabel: z.string().optional(),

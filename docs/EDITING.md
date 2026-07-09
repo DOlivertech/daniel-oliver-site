@@ -73,6 +73,7 @@ Your news/journal. Click **＋ New Blog Posts** to write one. Fields:
 - **Title**, **Date**, **Excerpt** (the short teaser on cards)
 - **Cover Image** (optional)
 - **Tags** (optional)
+- **Track** (optional) — pick a circuit and the post shows that track's outline, flag and name in a panel at the top
 - **Draft** — flip this ON to save without showing it publicly yet
 - **Body** — the article, with a rich text toolbar
 

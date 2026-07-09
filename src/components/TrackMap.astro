@@ -1,20 +1,23 @@
 ---
-// Renders a circuit outline (from src/data/tracks.json) as a subtle corner
-// overlay for event cards. Renders nothing if the track has no drawn map.
+// Renders a circuit outline (from src/data/tracks.json). By default it's a
+// corner overlay (position:absolute, to beat the `.card > *` rule); pass
+// `inline` to render it as a normal in-flow element. Renders nothing if the
+// track has no drawn map.
 import { trackById } from '../lib/tracks';
 
 interface Props {
   id?: string | null;
   class?: string;
+  inline?: boolean;
 }
-const { id, class: className = '' } = Astro.props;
+const { id, class: className = '', inline = false } = Astro.props;
 const track = trackById(id);
 const gid = `tm-${Math.random().toString(36).slice(2, 8)}`;
 ---
 {track?.path && (
   <svg
     class={`track-map ${className}`}
-    style="position:absolute"
+    style={inline ? undefined : 'position:absolute'}
     viewBox={track.viewBox}
     fill="none"
     role="img"
