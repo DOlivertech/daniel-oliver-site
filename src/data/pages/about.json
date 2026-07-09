@@ -19,7 +19,8 @@
       "body": [
         "Most racing drivers are handed a kart before they can spell their own name. I wasn't. There's no family team in my past, no racing dynasty, no childhood trophy shelf.",
         "I came to motorsport as a software engineer who fell in love with sim racing — and refused to accept that the simulator was where the story had to end. What I lacked in pedigree I made up for in method: break the problem down, measure everything, iterate relentlessly."
-      ]
+      ],
+      "imagePosition": "50% 28%"
     },
     {
       "eyebrow": "The leap",
@@ -29,7 +30,8 @@
       "body": [
         "When I decided to make the jump from virtual to real, I treated it like an engineering project with a deadline. Within roughly six months of starting, I'd earned an FIA international racing licence — and taken multiple wins along the way.",
         "The sim gave me racecraft, reference points and thousands of laps of deliberate practice. The real car demanded everything else: physicality, feel, and the discipline to perform when there's no reset button. Bridging that gap, systematically, is the thing I'm most proud of."
-      ]
+      ],
+      "imagePosition": "50% 45%"
     },
     {
       "eyebrow": "The mindset",
@@ -39,7 +41,8 @@
       "body": [
         "I drive the way I build software: hypothesis, test, measure, refine. Telemetry doesn't flatter you and it doesn't lie — it just tells you where the time is. That honesty is the whole game.",
         "Racing a Praga prototype in UK events at circuits like Brands Hatch and Silverstone has been the proving ground for this sim-to-real methodology: experiments run cheaply in the simulator, validated at speed on track."
-      ]
+      ],
+      "imagePosition": "center"
     },
     {
       "eyebrow": "What's next",
@@ -49,7 +52,8 @@
       "body": [
         "In 2026 I make my debut in the IMSA VP Racing SportsCar Challenge, racing endurance rounds with a co-driver. It's the biggest test yet of the data-driven approach — longer stints, shared strategy, and races won in the details.",
         "Alongside the racing is Project Limit Break, my initiative through Limit Break Engineering: a student exposure program at IMSA race weekends, where students work directly alongside engineers, strategists, media crews and mechanics — plus sim-to-real coaching for drivers making the same leap I did. The path I took shouldn't be a one-off. It should be a blueprint."
-      ]
+      ],
+      "imagePosition": "center"
     }
   ],
   "closing": {

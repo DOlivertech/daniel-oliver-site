@@ -10,6 +10,10 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
+const newsItems = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
 const galleries = (await getCollection('galleries'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
@@ -128,6 +132,7 @@ const { hero, about, simReal } = page;
             src={about.image}
             alt={about.imageAlt}
             class="parallax aspect-[4/5] w-full scale-[1.08] rounded-2xl object-cover"
+            style={`object-position:${about.imagePosition ?? 'center'}`}
             data-parallax="5"
             data-parallax-scale="1.08"
             loading="lazy"
@@ -268,6 +273,41 @@ const { hero, about, simReal } = page;
       ))}
     </div>
   </section>
+
+  <!-- ============================ NEWS ============================ -->
+  {newsItems.length > 0 && (
+    <section class="mx-auto max-w-6xl px-6 py-12 sm:py-20">
+      <div class="mb-10 flex items-end justify-between gap-6">
+        <div>
+          <p class="eyebrow reveal mb-3">{page.news.eyebrow}</p>
+          <h2 class="h-display reveal text-4xl text-white sm:text-5xl" style="--reveal-delay:80ms">{page.news.title}</h2>
+        </div>
+        <a href={page.news.ctaHref} class="btn btn-ghost reveal shrink-0" style="--reveal-delay:160ms">{page.news.ctaLabel}</a>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        {newsItems.map((n, i) => (
+          <a href={`/news/${n.id}`} class="card reveal group flex flex-col" style={`--reveal-delay:${i * 100}ms`}>
+            {n.data.cover && (
+              <div class="aspect-[16/9] overflow-hidden">
+                <img src={n.data.cover} alt="" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" width="640" height="360" />
+              </div>
+            )}
+            <div class="flex flex-1 flex-col p-6">
+              <div class="flex items-center gap-3">
+                <time class="font-mono text-xs text-mist" datetime={n.data.date.toISOString()}>{fmt(n.data.date)}</time>
+                {n.data.tags.slice(0, 1).map((t) => (
+                  <span class="rounded-full border border-line px-2.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest text-cyan">{t}</span>
+                ))}
+              </div>
+              <h3 class="mt-3 font-display text-lg font-bold leading-snug text-white transition-colors group-hover:text-cyan">{n.data.title}</h3>
+              <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-mist">{n.data.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   <!-- ============================ BLOG ============================ -->
   <section class="mx-auto max-w-6xl px-6 py-12 sm:py-20">

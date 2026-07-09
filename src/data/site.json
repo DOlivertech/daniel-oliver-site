@@ -30,6 +30,10 @@
       "href": "/blog"
     },
     {
+      "label": "News",
+      "href": "/news"
+    },
+    {
       "label": "Schedule",
       "href": "/schedule"
     },

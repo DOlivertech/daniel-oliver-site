@@ -542,9 +542,14 @@ body.no-scroll {
 
 /* ---- Persistent header signature ---- */
 .header-sig {
-  height: 2.1rem;
+  height: 2.5rem;
   width: auto;
-  opacity: 0.95;
+  opacity: 1;
+}
+/* The signature viewBox is ~807 units tall; shrunk to header size the default
+   stroke renders sub-pixel, so thicken it here for legibility. */
+.header-sig .sig-path {
+  stroke-width: 15;
 }
 @media (max-width: 640px) {
   .header-sig { display: none; }

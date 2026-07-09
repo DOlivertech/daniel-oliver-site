@@ -35,6 +35,7 @@
     },
     "photosLabel": "Photos →",
     "completedLabel": "Completed",
-    "pendingResultLabel": "Result to come"
+    "pendingResultLabel": "Result to come",
+    "storyLabel": "Read the story →"
   }
 }

@@ -149,7 +149,7 @@ const countdownUnits = [
                 <span class="font-mono text-xs uppercase tracking-[0.2em] text-mist">{page.past.pendingResultLabel}</span>
               )}
               {e.data.link && (
-                <a href={e.data.link} class="shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{page.past.photosLabel}</a>
+                <a href={e.data.link} class="shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{e.data.link.startsWith('/news') ? page.past.storyLabel : page.past.photosLabel}</a>
               )}
             </div>
           </li>

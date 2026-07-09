@@ -11,8 +11,9 @@
     "intro": "Partnering with Daniel means building a story together — an engineer-turned-racer taking a data-driven method to the 2026 IMSA VP Racing SportsCar Challenge, and bringing students into the paddock along the way.",
     "ctaPrimaryLabel": "Start the conversation",
     "ctaPrimarySubject": "Partnership enquiry",
-    "ctaSecondaryLabel": "Partnership deck",
-    "ctaSecondaryHref": "#deck"
+    "ctaSecondaryLabel": "Get the deck",
+    "ctaSecondaryHref": "#deck",
+    "imagePosition": "50% 30%"
   },
   "offers": {
     "eyebrow": "What partners get",
@@ -45,7 +46,8 @@
     "title": "Put students in the paddock with us",
     "body": "Through Limit Break Engineering, IMSA race weekends double as a student exposure program — young engineers working alongside strategists, mechanics and media crews. Partners don't just back a driver; they back the pipeline into motorsport.",
     "image": "/images/galleries/sebring-test-2026/suit-by-car.webp",
-    "imageAlt": "Daniel Oliver with the #38 Project Limit Break IMSA prototype at Sebring"
+    "imageAlt": "Daniel Oliver with the #38 Project Limit Break IMSA prototype at Sebring",
+    "imagePosition": "center"
   },
   "partnersSection": {
     "eyebrow": "Current partners",
@@ -53,11 +55,9 @@
   },
   "deck": {
     "title": "Let's build the story together",
-    "body": "The full 2026 partnership deck — packages, audiences and activation ideas.",
+    "body": "The full 2026 partnership deck — packages, audiences and activation ideas. Grab it below anytime.",
     "url": "",
-    "viewLabel": "View the deck",
-    "requestLabel": "Request the deck",
-    "requestSubject": "Partnership deck request",
+    "ctaLabel": "Get the deck",
     "secondaryLabel": "Contact page",
     "secondaryHref": "/contact"
   }

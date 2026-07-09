@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "title": "News — Daniel Oliver Racing",
+    "description": "The latest announcements and press from Daniel Oliver's 2026 IMSA campaign."
+  },
+  "hero": {
+    "eyebrow": "Newsroom",
+    "titlePrefix": "Latest",
+    "titleAccent": "news",
+    "intro": "Announcements, race entries and press from the road to — and through — the 2026 IMSA season."
+  },
+  "readLabel": "Read story",
+  "detail": {
+    "backLabel": "All news",
+    "sourcePrefix": "Source:",
+    "ctaTitle": "Follow the 2026 campaign",
+    "ctaBody": "Full calendar, results and media as the season unfolds.",
+    "ctaLabel": "Schedule",
+    "ctaHref": "/schedule"
+  }
+}

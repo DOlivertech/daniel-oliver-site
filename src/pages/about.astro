@@ -28,6 +28,7 @@ const { hero, sections, closing } = page;
               src={s.image}
               alt={s.imageAlt}
               class="parallax aspect-[4/3] w-full scale-[1.08] rounded-2xl object-cover"
+              style={`object-position:${s.imagePosition ?? 'center'}`}
               data-parallax="5"
               data-parallax-scale="1.08"
               loading="lazy"

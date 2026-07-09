@@ -47,7 +47,8 @@
     "ctaHref": "/about",
     "image": "/images/2026/hero-cockpit.webp",
     "imageAlt": "Daniel Oliver in the cockpit of the #38 IMSA prototype at Sebring",
-    "badge": "2026"
+    "badge": "2026",
+    "imagePosition": "50% 38%"
   },
   "simReal": {
     "eyebrow": "Methodology",
@@ -93,5 +94,11 @@
   },
   "partners": {
     "eyebrow": "Trusted by"
+  },
+  "news": {
+    "eyebrow": "Newsroom",
+    "title": "Latest news",
+    "ctaLabel": "All news",
+    "ctaHref": "/news"
   }
 }

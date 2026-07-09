@@ -39,4 +39,18 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, galleries, events };
+const news = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    excerpt: z.string(),
+    cover: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+    sourceUrl: z.string().optional(),
+    sourceLabel: z.string().optional(),
+  }),
+});
+
+export const collections = { posts, galleries, events, news };

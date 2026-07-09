@@ -35,6 +35,23 @@ collections:
       - { name: draft, label: Draft, widget: boolean, default: false }
       - { name: body, label: Body, widget: markdown }
 
+  - name: news
+    label: News
+    folder: src/content/news
+    create: true
+    slug: "{{year}}-{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime }
+      - { name: excerpt, label: Excerpt, widget: text }
+      - { name: cover, label: Cover Image, widget: image, required: false }
+      - { name: tags, label: Tags, widget: list, default: [] }
+      - { name: sourceUrl, label: "Source link (optional — e.g. an IMSA article)", widget: string, required: false }
+      - { name: sourceLabel, label: "Source credit (optional — e.g. 'IMSA.com — Author, date')", widget: string, required: false }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
   - name: galleries
     label: Galleries
     folder: src/content/galleries
@@ -193,6 +210,7 @@ collections:
               - { name: ctaHref, label: CTA Link, widget: string }
               - { name: image, label: Image, widget: image }
               - { name: imageAlt, label: Image Alt Text, widget: string }
+              - { name: imagePosition, label: "Image focal point", widget: string, required: false, default: "center", hint: "Which part of the photo stays in view when cropped, e.g. 50% 30% (left→right, top→bottom). 'center' = middle." }
               - { name: badge, label: Corner Badge, widget: string }
           - name: simReal
             label: "Sim → Real Section"
@@ -226,6 +244,14 @@ collections:
               - { name: ctaLabel, label: CTA Label, widget: string }
               - { name: ctaHref, label: CTA Link, widget: string }
               - { name: photosLabel, label: Photos Count Label, widget: string }
+          - name: news
+            label: News Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: ctaLabel, label: CTA Label, widget: string }
+              - { name: ctaHref, label: CTA Link, widget: string }
           - name: blog
             label: Blog Section
             widget: object
@@ -268,6 +294,7 @@ collections:
               - { name: body, label: Body, widget: text }
               - { name: image, label: Image, widget: image }
               - { name: imageAlt, label: Image Alt Text, widget: string }
+              - { name: imagePosition, label: "Image focal point", widget: string, required: false, default: "center", hint: "Which part of the photo stays in view when cropped, e.g. 50% 30% (left→right, top→bottom). 'center' = middle." }
           - name: closing
             label: Closing CTA
             widget: object
@@ -335,6 +362,36 @@ collections:
               - { name: ctaLabel, label: Bottom CTA Label, widget: string }
               - { name: ctaHref, label: Bottom CTA Link, widget: string }
 
+      - name: news_page
+        label: News Page
+        file: src/data/pages/news.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: titlePrefix, label: Title Prefix, widget: string }
+              - { name: titleAccent, label: Title Accent, widget: string }
+              - { name: intro, label: Intro, widget: text }
+          - { name: readLabel, label: "Read Story Label", widget: string }
+          - name: detail
+            label: Story Detail
+            widget: object
+            fields:
+              - { name: backLabel, label: Back Label, widget: string }
+              - { name: sourcePrefix, label: "Source credit prefix", widget: string }
+              - { name: ctaTitle, label: Bottom CTA Title, widget: string }
+              - { name: ctaBody, label: Bottom CTA Body, widget: text }
+              - { name: ctaLabel, label: Bottom CTA Label, widget: string }
+              - { name: ctaHref, label: Bottom CTA Link, widget: string }
+
       - name: schedule
         label: Schedule Page
         file: src/data/pages/schedule.json
@@ -391,6 +448,7 @@ collections:
                   - { name: series, label: Series, widget: string }
                   - { name: result, label: Result, widget: string }
               - { name: photosLabel, label: Photos Link Label, widget: string }
+              - { name: storyLabel, label: "Link label for events linking to a news story", widget: string }
 
       - name: partnerships
         label: Partnerships Page
@@ -407,6 +465,7 @@ collections:
             widget: object
             fields:
               - { name: image, label: Hero Image, widget: image }
+              - { name: imagePosition, label: "Image focal point", widget: string, required: false, default: "center", hint: "Which part of the photo stays in view when cropped, e.g. 50% 30% (left→right, top→bottom). 'center' = middle." }
               - { name: eyebrow, label: Eyebrow, widget: string }
               - { name: titleLine1, label: Title Line 1, widget: string }
               - { name: titleAccent, label: Title Accent, widget: string }
@@ -437,6 +496,7 @@ collections:
               - { name: body, label: Body, widget: text }
               - { name: image, label: Image, widget: image }
               - { name: imageAlt, label: Image Alt Text, widget: string }
+              - { name: imagePosition, label: "Image focal point", widget: string, required: false, default: "center", hint: "Which part of the photo stays in view when cropped, e.g. 50% 30% (left→right, top→bottom). 'center' = middle." }
           - name: partnersSection
             label: Current Partners
             widget: object
@@ -449,10 +509,8 @@ collections:
             fields:
               - { name: title, label: Title, widget: string }
               - { name: body, label: Body, widget: text }
-              - { name: url, label: "Deck link (Google Drive / PDF)", widget: string, required: false, hint: "Paste your Google Drive (or any) link to the deck. If filled, the button opens it in a new tab; if left blank, the button becomes a 'request by email' link instead." }
-              - { name: viewLabel, label: "View button label (when a link is set)", widget: string }
-              - { name: requestLabel, label: "Request button label (when no link is set)", widget: string }
-              - { name: requestSubject, label: "Request email subject", widget: string }
+              - { name: url, label: "Deck link (Google Drive / PDF)", widget: string, required: false, hint: "Paste the current Google Drive (or any) link to the deck — the 'Get the deck' button opens it in a new tab. Update it here whenever the link changes. If left blank, the button falls back to an email request." }
+              - { name: ctaLabel, label: "Button label", widget: string }
               - { name: secondaryLabel, label: Secondary Button Label, widget: string }
               - { name: secondaryHref, label: Secondary Button Link, widget: string }
 
