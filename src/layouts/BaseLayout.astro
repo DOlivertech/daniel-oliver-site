@@ -94,6 +94,13 @@ const ogImageAbs = new URL(ogImage, Astro.site);
             .forEach((s) => s.classList.add('stat-lit'));
           return;
         }
+        // NOTE: threshold must be 0 (fire on geometric intersection), NOT a
+        // ratio like 0.12. `.reveal-clip` starts at `clip-path: inset(0 0 100%)`
+        // which makes its VISIBLE area zero, so intersectionRatio is pinned at 0
+        // in Chromium even when the element is centered in the viewport. A ratio
+        // threshold would therefore never fire and the image would stay hidden
+        // forever. `entry.isIntersecting` is geometry-based (bounding-box
+        // overlap), so threshold 0 reveals clip elements correctly.
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -103,7 +110,7 @@ const ogImageAbs = new URL(ogImage, Astro.site);
               }
             });
           },
-          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+          { threshold: 0, rootMargin: '0px 0px -64px 0px' }
         );
         els.forEach((el) => io.observe(el));
         // Robustness: reveal anything already within the viewport on init
