@@ -644,6 +644,9 @@ collections:
             fields:
               - { name: eyebrow, label: Eyebrow, widget: string }
               - { name: tbaNote, label: TBA Note, widget: string }
+              - { name: comingSoon, label: "Show \"coming soon\" instead of the next event", widget: boolean, default: false, hint: "Turn ON to hide the next event's details and countdown and show a placeholder message instead — use when the next race isn't confirmed yet. Turn OFF to show the real next event again." }
+              - { name: comingSoonText, label: "Coming-soon heading", widget: string, default: "Information coming soon" }
+              - { name: comingSoonSub, label: "Coming-soon subtext", widget: string, required: false }
           - name: countdownLabels
             label: Countdown Labels
             widget: object
