@@ -19,10 +19,22 @@
     "scrollLabel": "SCROLL"
   },
   "stats": [
-    { "value": "FIA", "label": "International Licence" },
-    { "value": "P1×", "label": "Multiple Wins" },
-    { "value": "2026", "label": "IMSA VP Challenge" },
-    { "value": "Praga", "label": "Cup UK" }
+    {
+      "value": "FIA",
+      "label": "International Licence"
+    },
+    {
+      "value": "P1×",
+      "label": "Multiple Wins"
+    },
+    {
+      "value": "2026",
+      "label": "IMSA VP Challenge"
+    },
+    {
+      "value": "Praga",
+      "label": "Cup UK"
+    }
   ],
   "about": {
     "eyebrow": "The driver",
@@ -32,8 +44,8 @@
     "paragraph2": "Today I race a Praga prototype in the UK, and in 2026 I make my IMSA VP Racing SportsCar Challenge debut — bringing an engineer's discipline to every stint.",
     "ctaLabel": "Read the full story",
     "ctaHref": "/about",
-    "image": "/images/galleries/praga-brands-hatch/pxl-20240817-073454402-1.webp",
-    "imageAlt": "Daniel Oliver in the paddock with the Praga prototype",
+    "image": "/images/2026/hero-cockpit.webp",
+    "imageAlt": "Daniel Oliver in the cockpit of the #38 IMSA prototype at Sebring",
     "badge": "#25"
   },
   "simReal": {
