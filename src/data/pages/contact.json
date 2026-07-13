@@ -7,7 +7,7 @@
     "eyebrow": "Contact",
     "titlePrefix": "Get in",
     "titleAccent": "touch",
-    "intro": "Partnerships, media requests, sim-to-real coaching or Project Limit Break — send a message and Daniel's team will come back to you."
+    "intro": "Partnerships, media requests, sim-to-real coaching or Project Limit Break: send a message and Daniel's team will come back to you."
   },
   "emailCard": {
     "eyebrow": "Email",
@@ -28,7 +28,7 @@
     "ctaHref": "/partnerships"
   },
   "form": {
-    "successMessage": "Thanks — your message is in. Daniel will be in touch soon.",
+    "successMessage": "Thanks, your message is in. Daniel will be in touch soon.",
     "nameLabel": "Name",
     "namePlaceholder": "Your name",
     "emailLabel": "Email",

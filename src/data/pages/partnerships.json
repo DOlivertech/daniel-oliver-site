@@ -1,19 +1,19 @@
 {
   "meta": {
     "title": "Partnerships — Daniel Oliver Racing",
-    "description": "Partner with Daniel Oliver for the 2026 IMSA VP Racing SportsCar Challenge season — more than a logo on a car, we build a story together."
+    "description": "Partner with Daniel Oliver for the 2026 IMSA VP Racing SportsCar Challenge season. More than a logo on a car, we build a story together."
   },
   "hero": {
     "image": "/images/hero/hrrcc-media-daniel-oliver-brands-hatch-39.webp",
     "eyebrow": "Partnerships",
     "titleLine1": "More than a logo",
     "titleAccent": "on a car.",
-    "intro": "Partnering with Daniel means building a story together — an engineer-turned-racer taking a data-driven method to the 2026 IMSA VP Racing SportsCar Challenge, and bringing students into the paddock along the way.",
+    "intro": "Partnering with Daniel means building a story together: an engineer-turned-racer taking a data-driven method to the 2026 IMSA VP Racing SportsCar Challenge, and bringing students into the paddock along the way.",
     "ctaPrimaryLabel": "Start the conversation",
     "ctaPrimarySubject": "Partnership enquiry",
     "ctaSecondaryLabel": "Get the deck",
     "ctaSecondaryHref": "#deck",
-    "imagePosition": "50% 30%"
+    "imagePosition": "50% 75%"
   },
   "offers": {
     "eyebrow": "What partners get",
@@ -26,17 +26,17 @@
       },
       {
         "title": "Media production",
-        "body": "Professional photo and video from every event — content your marketing team can actually use, delivered race by race.",
+        "body": "Professional photo and video from every event. Content your marketing team can actually use, delivered race by race.",
         "icon": "M15 10l4.55-2.27A1 1 0 0 1 21 8.62v6.76a1 1 0 0 1-1.45.9L15 14M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
       },
       {
         "title": "Trackside presence",
-        "body": "Hospitality and paddock access at race weekends — bring clients and teams inside the sport, not just in front of it.",
+        "body": "Hospitality and paddock access at race weekends. Bring clients and teams inside the sport, not just in front of it.",
         "icon": "M12 2 3 7v13h18V7zM9 20v-6h6v6"
       },
       {
         "title": "A story worth telling",
-        "body": "Sim-to-real, engineering-driven, no pedigree — plus Project Limit Break putting students inside an IMSA paddock. A narrative your audience remembers.",
+        "body": "Sim-to-real, engineering-driven, no pedigree, plus Project Limit Break putting students inside an IMSA paddock. A narrative your audience remembers.",
         "icon": "M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-2.5"
       }
     ]
@@ -44,7 +44,7 @@
   "limitBreak": {
     "eyebrow": "Project Limit Break",
     "title": "Put students in the paddock with us",
-    "body": "Through Limit Break Engineering, IMSA race weekends double as a student exposure program — young engineers working alongside strategists, mechanics and media crews. Partners don't just back a driver; they back the pipeline into motorsport.",
+    "body": "Through Limit Break Engineering, IMSA race weekends double as a student exposure program with young engineers working alongside strategists, mechanics and media crews. Partners don't just back a driver; they back the pipeline into motorsport.",
     "image": "/images/galleries/sebring-test-2026/suit-by-car.webp",
     "imageAlt": "Daniel Oliver with the #38 Project Limit Break IMSA prototype at Sebring",
     "imagePosition": "center"

@@ -10,7 +10,7 @@
     "eyebrowNumber": "",
     "titleLine1": "Daniel",
     "titleLine2": "Oliver",
-    "intro": "Every lap is a dataset. Every mistake, an experiment. From the simulator to an FIA international licence in six months — and in 2026, the IMSA VP Racing SportsCar Challenge.",
+    "intro": "Every lap is a dataset. Every mistake, an experiment. From the simulator to an FIA international licence in six months, and in 2026, the IMSA VP Racing SportsCar Challenge.",
     "taglinePrefix": "No idols.",
     "taglineAccent": "Outwork everyone.",
     "ctaPrimaryLabel": "2026 Schedule",
@@ -41,31 +41,31 @@
     "eyebrow": "The driver",
     "titleLine1": "No pedigree.",
     "titleAccent": "No excuses.",
-    "paragraph1": "Daniel Oliver didn't inherit racing — he engineered his way into it. From a sim rig and a software career to an FIA international licence in around six months, with multiple wins along the way.",
-    "paragraph2": "Today he races a Praga prototype in the UK, and in 2026 he makes his IMSA VP Racing SportsCar Challenge debut — bringing an engineer's discipline to every stint.",
+    "paragraph1": "Daniel Oliver didn't inherit racing. He engineered his way into it. From a sim rig and a software career to an FIA international licence in around six months, with multiple wins along the way.",
+    "paragraph2": "Today he races a Praga prototype in the UK, and in 2026 he makes his IMSA VP Racing SportsCar Challenge debut, bringing an engineer's discipline to every stint.",
     "ctaLabel": "Read the full story",
     "ctaHref": "/about",
     "image": "/images/2026/hero-cockpit.webp",
     "imageAlt": "Daniel Oliver in the cockpit of the #38 IMSA prototype at Sebring",
     "badge": "2026",
-    "imagePosition": "50% 38%"
+    "imagePosition": "80% 75%"
   },
   "simReal": {
     "eyebrow": "Methodology",
     "titlePrefix": "SIM",
     "titleArrow": "→",
     "titleSuffix": "REAL",
-    "intro": "\"Every lap is a dataset, every mistake an experiment.\" The engineering mindset isn't a gimmick — it's the whole operating system.",
+    "intro": "\"Every lap is a dataset, every mistake an experiment.\" The engineering mindset isn't a gimmick, it's the whole operating system.",
     "cards": [
       {
         "number": "01",
         "title": "Measure",
-        "body": "Telemetry over feel. Braking points, throttle traces, minimum speeds — the data decides where the lap time lives."
+        "body": "Telemetry over feel. Braking points, throttle traces, minimum speeds: the data decides where the lap time lives."
       },
       {
         "number": "02",
         "title": "Simulate",
-        "body": "Hypotheses get tested in the sim first, where experiments are cheap and repeatable — then validated on track."
+        "body": "Hypotheses get tested in the sim first, where experiments are cheap and repeatable, then validated on track."
       },
       {
         "number": "03",

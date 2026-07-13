@@ -23,16 +23,13 @@ const { hero, emailCard, socialsCard, partnershipCard, form } = page;
       <div class="flex flex-col gap-6">
         <a href={`mailto:${site.email}`} class="card reveal group p-8">
           <p class="eyebrow mb-3">{emailCard.eyebrow}</p>
-          <p class="break-all font-display text-lg font-bold text-white transition-colors group-hover:text-cyan sm:text-xl">{site.email}</p>
+          <p class="break-all font-display text-base font-bold text-white transition-colors group-hover:text-cyan sm:text-lg">{site.email}</p>
           <p class="mt-2 text-sm text-mist">{emailCard.blurb}</p>
         </a>
 
         <div class="card reveal p-8" style="--reveal-delay:100ms">
           <p class="eyebrow mb-4">{socialsCard.eyebrow}</p>
           <SocialLinks />
-          <ul class="mt-5 space-y-1.5 font-mono text-xs text-mist">
-            {socialsCard.handles.map((h) => <li>{h}</li>)}
-          </ul>
         </div>
 
         <div class="grad-border reveal p-8" style="--reveal-delay:200ms">

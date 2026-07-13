@@ -7,14 +7,14 @@
     "eyebrow": "Calendar",
     "titlePrefix": "Race",
     "titleAccent": "schedule",
-    "intro": "2026 is the IMSA VP Racing SportsCar Challenge season — endurance rounds with a co-driver. Dates confirmed as they lock in."
+    "intro": "2026 is the IMSA VP Racing SportsCar Challenge season, featuring endurance rounds with a co-driver. Dates confirmed as they lock in."
   },
   "next": {
     "eyebrow": "Next event",
-    "tbaNote": "EXACT DATE TO BE ANNOUNCED — COUNTDOWN IS PROVISIONAL",
+    "tbaNote": "EXACT DATE TO BE ANNOUNCED (COUNTDOWN IS PROVISIONAL)",
     "comingSoon": true,
     "comingSoonText": "Information coming soon",
-    "comingSoonSub": "The next race will be confirmed here shortly — check back soon."
+    "comingSoonSub": "The next race will be confirmed here shortly. Check back soon."
   },
   "countdownLabels": {
     "days": "Days",

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "About — Daniel Oliver Racing",
-    "description": "From a 2025 sim racing championship — won at the first attempt — and software engineering to an FIA international licence in six months. The full story, and the road to IMSA 2026."
+    "description": "From a 2025 sim racing championship, won at the first attempt, and software engineering to an FIA international licence in six months. The full story, and the road to IMSA 2026."
   },
   "hero": {
     "ghostText": "DO",
@@ -18,8 +18,8 @@
       "imageAlt": "Daniel Oliver focused in his race suit before a test session at Sebring",
       "body": [
         "Most racing drivers are handed a kart before they can spell their own name. Daniel Oliver wasn't. There's no family team in his past, no racing dynasty, no childhood trophy shelf.",
-        "He came to motorsport as a software engineer who fell in love with sim racing — and refused to accept that the simulator was where the story had to end. What he lacked in pedigree he made up for in method: break the problem down, measure everything, iterate relentlessly.",
-        "The method proved itself early. In 2025, at his very first attempt, Daniel took the Pro-division title in the West Coast Racing League's Super Formula Lights series — a clean, first-season championship that turned the approach from theory into track record and set the tone for everything that followed."
+        "He came to motorsport as a software engineer who fell in love with sim racing and refused to accept that the simulator was where the story had to end. What he lacked in pedigree he made up for in method: break the problem down, measure everything, iterate relentlessly.",
+        "The method proved itself early. In 2025, at his very first attempt, Daniel took the Pro-division title in the West Coast Racing League's Super Formula Lights series, a clean, first-season championship that turned the approach from theory into track record and set the tone for everything that followed."
       ],
       "imagePosition": "50% 28%"
     },
@@ -29,10 +29,10 @@
       "image": "/images/2026/suit-by-car.webp",
       "imageAlt": "Daniel Oliver alongside the #38 Project Limit Break prototype",
       "body": [
-        "When Daniel decided to make the jump from virtual to real, he treated it like an engineering project with a deadline. Within roughly six months of starting, he'd earned an FIA international racing licence — and taken multiple wins along the way.",
+        "When Daniel decided to make the jump from virtual to real, he treated it like an engineering project with a deadline. Within roughly six months of starting, he'd earned an FIA international racing licence and taken multiple wins along the way.",
         "The sim gave him racecraft, reference points and thousands of laps of deliberate practice. The real car demanded everything else: physicality, feel, and the discipline to perform when there's no reset button. Bridging that gap, systematically, is the thing he's most proud of."
       ],
-      "imagePosition": "50% 45%"
+      "imagePosition": "center"
     },
     {
       "eyebrow": "The mindset",
@@ -40,19 +40,19 @@
       "image": "/images/galleries/praga-silverstone-gp/dsc0162.webp",
       "imageAlt": "The Praga prototype on track at Silverstone",
       "body": [
-        "Daniel drives the way he builds software: hypothesis, test, measure, refine. Telemetry doesn't flatter you and it doesn't lie — it just tells you where the time is. That honesty is the whole game.",
+        "Daniel drives the way he builds software: hypothesis, test, measure, refine. Telemetry doesn't flatter you and it doesn't lie. It just tells you where the time is. That honesty is the whole game.",
         "Racing a Praga prototype in UK events at circuits like Brands Hatch and Silverstone has been the proving ground for this sim-to-real methodology: experiments run cheaply in the simulator, validated at speed on track."
       ],
-      "imagePosition": "center"
+      "imagePosition": "50% 25%"
     },
     {
       "eyebrow": "What's next",
-      "title": "IMSA 2026 — and opening the door behind him.",
+      "title": "IMSA 2026 and opening the door behind him.",
       "image": "/images/build/image-3.webp",
       "imageAlt": "Project Limit Break build work in progress",
       "body": [
-        "In 2026 Daniel makes his debut in the IMSA VP Racing SportsCar Challenge, racing endurance rounds with a co-driver. It's the biggest test yet of the data-driven approach — longer stints, shared strategy, and races won in the details.",
-        "Alongside the racing is Project Limit Break, his initiative through Limit Break Engineering: a student exposure program at IMSA race weekends, where students work directly alongside engineers, strategists, media crews and mechanics — plus sim-to-real coaching for drivers making the same leap he did. The path Daniel took shouldn't be a one-off. It should be a blueprint."
+        "In 2026 Daniel makes his debut in the IMSA VP Racing SportsCar Challenge, racing endurance rounds with a co-driver. It's the biggest test yet of the data-driven approach: longer stints, shared strategy, and races won in the details.",
+        "Alongside the racing is Project Limit Break, his initiative through Limit Break Engineering: a student exposure program at IMSA race weekends, where students work directly alongside engineers, strategists, media crews and mechanics, plus sim-to-real coaching for drivers making the same leap he did. The path Daniel took shouldn't be a one-off. It should be a blueprint."
       ],
       "imagePosition": "center"
     }
