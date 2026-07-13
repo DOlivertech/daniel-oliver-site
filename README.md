@@ -55,21 +55,23 @@ optional background **video** (`home.json` → `hero.video`) layered over the st
 
 ## Deployment
 
-The site is live on Netlify (`daniel-oliver-site`). **Deploys are currently manual:**
+The site is live on Netlify (`daniel-oliver-site`). **Deploys are manual via the Netlify CLI —
+there is no CI, and pushing to GitHub does _not_ publish the site:**
 
 ```bash
 npm run build
 netlify deploy --prod --dir=dist
 ```
 
-A GitHub Actions workflow (`.github/workflows/deploy.yml`) is set up to build + deploy on every
-push to `main` (and thus on every CMS publish), **but it needs one repo secret to work**:
+This builds locally and uploads `dist/` (no GitHub Actions / Netlify build minutes used). Because
+it's manual, **CMS edits merged to `main` don't go live until someone runs the command above.**
 
-- `NETLIFY_SITE_ID` — already set.
-- `NETLIFY_AUTH_TOKEN` — **not yet set.** Create a token at Netlify → User settings → Applications →
-  New access token, then: `gh secret set NETLIFY_AUTH_TOKEN --repo DOlivertech/daniel-oliver-site`.
+Optional: connect the repo in Netlify's UI for automatic Git-based builds (Netlify's own build
+minutes, independent of GitHub Actions) — not currently enabled.
 
-Until that token is added, pushes still commit fine — just deploy manually with the command above.
+**Going live on `danieloliverracing.com`:** add the domain in Netlify → Domain management, point DNS,
+wait for SSL; then update `publicOrigin` in `src/layouts/BaseLayout.astro` and redeploy; then do
+`docs/SEARCH-CONSOLE.md`. Full checklist in **[AGENTS.md](AGENTS.md)**.
 
 ## CMS login (GitHub OAuth) — ✅ set up
 
