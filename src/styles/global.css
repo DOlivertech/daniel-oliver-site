@@ -59,7 +59,11 @@ html {
 }
 
 body {
-  background-color: var(--color-ink);
+  /* NO background here — html carries the ink backdrop. A body background
+     would paint OVER the fixed z:-1 layers (GalaxyField stars, AmbientAurora,
+     bg-depth washes): body is position:relative but z-index:auto, so it's not
+     a stacking context — those layers live in the ROOT context, where in-flow
+     body's own background paints after (above) negative-z descendants. */
   color: #f4f4fb;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
