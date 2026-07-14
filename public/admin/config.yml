@@ -978,6 +978,7 @@ collections:
               - { name: image, label: Image, widget: image }
               - { name: imageAlt, label: Image Alt Text, widget: string }
               - { name: imagePosition, label: "Image focal point", widget: string, required: false, default: "center", hint: "Which part of the photo stays in view when cropped, e.g. 50% 30% (left→right, top→bottom). 'center' = middle." }
+              - { name: imageAspect, label: "Image shape (optional)", widget: string, required: false, hint: "Aspect ratio, e.g. 4 / 3 (default, landscape), 3 / 4 (tall portrait, good for full-body shots), 1 / 1 (square)." }
               - { name: image2, label: "Second image (optional)", widget: image, required: false, hint: "Optional second photo, stacked under the first." }
               - { name: image2Alt, label: "Second image alt text", widget: string, required: false }
               - { name: image2Position, label: "Second image focal point", widget: string, required: false }
