@@ -11,7 +11,7 @@
     "intro": "Partnering with Daniel means building a story together: an engineer-turned-racer taking a data-driven method to the 2026 IMSA VP Racing SportsCar Challenge, and bringing students into the paddock along the way.",
     "ctaPrimaryLabel": "Start the conversation",
     "ctaPrimarySubject": "Partnership enquiry",
-    "ctaSecondaryLabel": "Get the deck",
+    "ctaSecondaryLabel": "Let's make magic together",
     "ctaSecondaryHref": "#deck",
     "imagePosition": "50% 75%"
   },
@@ -97,13 +97,43 @@
         "image": "/images/partnerships/podcast-qa.webp",
         "alt": "Daniel answering a fan question on a live broadcast",
         "caption": "Live fan Q&A on broadcast"
-      },
-      {
-        "image": "/images/partnerships/paddock-group.webp",
-        "alt": "Daniel with the team and partners around two Praga prototypes in the garage",
-        "caption": "Partners hosted trackside in the paddock"
       }
-    ]
+    ],
+    "carousel": {
+      "title": "Sponsor day at Silverstone - a Formula 1 circuit, and the cockpit experience",
+      "slides": [
+        {
+          "image": "/images/partnerships/silverstone-sponsor-day.webp",
+          "alt": "Sponsor guests in the Silverstone garage with Daniel and the Praga prototype",
+          "caption": "On the grid at Silverstone, a Formula 1 circuit"
+        },
+        {
+          "image": "/images/partnerships/cockpit-experience-1.webp",
+          "alt": "Daniel walking sponsor guests through the program in the garage",
+          "caption": "Walking partners through the program"
+        },
+        {
+          "image": "/images/partnerships/cockpit-experience-2.webp",
+          "alt": "A sponsor guest sitting in the cockpit of the prototype, grinning",
+          "caption": "A partner takes the seat - once-in-a-lifetime"
+        },
+        {
+          "image": "/images/partnerships/cockpit-experience-3.webp",
+          "alt": "A sponsor guest in the cockpit talking with a young fan beside the car",
+          "caption": "In the cockpit - the full experience"
+        },
+        {
+          "image": "/images/partnerships/paddock-kid.webp",
+          "alt": "A young fan from the paddock sitting in the prototype, hands on the steering wheel",
+          "caption": "A young fan from the paddock gets his turn at the wheel"
+        }
+      ]
+    },
+    "teamPhoto": {
+      "image": "/images/partnerships/paddock-group.webp",
+      "alt": "Daniel with the full team of drivers and crew around two Praga prototypes in the garage",
+      "caption": "The team - drivers and crew in the Praga paddock"
+    }
   },
   "partnersSection": {
     "eyebrow": "Current partners",
@@ -113,8 +143,10 @@
     "title": "Let's build the story together",
     "body": "The full 2026 partnership deck — packages, audiences and activation ideas. Grab it below anytime.",
     "url": "https://drive.google.com/file/d/16UjoJ5OPJtx5PnBSj1OvCjCs7Xe4Sa7v/view",
-    "ctaLabel": "Get the deck",
+    "ctaLabel": "Let's make magic together",
     "secondaryLabel": "Contact page",
-    "secondaryHref": "/contact"
+    "secondaryHref": "/contact",
+    "image": "/images/2026/cool-back.webp",
+    "imageAlt": "Daniel Oliver from behind, helmet on, D. Oliver on the race suit"
   }
 }

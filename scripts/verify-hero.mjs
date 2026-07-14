@@ -6,8 +6,9 @@ import { chromium } from 'playwright';
 
 const URL = 'http://localhost:4642/';
 // Face region in source px (eyes/glasses → chin, incl. a small margin).
-const FACE_SRC = { x1: 830, y1: 720, x2: 1240, y2: 1360 };
-const SRC_W = 2000, SRC_H = 3000;
+// Coords are for the current hero image (hero-pitwall.webp, 1365x2048).
+const FACE_SRC = { x1: 780, y1: 320, x2: 1010, y2: 620 };
+const SRC_W = 1365, SRC_H = 2048;
 
 const VIEWPORTS = [
   ['iPhone SE',        375,  667],

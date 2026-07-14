@@ -3,9 +3,9 @@
     "title": "Daniel Oliver Racing | Racing Driver × Software Engineer"
   },
   "hero": {
-    "image": "/images/2026/hero-helmet-walk.webp",
+    "image": "/images/2026/hero-pitwall.webp",
     "video": "",
-    "imageAlt": "Daniel Oliver in his blue and pink helmet, visor raised, on the pit lane at Sebring",
+    "imageAlt": "Daniel Oliver standing at the pit wall in his race suit, helmet under his arm",
     "ghostText": "DO",
     "eyebrowNumber": "",
     "titleLine1": "Daniel",
@@ -45,10 +45,10 @@
     "paragraph2": "Today he races a Praga prototype in the UK, and in 2026 he makes his IMSA VP Racing SportsCar Challenge debut, bringing an engineer's discipline to every stint.",
     "ctaLabel": "Read the full story",
     "ctaHref": "/about",
-    "image": "/images/2026/hero-cockpit.webp",
-    "imageAlt": "Daniel Oliver in the cockpit of the #38 IMSA prototype at Sebring",
+    "image": "/images/2026/helmet-on-1.webp",
+    "imageAlt": "Daniel Oliver fastening his helmet before a session",
     "badge": "2026",
-    "imagePosition": "80% 75%"
+    "imagePosition": "50% 30%"
   },
   "simReal": {
     "eyebrow": "Methodology",

@@ -37,6 +37,21 @@ const { hero, sections, closing } = page;
               height="660"
             />
           </div>
+          {s.image2 && (
+            <div class="grad-border reveal-clip mt-5 overflow-hidden rounded-2xl">
+              <img
+                src={s.image2}
+                alt={s.image2Alt ?? ''}
+                class="parallax aspect-[16/10] w-full scale-[1.08] rounded-2xl object-cover"
+                style={`object-position:${s.image2Position ?? 'center'}`}
+                data-parallax="4"
+                data-parallax-scale="1.08"
+                loading="lazy"
+                width="880"
+                height="550"
+              />
+            </div>
+          )}
         </div>
         <div>
           <p class="eyebrow reveal mb-3" style="--reveal-delay:80ms">{s.eyebrow}</p>
