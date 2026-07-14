@@ -1279,3 +1279,23 @@ collections:
           - { name: ctaPrimaryHref, label: Primary CTA Link, widget: string }
           - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
           - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }
+
+      - name: store
+        label: Store Page (Coming Soon)
+        file: src/data/pages/store.json
+        fields:
+          - name: meta
+            label: SEO
+            widget: object
+            fields:
+              - { name: title, label: Page Title, widget: string }
+              - { name: description, label: Meta Description, widget: text }
+          - { name: eyebrow, label: Eyebrow, widget: string }
+          - { name: titlePrefix, label: Title Prefix, widget: string }
+          - { name: titleAccent, label: Title Accent (gradient), widget: string }
+          - { name: body, label: Body, widget: text }
+          - { name: characterAlt, label: "Cartoon character alt text (screen readers)", widget: string }
+          - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
+          - { name: ctaPrimaryHref, label: Primary CTA Link, widget: string }
+          - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
+          - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }

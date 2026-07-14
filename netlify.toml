@@ -10,9 +10,3 @@
   for = "/admin/*"
   [headers.values]
     X-Frame-Options = "SAMEORIGIN"
-
-[[redirects]]
-  from = "/store"
-  to = "https://www.danieloliverracing.com/store"
-  status = 302
-  force = false

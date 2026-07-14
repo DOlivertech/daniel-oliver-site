@@ -102,7 +102,7 @@ scripts/            # build-tracks.mjs (data gen) + Playwright verification scri
 ## Auth & config
 
 - **CMS login: GitHub OAuth — working.** `backend: github`, repo `DOlivertech/daniel-oliver-site`, private → the owner (DOlivertech) is the only person who can log in. A GitHub OAuth app (callback `https://api.netlify.com/auth/done`) is installed in Netlify, which brokers the handshake; the client secret lives only in Netlify's dashboard. Editorial workflow is on (drafts land on `cms/*` branches).
-- `netlify.toml`: publish `dist`, Node 20, `X-Frame-Options: SAMEORIGIN` on `/admin/*`, 302 `/store` → external Squarespace store.
+- `netlify.toml`: publish `dist`, Node 20, `X-Frame-Options: SAMEORIGIN` on `/admin/*`. (`/store` is an on-site coming-soon page — the old external Squarespace redirect was removed; it would have looped once the custom domain points here.)
 - No env vars needed to build/run locally.
 
 ## Conventions

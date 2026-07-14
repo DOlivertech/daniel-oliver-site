@@ -6,7 +6,7 @@
   "heroHeadline": "Every lap is a dataset.",
   "bioShort": "Racing driver and software engineer. No family pedigree, just a sim rig, an engineer's mind, and an FIA international licence earned in six months. In 2026 Daniel Oliver takes that data-driven approach to the IMSA VP Racing SportsCar Challenge.",
   "email": "***removed***",
-  "storeUrl": "https://www.danieloliverracing.com/store",
+  "storeUrl": "/store",
   "brand": {
     "monogram": "/images/brand/favicon-dark.webp",
     "wordmarkHorizontal": "/images/brand/do-horizontal-wht.webp",
@@ -43,8 +43,7 @@
     },
     {
       "label": "Store",
-      "href": "https://www.danieloliverracing.com/store",
-      "external": true
+      "href": "/store"
     },
     {
       "label": "Contact",
@@ -67,7 +66,7 @@
     "taglinePrefix": "No idols.",
     "taglineAccent": "Outwork everyone.",
     "followLabel": "Follow",
-    "storeLabel": "Store ↗",
+    "storeLabel": "Store",
     "copyright": "Daniel Oliver Racing. All rights reserved.",
     "motto": "DO · SIM → REAL"
   },

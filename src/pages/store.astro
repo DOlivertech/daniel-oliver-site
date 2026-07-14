@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import page from '../data/pages/store.json';
+---
+<BaseLayout title={page.meta.title} description={page.meta.description}>
+  <section class="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 text-center">
+    <!-- ambient corner glows -->
+    <div class="pointer-events-none absolute inset-0 opacity-50" style="background: radial-gradient(ellipse 45% 60% at 85% 15%, #ff2d8722, transparent 65%), radial-gradient(ellipse 45% 60% at 12% 85%, #38bdf81e, transparent 65%);" aria-hidden="true"></div>
+
+    <div class="store-stage relative">
+      <!-- dashed racing-line ellipse the character laps on -->
+      <svg class="store-track pointer-events-none absolute left-1/2 top-1/2" viewBox="0 0 700 340" fill="none" aria-hidden="true">
+        <ellipse cx="350" cy="170" rx="330" ry="150" stroke="url(#store-track-grad)" stroke-width="2" stroke-dasharray="3 14" stroke-linecap="round" class="store-track-dash" />
+        <defs>
+          <linearGradient id="store-track-grad" x1="0" y1="0" x2="700" y2="340" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#ff2d87" /><stop offset="0.5" stop-color="#8b5cf6" /><stop offset="1" stop-color="#38bdf8" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- headline the character orbits -->
+      <div class="relative z-[2]">
+        <p class="eyebrow mb-5">{page.eyebrow}</p>
+        <h1 class="h-display text-[clamp(2.8rem,9vw,6.5rem)] uppercase leading-none text-white">
+          {page.titlePrefix} <span class="text-gradient">{page.titleAccent}</span>
+        </h1>
+      </div>
+
+      <!-- orbiting chibi: X and Y phase-shifted → ellipse; z flips to pass behind the text -->
+      <div class="orbit pointer-events-none absolute left-1/2 top-[38%]" aria-hidden="true">
+        <div class="orbit-x">
+          <div class="orbit-y">
+            <img src="/images/store/chibi-daniel.webp" alt="" width="675" height="910" class="chibi" loading="eager" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="relative z-[2] mx-auto mt-[clamp(5rem,14vh,8rem)] max-w-md text-lg text-fog">{page.body}</p>
+
+    <div class="relative z-[2] mt-9 flex flex-wrap justify-center gap-4">
+      <a href={page.ctaPrimaryHref} class="btn btn-primary">{page.ctaPrimaryLabel}</a>
+      <a href={page.ctaSecondaryHref} class="btn btn-ghost">{page.ctaSecondaryLabel}</a>
+    </div>
+
+    <!-- static, visible-to-AT version of the character for reduced motion -->
+    <img
+      src="/images/store/chibi-daniel.webp"
+      alt={page.characterAlt}
+      width="675"
+      height="910"
+      class="chibi-static mx-auto mt-10 hidden w-36"
+      loading="lazy"
+    />
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---- stage geometry ---------------------------------------------------- */
+  .store-stage { width: min(92vw, 760px); }
+  .store-track {
+    width: min(96vw, 780px);
+    transform: translate(-50%, -38%);
+    opacity: 0.35;
+  }
+  .store-track-dash { animation: store-dash 26s linear infinite; }
+  @keyframes store-dash { to { stroke-dashoffset: -340; } }
+
+  /* ---- orbit: translateX and translateY run the same period, half out of
+     phase → an ellipse. The z-index flip makes him pass BEHIND the headline
+     across the top of the lap and IN FRONT across the bottom. ------------- */
+  .orbit {
+    --rx: min(45vw, 330px);
+    --ry: clamp(70px, 17vh, 140px);
+    --chibi-w: clamp(110px, 22vw, 190px);
+    animation: orbit-z 16s infinite;
+    z-index: 3;
+  }
+  .orbit-x { animation: orbit-x 8s ease-in-out infinite alternate; }
+  .orbit-y { animation: orbit-y 8s ease-in-out infinite alternate; animation-delay: -4s; }
+  .chibi {
+    width: var(--chibi-w);
+    height: auto;
+    margin-left: calc(var(--chibi-w) / -2);
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.45));
+    animation:
+      orbit-depth 16s ease-in-out infinite,
+      chibi-bob 3.2s ease-in-out infinite alternate;
+  }
+  @keyframes orbit-x {
+    from { transform: translateX(calc(var(--rx) * -1)); }
+    to   { transform: translateX(var(--rx)); }
+  }
+  @keyframes orbit-y {
+    from { transform: translateY(var(--ry)); }
+    to   { transform: translateY(calc(var(--ry) * -1)); }
+  }
+  /* tighter lap on small screens so he never wanders over the copy */
+  @media (max-width: 640px) {
+    .orbit { --rx: 41vw; --ry: 54px; --chibi-w: 88px; }
+  }
+  /* far side of the lap = smaller; near side = bigger */
+  @keyframes orbit-depth {
+    0%   { scale: 1; }
+    25%  { scale: 0.78; }
+    50%  { scale: 1; }
+    75%  { scale: 1.12; }
+    100% { scale: 1; }
+  }
+  /* behind the text across the top of the lap (12.5% → 37.5%) */
+  @keyframes orbit-z {
+    0%, 12.5%  { z-index: 3; }
+    12.51%, 37.5% { z-index: 1; }
+    37.51%, 100% { z-index: 3; }
+  }
+  @keyframes chibi-bob {
+    from { transform: translateY(0) rotate(-3.5deg); }
+    to   { transform: translateY(-9px) rotate(3.5deg); }
+  }
+
+  /* ---- reduced motion: park the character, kill the lap ------------------ */
+  @media (prefers-reduced-motion: reduce) {
+    .orbit, .store-track { display: none; }
+    .store-track-dash { animation: none; }
+    .chibi-static { display: block; }
+  }
+</style>

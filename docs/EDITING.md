@@ -63,7 +63,7 @@ ever log in.** Nothing to manage.
 When you open the admin you'll see these groups in the left sidebar:
 
 ### Pages
-One entry per page — **Home, About, Media, Blog, Schedule, Partnerships, Contact, 404.**
+One entry per page — **Home, About, Media, Blog, Schedule, Partnerships, Contact, Store (coming soon), 404.**
 Open any page and you can change **every** heading, paragraph, button label, and image on it.
 For example, open **Home Page** to swap the big hero photo, rewrite the intro, or edit the
 three "Sim → Real" method cards and the stats strip.
