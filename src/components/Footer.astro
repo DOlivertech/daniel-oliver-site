@@ -2,6 +2,13 @@
 import SocialLinks from './SocialLinks.astro';
 import site from '../data/site.json';
 
+interface Props {
+  /** Hide the "partners behind Daniel" logo strip (e.g. on /partnerships,
+      which has its own "In good company" section). */
+  hidePartners?: boolean;
+}
+const { hidePartners = false } = Astro.props;
+
 const year = new Date().getFullYear();
 const nav = (site.nav as { label: string; href: string; external?: boolean }[]).filter((l) => !l.external);
 const f = site.footer;
@@ -10,6 +17,7 @@ const f = site.footer;
   <div class="pointer-events-none absolute inset-x-0 top-0 h-px" style="background: var(--grad-accent); opacity: 0.5;" aria-hidden="true"></div>
 
   <!-- Sponsor home: curated logo grid -->
+  {!hidePartners && (
   <section class="mx-auto max-w-6xl px-6 pt-20 pb-14" aria-labelledby="partners-heading">
     <div class="mb-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
       <div>
@@ -43,6 +51,7 @@ const f = site.footer;
       ))}
     </ul>
   </section>
+  )}
 
   <div class="mx-auto max-w-6xl px-6 pb-10">
     <div class="rule-gradient opacity-30"></div>

@@ -21,7 +21,7 @@ const platformIcons: Record<string, string> = {
 const deckHref = deck.url || `mailto:${site.email}?subject=${encodeURIComponent('Partnership deck')}`;
 const deckExternal = Boolean(deck.url);
 ---
-<BaseLayout title={page.meta.title} description={page.meta.description}>
+<BaseLayout title={page.meta.title} description={page.meta.description} hideFooterPartners>
   <!-- Hero -->
   <section class="relative overflow-hidden px-6 pb-20 pt-40 sm:px-12 lg:px-20">
     <!-- Layered media well: a background <video> can drop in as a sibling

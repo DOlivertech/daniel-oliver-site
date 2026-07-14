@@ -16,6 +16,8 @@ interface Props {
   ogType?: 'website' | 'article' | 'profile';
   /** Extra schema.org JSON-LD objects for this page (Article, Event, …). */
   structuredData?: Record<string, unknown>[];
+  /** Hide the footer's partner-logo strip (pages with their own partners section). */
+  hideFooterPartners?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   ogImageAlt = 'Daniel Oliver — racing driver',
   ogType = 'website',
   structuredData = [],
+  hideFooterPartners = false,
 } = Astro.props;
 
 // The host that actually serves the site today. Social scrapers must be able
@@ -129,7 +132,7 @@ const jsonLd = {
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer hidePartners={hideFooterPartners} />
 
     <script>
       // =====================================================================
