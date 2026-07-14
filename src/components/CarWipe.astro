@@ -1,0 +1,116 @@
+---
+// CarWipe — page-transition wipe for /schedule and /partnerships: Daniel's
+// stylized LMP3 (art faces left) sweeps right→left leading an ink panel that
+// covers the screen; the swap happens under cover; the panel then continues
+// off left revealing the new page. Driven by Astro view-transition events:
+// astro:before-preparation extends e.loader so the cover completes before the
+// swap, astro:page-load plays the exit. The element carries transition:persist
+// so its state survives the DOM swap. Skipped entirely for reduced motion.
+---
+<div id="car-wipe" transition:persist="car-wipe" aria-hidden="true">
+  <div class="cw-panel">
+    <img src="/images/brand/lmp3-wipe.webp" alt="" width="1600" height="624" class="cw-car" loading="eager" decoding="async" />
+  </div>
+</div>
+
+<style>
+  #car-wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  #car-wipe.active { visibility: visible; }
+
+  .cw-panel {
+    --carw: clamp(340px, 58vw, 820px);
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 20%, #8b5cf614, transparent 65%),
+      radial-gradient(ellipse 50% 70% at 30% 85%, #ff2d8710, transparent 65%),
+      #0b0b14;
+    transform: translateX(103%);
+    will-change: transform;
+  }
+  /* gradient leading edge on the panel's left side */
+  .cw-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -3px;
+    width: 3px;
+    background: linear-gradient(180deg, #ff2d87, #8b5cf6 48%, #38bdf8);
+    filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.8));
+  }
+  .cw-car {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--carw) * -0.94);
+    width: var(--carw);
+    height: auto;
+    transform: translateY(-50%);
+    filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.5));
+  }
+
+  #car-wipe.in .cw-panel {
+    animation: cw-in 680ms cubic-bezier(0.74, 0, 0.24, 1) forwards;
+  }
+  #car-wipe.out .cw-panel {
+    animation: cw-out 640ms cubic-bezier(0.6, 0.04, 0.34, 1) forwards;
+  }
+  @keyframes cw-in {
+    from { transform: translateX(103%); }
+    to   { transform: translateX(0); }
+  }
+  @keyframes cw-out {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-104%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #car-wipe { display: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    // Wipe only into these routes (trailing-slash agnostic).
+    const ROUTES = ['/schedule', '/partnerships'];
+    const norm = (p: string | undefined) => (p || '/').replace(/\/+$/, '') || '/';
+    let pendingOut = false;
+    let busy = false;
+
+    document.addEventListener('astro:before-preparation', (e: any) => {
+      const el = document.getElementById('car-wipe');
+      if (!el || busy) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const to = norm(e.to?.pathname);
+      if (!ROUTES.includes(to) || to === norm(e.from?.pathname)) return;
+
+      busy = true;
+      pendingOut = true;
+      el.classList.add('active', 'in');
+      const original = e.loader;
+      e.loader = async () => {
+        await new Promise((r) => setTimeout(r, 660)); // let the cover land
+        await original();
+      };
+    });
+
+    document.addEventListener('astro:page-load', () => {
+      if (!pendingOut) return;
+      pendingOut = false;
+      const el = document.getElementById('car-wipe');
+      if (!el) { busy = false; return; }
+      el.classList.remove('in');
+      el.classList.add('out');
+      window.setTimeout(() => {
+        el.classList.remove('active', 'out');
+        busy = false;
+      }, 700);
+    });
+  })();
+</script>

@@ -19,8 +19,20 @@ import page from '../data/pages/notfound.json';
     </svg>
 
     <div class="relative">
-      <p class="eyebrow mb-5">{page.eyebrow}</p>
-      <h1 class="h-display text-5xl uppercase text-white sm:text-7xl">{page.titlePrefix} <span class="text-gradient">{page.titleAccent}</span></h1>
+      <div class="relative">
+        <p class="eyebrow mb-5">{page.eyebrow}</p>
+        <h1 class="relative z-[2] h-display text-5xl uppercase text-white sm:text-7xl">{page.titlePrefix} <span class="text-gradient">{page.titleAccent}</span></h1>
+
+        <!-- chibi Daniel lapping the headline (same orbit as /store, tighter) -->
+        <div class="orbit404 pointer-events-none absolute left-1/2 top-[55%]" aria-hidden="true">
+          <div class="orbit404-x">
+            <div class="orbit404-y">
+              <img src="/images/store/chibi-daniel.webp" alt="" width="675" height="910" class="chibi404" loading="eager" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <p class="mx-auto mt-6 max-w-md text-lg text-fog">
         {page.body}
       </p>
@@ -32,6 +44,54 @@ import page from '../data/pages/notfound.json';
   </section>
 
   <style>
+    /* -- orbiting chibi: X/Y half out of phase → ellipse; z flips behind the
+       heading across the top of the lap (mirrors the /store treatment) ---- */
+    .orbit404 {
+      --rx: min(34vw, 300px);
+      --ry: clamp(48px, 10vh, 84px);
+      --chibi-w: clamp(72px, 12vw, 118px);
+      animation: orbit404-z 14s infinite;
+      z-index: 3;
+    }
+    .orbit404-x { animation: orbit404-x 7s ease-in-out infinite alternate; }
+    .orbit404-y { animation: orbit404-y 7s ease-in-out infinite alternate; animation-delay: -3.5s; }
+    .chibi404 {
+      width: var(--chibi-w);
+      height: auto;
+      margin-left: calc(var(--chibi-w) / -2);
+      filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
+      animation:
+        orbit404-depth 14s ease-in-out infinite,
+        chibi404-bob 3s ease-in-out infinite alternate;
+    }
+    @keyframes orbit404-x {
+      from { transform: translateX(calc(var(--rx) * -1)); }
+      to   { transform: translateX(var(--rx)); }
+    }
+    @keyframes orbit404-y {
+      from { transform: translateY(var(--ry)); }
+      to   { transform: translateY(calc(var(--ry) * -1)); }
+    }
+    @keyframes orbit404-depth {
+      0%   { scale: 1; }
+      25%  { scale: 0.78; }
+      50%  { scale: 1; }
+      75%  { scale: 1.1; }
+      100% { scale: 1; }
+    }
+    @keyframes orbit404-z {
+      0%, 12.5%  { z-index: 3; }
+      12.51%, 37.5% { z-index: 1; }
+      37.51%, 100% { z-index: 3; }
+    }
+    @keyframes chibi404-bob {
+      from { transform: translateY(0) rotate(-3deg); }
+      to   { transform: translateY(-7px) rotate(3deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .orbit404 { display: none; }
+    }
+
     .skid-path {
       stroke-dasharray: var(--skid-len, 1600);
       stroke-dashoffset: var(--skid-len, 1600);
