@@ -63,15 +63,14 @@ const { hero, about, simReal } = page;
           src={hero.video}
         ></video>
       )}
-      <!-- seams: fade into ink below the panel (stacked) / into the left column (split) -->
+      <!-- stacked (< lg): fade the portrait panel into the ink below it -->
       <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-ink lg:hidden"></div>
-      <!-- split view: a long, soft left ramp so the image dissolves into the type column -->
-      <div class="absolute inset-y-0 left-0 hidden w-[58%] lg:block" style="background: linear-gradient(to right, var(--color-ink) 0%, var(--color-ink) 8%, rgba(11,11,20,0.72) 34%, rgba(11,11,20,0.28) 62%, rgba(11,11,20,0) 100%);"></div>
-      <div class="absolute inset-0 hidden bg-gradient-to-t from-ink via-ink/35 to-ink/10 lg:block"></div>
+      <!-- split (lg+): left edge is feathered via the well's mask (see <style>);
+           a whisper of bottom darkening keeps the lower-right grounded -->
+      <div class="absolute inset-0 hidden bg-gradient-to-t from-ink/60 via-transparent to-transparent lg:block"></div>
     </div>
 
-    <!-- Giant ghost number -->
-    <div class="hero-ghost pointer-events-none absolute -right-6 top-16 select-none font-display text-[38vw] font-black leading-none text-white/[0.045] sm:text-[26vw]" aria-hidden="true">{hero.ghostText}</div>
+    {/* Giant ghost watermark removed — it showed over the hero photo. */}
 
     <!-- ambient racing-line light layer -->
     <RacingLines variant="hero" class="mix-blend-screen" />
@@ -398,6 +397,16 @@ const { hero, about, simReal } = page;
   </section>
 
   <style>
+    /* Split view (lg+): feather the media well's left edge to transparent so
+       the photo dissolves into the same galaxy/ink background as the type
+       column — no opaque rectangle, no seam where the starfield gets cut off.
+       A gentle bottom feather keeps the signature area clean too. */
+    @media (min-width: 1024px) {
+      .hero-media-well {
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 27%, #000 52%);
+        mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 27%, #000 52%);
+      }
+    }
     /* Autograph tilt — like a signature signed across the corner of a poster */
     :global(.hero-autograph) {
       transform: rotate(-4deg);

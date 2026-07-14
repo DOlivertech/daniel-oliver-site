@@ -30,7 +30,7 @@ const deckExternal = Boolean(deck.url);
       <img
         src={hero.image}
         alt=""
-        class="parallax absolute inset-0 h-full w-full scale-[1.08] object-cover opacity-25"
+        class="parallax absolute inset-0 h-full w-full scale-[1.08] object-cover opacity-60"
         style={`object-position:${hero.imagePosition ?? 'center'}`}
         data-parallax="4"
         data-parallax-scale="1.08"
@@ -40,7 +40,9 @@ const deckExternal = Boolean(deck.url);
         height="1080"
       />
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/85 to-ink" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/70 to-ink" aria-hidden="true"></div>
+    <!-- left-side readability scrim for the headline -->
+    <div class="absolute inset-y-0 left-0 w-full lg:w-[62%]" style="background: linear-gradient(to right, rgba(11,11,20,0.82) 0%, rgba(11,11,20,0.5) 45%, rgba(11,11,20,0) 100%);" aria-hidden="true"></div>
     <div class="relative">
       <p class="eyebrow reveal mb-4">{hero.eyebrow}</p>
       <h1 class="h-display reveal max-w-4xl text-[clamp(2.6rem,7vw,5.2rem)] uppercase text-white" style="--reveal-delay:100ms">
@@ -108,13 +110,6 @@ const deckExternal = Boolean(deck.url);
                 </svg>
               </span>
               <span class="mt-0.5 block truncate font-mono text-xs text-mist">{s.handle}</span>
-              <span class="mt-1 flex items-center gap-1 font-mono text-[0.68rem] tracking-[0.12em] text-[#1d9bf0]">
-                <svg class="h-3 w-3 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="#1d9bf0" d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82 1.89 3.19L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69z"/>
-                  <path fill="#fff" d="m10.09 16.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48z"/>
-                </svg>
-                Verified
-              </span>
               {s.followers && (
                 <span class="mt-1 block font-mono text-xs tracking-[0.15em] text-cyan">{s.followers} followers</span>
               )}
