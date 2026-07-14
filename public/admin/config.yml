@@ -790,7 +790,6 @@ collections:
           - { name: heroHeadline, label: Hero Headline, widget: string }
           - { name: bioShort, label: Short Bio, widget: text }
           - { name: email, label: Contact Email, widget: string }
-          - { name: storeUrl, label: Store URL, widget: string }
           - name: brand
             label: Brand Logos
             widget: object
@@ -826,7 +825,6 @@ collections:
               - { name: taglinePrefix, label: Tagline Prefix, widget: string }
               - { name: taglineAccent, label: Tagline Accent, widget: string }
               - { name: followLabel, label: Follow Label, widget: string }
-              - { name: storeLabel, label: Store Label, widget: string }
               - { name: copyright, label: Copyright, widget: string }
               - { name: motto, label: Motto, widget: string }
           - name: socials
@@ -1297,5 +1295,3 @@ collections:
           - { name: characterAlt, label: "Cartoon character alt text (screen readers)", widget: string }
           - { name: ctaPrimaryLabel, label: Primary CTA Label, widget: string }
           - { name: ctaPrimaryHref, label: Primary CTA Link, widget: string }
-          - { name: ctaSecondaryLabel, label: Secondary CTA Label, widget: string }
-          - { name: ctaSecondaryHref, label: Secondary CTA Link, widget: string }
