@@ -41,7 +41,7 @@ const { hero, about, simReal } = page;
          never sit over the face at any small/medium viewport.
          lg+: SPLIT — the portrait owns the right ~62% with a soft fade into
          the ink left column; typography owns the left. -->
-    <div class="hero-media-well pointer-events-none relative h-[46svh] min-h-[19rem] overflow-hidden lg:absolute lg:inset-y-0 lg:left-[38%] lg:right-0 lg:h-auto lg:min-h-0" aria-hidden="true">
+    <div class="hero-media-well pointer-events-none relative h-[46svh] min-h-[19rem] overflow-hidden lg:absolute lg:inset-y-0 lg:left-[34%] lg:right-0 lg:h-auto lg:min-h-0" aria-hidden="true">
       <img
         src={hero.image}
         alt={hero.imageAlt}
@@ -65,7 +65,8 @@ const { hero, about, simReal } = page;
       )}
       <!-- seams: fade into ink below the panel (stacked) / into the left column (split) -->
       <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-ink lg:hidden"></div>
-      <div class="absolute inset-y-0 left-0 hidden w-56 bg-gradient-to-r from-ink to-transparent lg:block"></div>
+      <!-- split view: a long, soft left ramp so the image dissolves into the type column -->
+      <div class="absolute inset-y-0 left-0 hidden w-[58%] lg:block" style="background: linear-gradient(to right, var(--color-ink) 0%, var(--color-ink) 8%, rgba(11,11,20,0.72) 34%, rgba(11,11,20,0.28) 62%, rgba(11,11,20,0) 100%);"></div>
       <div class="absolute inset-0 hidden bg-gradient-to-t from-ink via-ink/35 to-ink/10 lg:block"></div>
     </div>
 
@@ -81,17 +82,35 @@ const { hero, about, simReal } = page;
       </p>
 
       <h1 class="h-display text-[clamp(2.6rem,10vw,7.5rem)] uppercase text-white" data-hero>
-        <span class="hero-line" style="--hero-delay:260ms"><span>{hero.titleLine1}</span></span>
-        <span class="hero-line" style="--hero-delay:340ms"><span class="text-gradient">{hero.titleLine2}</span></span>
+        {hero.logo ? (
+          <img
+            src={hero.logo}
+            alt={site.name}
+            class="hero-logo w-[min(100%,32rem)] sm:w-[min(100%,38rem)] lg:w-[min(100%,44rem)]"
+            width="1400"
+            height="247"
+            loading="eager"
+            fetchpriority="high"
+            style="--hero-delay:260ms"
+          />
+        ) : (
+          <Fragment>
+            <span class="hero-line" style="--hero-delay:260ms"><span>{hero.titleLine1}</span></span>
+            <span class="hero-line" style="--hero-delay:340ms"><span class="text-gradient">{hero.titleLine2}</span></span>
+          </Fragment>
+        )}
       </h1>
 
       <p class="mt-4 max-w-xl text-base leading-relaxed text-fog sm:mt-6 sm:text-lg" data-hero="fade" style="--hero-delay:520ms">
         {hero.intro}
       </p>
 
+      {/* Tagline hidden — the hero logo already carries "No idols. Outwork everyone."
+          Uncomment to bring back the standalone tagline line.
       <p class="mt-3 font-mono text-xs uppercase tracking-[0.35em] text-fog sm:mt-5" data-hero="fade" style="--hero-delay:600ms">
         {hero.taglinePrefix} <span class="text-gradient font-bold">{hero.taglineAccent}</span>
       </p>
+      */}
 
       <div class="mt-6 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4" data-hero="fade" style="--hero-delay:680ms">
         <a href={hero.ctaPrimaryHref} class="btn btn-primary">{hero.ctaPrimaryLabel}</a>

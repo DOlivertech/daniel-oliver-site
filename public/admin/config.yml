@@ -861,9 +861,10 @@ collections:
               - { name: image, label: Hero Image, widget: image }
               - { name: video, label: "Hero Background Video (optional)", widget: file, required: false, hint: "MP4/WebM loop layered over the hero image. Leave empty to use the still image only. The image stays as poster/fallback (slow connections, reduced-motion users)." }
               - { name: imageAlt, label: Hero Image Alt Text, widget: string }
+              - { name: logo, label: "Name logo (optional)", widget: image, required: false, hint: "A logo/wordmark shown in place of the big DANIEL OLIVER text. Leave blank to use the Title Line 1/2 text below instead." }
               - { name: ghostText, label: "Ghost Background Text (big watermark)", widget: string }
               - { name: eyebrowNumber, label: Eyebrow Number, widget: string }
-              - { name: titleLine1, label: Title Line 1, widget: string }
+              - { name: titleLine1, label: "Title Line 1 (used if no logo)", widget: string }
               - { name: titleLine2, label: "Title Line 2 (gradient)", widget: string }
               - { name: intro, label: Intro Paragraph, widget: text }
               - { name: taglinePrefix, label: Tagline Prefix, widget: string }
@@ -1179,6 +1180,7 @@ collections:
             label: Project Limit Break Section
             widget: object
             fields:
+              - { name: logo, label: "Logo (optional)", widget: image, required: false, hint: "Shown at the top of the box instead of the eyebrow text. Leave blank to show the eyebrow instead." }
               - { name: eyebrow, label: Eyebrow, widget: string }
               - { name: title, label: Title, widget: string }
               - { name: body, label: Body, widget: text }
@@ -1191,8 +1193,14 @@ collections:
             fields:
               - { name: eyebrow, label: Eyebrow, widget: string }
               - { name: title, label: Title, widget: string }
-              - { name: statValue, label: "Headline number (e.g. 50k+)", widget: string }
-              - { name: statLabel, label: "Headline caption", widget: string }
+              - name: stats
+                label: Headline stats
+                widget: list
+                summary: "{{fields.value}} — {{fields.label}}"
+                hint: "Each renders as a big number box. Numbers are manual (not auto-updated)."
+                fields:
+                  - { name: value, label: "Big number (e.g. 50k+, 1M+)", widget: string }
+                  - { name: label, label: "Caption", widget: string }
               - name: platforms
                 label: Platforms
                 widget: list

@@ -4,7 +4,7 @@
     "description": "Partner with Daniel Oliver for the 2026 IMSA VP Racing SportsCar Challenge season. More than a logo on a car, we build a story together."
   },
   "hero": {
-    "image": "/images/hero/hrrcc-media-daniel-oliver-brands-hatch-39.webp",
+    "image": "/images/2026/imsa-strap-in.webp",
     "eyebrow": "Partnerships",
     "titleLine1": "More than a logo",
     "titleAccent": "on a car.",
@@ -13,7 +13,7 @@
     "ctaPrimarySubject": "Partnership enquiry",
     "ctaSecondaryLabel": "Let's make magic together",
     "ctaSecondaryHref": "#deck",
-    "imagePosition": "50% 75%"
+    "imagePosition": "50% 42%"
   },
   "offers": {
     "eyebrow": "What partners get",
@@ -44,8 +44,16 @@
   "audience": {
     "eyebrow": "The audience",
     "title": "A fanbase that follows the whole journey",
-    "statValue": "50k+",
-    "statLabel": "highly engaged fanbase following the journey across all platforms",
+    "stats": [
+      {
+        "value": "50k+",
+        "label": "highly engaged fanbase following the journey across all platforms"
+      },
+      {
+        "value": "1M+",
+        "label": "monthly views across all platforms"
+      }
+    ],
     "platforms": [
       {
         "platform": "instagram",
@@ -74,9 +82,10 @@
     "eyebrow": "Project Limit Break",
     "title": "Put students in the paddock with us",
     "body": "Through Limit Break Engineering, IMSA race weekends double as a student exposure program with young engineers working alongside strategists, mechanics and media crews. Partners don't just back a driver; they back the pipeline into motorsport.",
-    "image": "/images/galleries/sebring-test-2026/suit-by-car.webp",
-    "imageAlt": "Daniel Oliver with the #38 Project Limit Break IMSA prototype at Sebring",
-    "imagePosition": "center"
+    "image": "/images/2026/students-garage.webp",
+    "imageAlt": "Daniel Oliver with a group of Project Limit Break students in the race garage",
+    "imagePosition": "50% 88%",
+    "logo": "/images/sponsors/plb-simtoreal.webp"
   },
   "media": {
     "eyebrow": "Beyond the track",
