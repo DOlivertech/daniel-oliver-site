@@ -30,15 +30,12 @@ const {
   hideFooterPartners = false,
 } = Astro.props;
 
-// The host that actually serves the site today. Social scrapers must be able
-// to fetch the preview image, so OG/Twitter image + og:url point here rather
-// than at the (not-yet-live) canonical domain. Once danieloliverracing.com is
-// attached, update this to that origin (or the .netlify.app URL keeps working).
-const publicOrigin = 'https://daniel-oliver-site.netlify.app';
-
+// danieloliverracing.com is live and serves the OG assets, so canonical, share
+// URL, and OG/Twitter image all resolve to the single canonical origin — no
+// more host mismatch between the <link rel=canonical> and the og:url.
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const shareUrl = new URL(Astro.url.pathname, publicOrigin);
-const ogImageAbs = new URL(ogImage, publicOrigin);
+const shareUrl = canonical;
+const ogImageAbs = new URL(ogImage, Astro.site);
 const ogIsDefault = ogImage === '/images/og/og-default.jpg';
 const ogIsJpg = ogImage.toLowerCase().endsWith('.jpg') || ogImage.toLowerCase().endsWith('.jpeg');
 const origin = new URL(Astro.site!).origin;
