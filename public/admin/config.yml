@@ -1182,6 +1182,43 @@ collections:
               - { name: image, label: Image, widget: image }
               - { name: imageAlt, label: Image Alt Text, widget: string }
               - { name: imagePosition, label: "Image focal point", widget: string, required: false, default: "center", hint: "Which part of the photo stays in view when cropped, e.g. 50% 30% (left→right, top→bottom). 'center' = middle." }
+          - name: audience
+            label: Audience / Socials Section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: statValue, label: "Headline number (e.g. 50k+)", widget: string }
+              - { name: statLabel, label: "Headline caption", widget: string }
+              - name: platforms
+                label: Platforms
+                widget: list
+                summary: "{{fields.label}} — {{fields.followers}}"
+                fields:
+                  - name: platform
+                    label: Platform (icon)
+                    widget: select
+                    options: [instagram, youtube, tiktok]
+                  - { name: label, label: Display Name, widget: string }
+                  - { name: handle, label: Handle, widget: string }
+                  - { name: followers, label: "Follower count (e.g. 18.4k)", widget: string, required: false, hint: "Shown on the card. Leave blank to hide the number for this platform. Update whenever you like — it's not automatic." }
+                  - { name: url, label: Profile URL, widget: string }
+          - name: media
+            label: Beyond the Track (media)
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Body, widget: text }
+              - name: items
+                label: Media Items
+                widget: list
+                summary: "{{fields.caption}}"
+                hint: "The FIRST item renders full-width (great for wide strips); the rest show in a 3-up grid."
+                fields:
+                  - { name: image, label: Image, widget: image }
+                  - { name: alt, label: Alt Text, widget: string }
+                  - { name: caption, label: Caption, widget: string }
           - name: partnersSection
             label: Current Partners
             widget: object

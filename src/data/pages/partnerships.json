@@ -41,6 +41,35 @@
       }
     ]
   },
+  "audience": {
+    "eyebrow": "The audience",
+    "title": "A fanbase that follows the whole journey",
+    "statValue": "50k+",
+    "statLabel": "highly engaged fanbase following the journey across all platforms",
+    "platforms": [
+      {
+        "platform": "instagram",
+        "label": "Instagram",
+        "handle": "@daniel.oliver25",
+        "followers": "",
+        "url": "https://instagram.com/daniel.oliver25"
+      },
+      {
+        "platform": "youtube",
+        "label": "YouTube",
+        "handle": "@DanielOliverRacing",
+        "followers": "",
+        "url": "https://youtube.com/@DanielOliverRacing"
+      },
+      {
+        "platform": "tiktok",
+        "label": "TikTok",
+        "handle": "@danieloliverracing",
+        "followers": "",
+        "url": "https://tiktok.com/@danieloliverracing"
+      }
+    ]
+  },
   "limitBreak": {
     "eyebrow": "Project Limit Break",
     "title": "Put students in the paddock with us",
@@ -49,6 +78,33 @@
     "imageAlt": "Daniel Oliver with the #38 Project Limit Break IMSA prototype at Sebring",
     "imagePosition": "center"
   },
+  "media": {
+    "eyebrow": "Beyond the track",
+    "title": "Content, camera-ready",
+    "body": "Bespoke partner shoots, podcast and broadcast appearances, live fan Q&As - the program produces professional media wherever the story goes, and partners ride along in all of it.",
+    "items": [
+      {
+        "image": "/images/partnerships/photoshoot-aiea.webp",
+        "alt": "Four-panel partner photoshoot: Daniel with the AIEA Golf Porsche GT2 RS in a hangar",
+        "caption": "Partner photoshoot - AIEA Golf x Porsche GT2 RS"
+      },
+      {
+        "image": "/images/partnerships/podcast-couch.webp",
+        "alt": "Daniel on a podcast set with a host, mid-conversation",
+        "caption": "Podcast appearances - telling the sim-to-real story"
+      },
+      {
+        "image": "/images/partnerships/podcast-qa.webp",
+        "alt": "Daniel answering a fan question on a live broadcast",
+        "caption": "Live fan Q&A on broadcast"
+      },
+      {
+        "image": "/images/partnerships/paddock-group.webp",
+        "alt": "Daniel with the team and partners around two Praga prototypes in the garage",
+        "caption": "Partners hosted trackside in the paddock"
+      }
+    ]
+  },
   "partnersSection": {
     "eyebrow": "Current partners",
     "title": "In good company"
@@ -56,7 +112,7 @@
   "deck": {
     "title": "Let's build the story together",
     "body": "The full 2026 partnership deck — packages, audiences and activation ideas. Grab it below anytime.",
-    "url": "",
+    "url": "https://drive.google.com/file/d/16UjoJ5OPJtx5PnBSj1OvCjCs7Xe4Sa7v/view",
     "ctaLabel": "Get the deck",
     "secondaryLabel": "Contact page",
     "secondaryHref": "/contact"
