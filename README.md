@@ -103,6 +103,19 @@ This builds locally and uploads `dist/` (no CI minutes used). Because it's manua
 to the main branch don't go live until someone runs the command above.** (You can instead connect the
 repo in Netlify's UI for automatic Git-based builds — not currently enabled.)
 
+## Store (Shopify theme)
+
+The merch store runs on **Shopify** with a custom Online Store 2.0 theme that mirrors this site's
+design language — dark ink base, pink/violet/cyan gradient accents, the animated starfield, and the
+Unbounded / Space Grotesk / Space Mono type system. It lives in its own repo and connects to Shopify
+through the GitHub integration (two-way sync — commits deploy to Shopify, theme-editor changes commit
+back):
+
+**→ [DOlivertech/daniel-oliver-shopify-theme](https://github.com/DOlivertech/daniel-oliver-shopify-theme)**
+
+That repo's README covers connecting it to a Shopify store (GitHub or ZIP) and the post-install
+theme-settings + navigation steps.
+
 ## Validating changes (Playwright)
 
 The site leans on animation and precise image cropping, so regressions are visual. Rather than eyeball
