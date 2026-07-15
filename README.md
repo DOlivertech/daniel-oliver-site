@@ -87,7 +87,10 @@ Full field-by-field walkthrough: **[docs/EDITING.md](docs/EDITING.md)**.
 | Site settings | `src/data/site.json` | name, tagline, nav, socials, sponsors, footer, brand logos |
 | Pages | `src/data/pages/*.json` | per-page copy + images (home, about, media, blog, schedule, partnerships, contact, 404) |
 
-Images live in `public/images/`; CMS uploads go to `public/images/uploads`.
+Images live in `public/images/`; CMS uploads go to `public/images/uploads`. Events can carry a
+`track` id (picked from a CMS dropdown) that renders the circuit's outline + country flag on the
+schedule and in track-tagged posts — see **[docs/TRACK-MAPS.md](docs/TRACK-MAPS.md)** for how those
+outlines are drawn.
 
 ## Deployment
 
@@ -156,7 +159,7 @@ public/
   admin/        Decap CMS (index.html + config.yml)
   images/       hero/, galleries/, sponsors/, brand/, flags/, 2026/, uploads/
 scripts/        Playwright verification + screenshot/GIF tooling
-docs/           EDITING.md, SIGNATURE.md, SEARCH-CONSOLE.md, screenshots/
+docs/           EDITING.md, SIGNATURE.md, TRACK-MAPS.md, SEARCH-CONSOLE.md, screenshots/
 ```
 
 Deeper architecture notes, gotchas, and the go-live checklist live in **[AGENTS.md](AGENTS.md)**.
