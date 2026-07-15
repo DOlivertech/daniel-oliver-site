@@ -1,22 +1,45 @@
 # Daniel Oliver Racing
 
-Personal site for racing driver **Daniel Oliver**. Built with **Astro 5** + **Tailwind CSS 4**,
-content managed via **Decap CMS**, hosted on **Netlify**.
+Personal site for racing driver **Daniel Oliver** — a fast, static, animation-rich site with a
+built-in content editor. Built with **Astro 5** + **Tailwind CSS 4**, content managed via
+**Decap CMS**, hosted on **Netlify**.
+
+**Live:** <https://danieloliverracing.com>
 
 > No idols. Outwork everyone.
 
-- **Live:** https://daniel-oliver-site.netlify.app
-- **Prod domain (planned):** `danieloliverracing.com` — see [Going to production](#going-to-production).
+![Home](docs/screenshots/home.webp)
 
-📝 **Just want to edit content?** See **[docs/EDITING.md](docs/EDITING.md)** — a plain-English guide.
+<table>
+  <tr>
+    <td><img src="docs/screenshots/about.webp" alt="About" /></td>
+    <td><img src="docs/screenshots/schedule.webp" alt="Schedule" /></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/partnerships.webp" alt="Partnerships" /></td>
+    <td valign="top">
+
+**Highlights**
+- Animated hero with a real signature write-on
+- Site-wide galaxy starfield + aurora ambience
+- Car-swipe page transitions
+- Circuit outline maps + country flags
+- Everything editable from `/admin` — no code
+
+  </td>
+  </tr>
+</table>
+
+📝 **Just want to edit content?** Jump to [Editing content](#editing-content) or read the plain-English
+guide in **[docs/EDITING.md](docs/EDITING.md)**.
 
 ## Stack
 
 - [Astro 5](https://astro.build) — static output, content collections (glob loaders + zod schemas)
 - [Tailwind CSS 4](https://tailwindcss.com) — via `@tailwindcss/vite`, theme in `src/styles/global.css`
-- [Decap CMS](https://decapcms.org) — `/admin`, GitHub OAuth backend, editorial workflow
-- Vanilla JS + CSS only for motion (View Transitions, scroll reveals, an animated real-signature
-  write-on, racing-line/aurora ambience) — no client frameworks
+- [Decap CMS](https://decapcms.org) — the `/admin` editor, git-based (commits straight to the repo)
+- Vanilla JS + CSS only for motion (View Transitions, scroll reveals, the signature write-on,
+  starfield/aurora ambience, car-swipe transitions) — no client-side framework
 
 ## Local development
 
@@ -27,98 +50,116 @@ npm run build        # production build → dist/
 npm run preview      # serve the production build
 ```
 
-### Editing content locally (with live preview)
+## Editing content
 
-```bash
-npm run edit         # starts the CMS + the site together
-```
+Everything user-facing is CMS-editable — pages read from `src/data/**` and `src/content/**`, with
+**no hardcoded copy**. You never have to touch code to change words, images, events, or posts.
 
-Open **http://localhost:4642/admin/index.html** (editor) and **http://localhost:4642** (site).
-`local_backend: true` means no login locally and the CMS writes straight to your working tree —
-**every Save hot-reloads the site tab**, so you preview the real, styled result as you go.
-Commit + push to publish. (`Ctrl+C` stops both. Prefer two tabs? `npm run dev` + `npm run cms`.)
+Two ways to edit:
 
-## Content model
+- **Locally, with live preview (no login):**
 
-Everything user-facing is CMS-editable; pages read from `src/data/**` (no hardcoded copy).
+  ```bash
+  npm run edit       # starts the editor + the live site together
+  ```
+
+  Open **http://localhost:4642/admin** (editor) and **http://localhost:4642** (site). Every **Save**
+  hot-reloads the site tab, so you see the real, styled result as you type. Commit + push to publish.
+
+- **From any browser (logged in):** open `/admin` on the live site and sign in. Edits are saved as
+  drafts you can review, then Publish.
+
+Full field-by-field walkthrough: **[docs/EDITING.md](docs/EDITING.md)**.
+
+### Content model
 
 | Collection | Location | Notes |
 |---|---|---|
-| Blog posts | `src/content/posts/*.md` | title, date, excerpt, cover, tags, draft, body |
+| Blog / News posts | `src/content/posts/*.md`, `src/content/news/*.md` | title, date, excerpt, cover, tags, track, draft, body |
 | Galleries | `src/content/galleries/*.json` | title, date, location, cover, images[] |
-| Events | `src/content/events/*.md` | circuit, series, `status: upcoming\|completed`, `result` (P1/P2/P3 → medal), link |
+| Events | `src/content/events/*.md` | circuit, series, `status`, `result` (P1/P2/P3 → medal), track, link |
 | Site settings | `src/data/site.json` | name, tagline, nav, socials, sponsors, footer, brand logos |
 | Pages | `src/data/pages/*.json` | per-page copy + images (home, about, media, blog, schedule, partnerships, contact, 404) |
 
-Images live in `public/images/`; CMS uploads go to `public/images/uploads`. The hero can take an
-optional background **video** (`home.json` → `hero.video`) layered over the still — currently unused.
+Images live in `public/images/`; CMS uploads go to `public/images/uploads`.
 
 ## Deployment
 
-The site is live on Netlify (`daniel-oliver-site`). **Deploys are manual via the Netlify CLI —
-there is no CI, and pushing to GitHub does _not_ publish the site:**
+The site is live on Netlify. **Deploys are manual via the Netlify CLI — there is no CI, and pushing
+to GitHub does _not_ publish the site:**
 
 ```bash
 npm run build
 netlify deploy --prod --dir=dist
 ```
 
-This builds locally and uploads `dist/` (no GitHub Actions / Netlify build minutes used). Because
-it's manual, **CMS edits merged to `main` don't go live until someone runs the command above.**
+This builds locally and uploads `dist/` (no CI minutes used). Because it's manual, **CMS edits merged
+to the main branch don't go live until someone runs the command above.** (You can instead connect the
+repo in Netlify's UI for automatic Git-based builds — not currently enabled.)
 
-Optional: connect the repo in Netlify's UI for automatic Git-based builds (Netlify's own build
-minutes, independent of GitHub Actions) — not currently enabled.
+## Validating changes (Playwright)
 
-**Going live on `danieloliverracing.com`:** add the domain in Netlify → Domain management, point DNS,
-wait for SSL; then update `publicOrigin` in `src/layouts/BaseLayout.astro` and redeploy; then do
-`docs/SEARCH-CONSOLE.md`. Full checklist in **[AGENTS.md](AGENTS.md)**.
-
-## CMS login (GitHub OAuth) — ✅ set up
-
-Login uses **GitHub OAuth**, with Netlify brokering the token exchange (the client secret lives only
-in Netlify's dashboard, never in the repo). The repo is **private**, so **who can log in = repo
-collaborators** — currently just the owner (`DOlivertech`).
-
-- Log in: `https://<site>/admin` → **Login with GitHub** → authorize.
-- The one-time OAuth app + Netlify install is already done. It's **domain-independent** (the callback
-  is `https://api.netlify.com/auth/done`), so moving to the custom domain needs no OAuth changes.
-- **Add an editor:** add them as a collaborator on `DOlivertech/daniel-oliver-site` (they need a
-  GitHub account). Remove access by removing the collaborator.
-- **Why not "Login with Google"?** Decap commits straight to git, so the login must grant git access —
-  GitHub does, Google can't (it would require the deprecated Netlify Identity + Git Gateway).
-
-Editorial workflow is on: edits land as drafts on `cms/*` branches to review, then Publish.
-
-## Going to production
-
-To launch on `danieloliverracing.com`:
-
-1. In Netlify → **Domain management**, add `danieloliverracing.com` (and `www`) and follow the DNS steps.
-2. That's it for code — `astro.config.mjs` `site` and the CMS `site_url` already point at the prod
-   domain, and the GitHub OAuth login keeps working unchanged.
-
-## Verification (Playwright)
-
-Dev-only regression checks (require the dev server running on 4642):
+The site leans on animation and precise image cropping, so regressions are visual. Rather than eyeball
+every page, the repo ships **Playwright-driven checks** you run against a local dev server (port 4642):
 
 ```bash
-npm run verify:hero      # asserts hero text never overlaps the face across 9 viewports
-npm run verify:reveals   # asserts every scroll-reveal section image actually appears
+npm run dev            # in one terminal
+
+npm run verify:hero    # asserts the hero text never overlaps the driver's face (9 viewports)
+npm run verify:reveals # asserts every scroll-reveal image actually appears (no stuck-hidden sections)
+npm run verify:a11y    # runs axe-core accessibility checks and fails on violations
+```
+
+Use them as a pre-commit gate — if you tweak the hero, layout, or motion, run the relevant check and
+confirm it passes before you push. They're plain Node scripts in `scripts/`, easy to extend with new
+assertions as you add sections.
+
+Regenerate the README screenshots (captures the live site with reduced motion for clean stills):
+
+```bash
+npm run screenshots                                  # defaults to the live domain
+BASE=http://localhost:4642 npm run screenshots       # or a local build
 ```
 
 ## Project structure
 
 ```
 src/
-  components/   Header (persistent hamburger overlay), Footer, Signature (real autograph write-on),
-                RacingLines, AmbientAurora, Lightbox, SocialLinks
-  layouts/      BaseLayout.astro — SEO/fonts + the site-wide motion runtime
-  pages/        index, about, media(+[slug]), blog(+[slug]), schedule, partnerships, contact, 404
-  content/      posts/, galleries/, events/  (Astro collections)
-  data/         site.json, pages/*.json (CMS-editable copy), signature.json (traced autograph)
+  components/   Header, Footer, Signature (real autograph write-on), GalaxyField,
+                AmbientAurora, CarWipe, TrackMap, Flag, Lightbox, SocialLinks
+  layouts/      BaseLayout.astro — SEO/structured data/fonts + the site-wide motion runtime
+  pages/        index, about, media(+[slug]), blog(+[slug]), news(+[slug]),
+                schedule, partnerships, contact, 404
+  content/      posts/, news/, galleries/, events/  (Astro collections)
+  data/         site.json, pages/*.json (CMS-editable copy), tracks.json, signature.json
   styles/       global.css (Tailwind 4 @theme design system)
 public/
   admin/        Decap CMS (index.html + config.yml)
-  images/       hero/, galleries/, sponsors/, brand/, build/, 2026/, uploads/
-scripts/        Playwright verification (dev-only)
+  images/       hero/, galleries/, sponsors/, brand/, flags/, 2026/, uploads/
+scripts/        Playwright verification + screenshot tooling
+docs/           EDITING.md, SEARCH-CONSOLE.md, screenshots/
 ```
+
+Deeper architecture notes, gotchas, and the go-live checklist live in **[AGENTS.md](AGENTS.md)**.
+
+## Use this as a template for your own site
+
+This is a solid starting point for any driver/athlete/personal brand: fast static pages, a real CMS,
+and a distinctive motion system — with nothing to run but Node and Netlify. To make it yours:
+
+1. **Fork / use as a template**, then `npm install` and `npm run dev`.
+2. **Point the CMS at your repo.** In `public/admin/config.yml`, change `backend.repo` to your own
+   `owner/repo`. That, plus your Netlify site, is all the CMS needs — it commits content to your repo.
+3. **Rebrand.** Edit `src/data/site.json` (name, tagline, socials, colors) and swap the design tokens
+   in `src/styles/global.css`. Replace the logo/favicon in `public/`.
+4. **Replace the content.** Edit `src/data/pages/*.json` for copy, drop your own posts in
+   `src/content/**`, and put your images in `public/images/` (or upload via `/admin`).
+5. **Set your domain.** Update `site` in `astro.config.mjs` and the URLs in
+   `public/admin/config.yml` and `public/robots.txt` to your domain.
+6. **Deploy** with the Netlify CLI (see [Deployment](#deployment)), then follow
+   [docs/SEARCH-CONSOLE.md](docs/SEARCH-CONSOLE.md) for search indexing.
+7. **Validate** with the Playwright checks above as you customize.
+
+> **Please note:** the *code* is a fair template to learn from and adapt, but the **name, likeness,
+> photography, signature, and branding of Daniel Oliver are not** — replace all content and imagery
+> with your own before publishing. No license is granted to reuse Daniel's personal assets.

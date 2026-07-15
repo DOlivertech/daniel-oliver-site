@@ -25,7 +25,7 @@ domain, not the temporary `daniel-oliver-site.netlify.app` address.
 ## 2. Verify ownership in Search Console
 
 1. Go to <https://search.google.com/search-console> and sign in with the Google account you
-   want to own the property (e.g. `danielolivertech@gmail.com`).
+   want to own the property (e.g. `you@gmail.com`).
 2. Click **Add property** → choose the **Domain** type (not "URL prefix") → enter
    `danieloliverracing.com`. The Domain property covers http/https + www/non-www + every
    subdomain in one go.

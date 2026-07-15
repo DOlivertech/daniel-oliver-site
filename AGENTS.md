@@ -7,9 +7,9 @@ Everything here was verified against the code — trust it over guesses, and upd
 
 Personal marketing site for racing driver **Daniel Oliver**. Statically generated **Astro 5** site with Tailwind CSS 4 and a **Decap CMS** admin at `/admin` so the owner can edit content via GitHub commits. Content: bio, media galleries, blog, news, season schedule (2026 IMSA VP Racing SportsCar Challenge debut), partnerships, contact.
 
-- **Live now:** https://daniel-oliver-site.netlify.app (Netlify project `daniel-oliver-site`, team `dolivertech`).
-- **Repo / CMS backend:** `DOlivertech/daniel-oliver-site` (private).
-- **Prod domain (planned):** `danieloliverracing.com` — not yet attached in Netlify. The code already treats it as canonical (`astro.config.mjs` `site`, and `site_url`/`display_url` in `public/admin/config.yml`), so launch = add the custom domain in Netlify (see **Going live** below).
+- **Live:** https://danieloliverracing.com (Netlify project `daniel-oliver-site`, team `dolivertech`; the `.netlify.app` URL still resolves as the origin). `www` 301-redirects to the apex.
+- **Repo / CMS backend:** `DOlivertech/daniel-oliver-site`.
+- **Canonical domain** `danieloliverracing.com` is wired throughout: `astro.config.mjs` `site`, `site_url`/`display_url` in `public/admin/config.yml`, `robots.txt`, and the OG/canonical tags (which derive from `Astro.site`, no separate override).
 
 ⚠️ **Naming traps**:
 - Local dir is `danieloliver-racing`, but the git remote / CMS backend repo is **`DOlivertech/daniel-oliver-site`**.
@@ -24,7 +24,8 @@ Personal marketing site for racing driver **Daniel Oliver**. Statically generate
 | **Edit w/ live preview** | `npm run edit` | runs decap-server + astro together (concurrently); CMS Save hot-reloads the real site. Open `/admin/index.html` + `/` |
 | Local CMS only | `npm run cms` (decap-server) alongside `npm run dev` | `local_backend: true` bypasses OAuth |
 | Build | `npm run build` | outputs `dist/` — **the primary quality gate; no unit-test or lint script** |
-| Verify (Playwright) | `npm run verify:hero`, `npm run verify:reveals` | headless checks; **need the dev server running** on 4642 |
+| Verify (Playwright) | `npm run verify:hero`, `npm run verify:reveals`, `npm run verify:a11y` | headless checks; **need the dev server running** on 4642 |
+| Screenshots | `npm run screenshots` | regenerates `docs/screenshots/*.webp` (defaults to live domain; `BASE=http://localhost:4642` for local) |
 
 ## Deploy / publish
 
@@ -46,11 +47,14 @@ That builds to `dist/` and uploads it; the command prints the Production URL whe
 
 **CMS edits ≠ live.** When the owner publishes in `/admin`, Decap commits to the GitHub repo (editorial workflow → `cms/*` branch → merge to `main`). Because deploys are manual, **merging a CMS change to `main` does not update the live site** — someone must then run `npm run build && netlify deploy --prod --dir=dist`. (Alternatively, connect the repo in Netlify's UI for automatic Git-based builds — that uses Netlify's own build-minute pool, independent of GitHub Actions. Not currently enabled.)
 
-## Going live (custom domain)
+## Custom domain — done
 
-1. **Netlify dashboard → project `daniel-oliver-site` → Domain management → Add `danieloliverracing.com`.** Point DNS as Netlify instructs (Netlify DNS, or `A`/`CNAME` records at the registrar) and wait for the SSL certificate to provision.
-2. **Update `publicOrigin`** in `src/layouts/BaseLayout.astro` from the `.netlify.app` URL to `https://danieloliverracing.com` (it drives `og:image`/`og:url` so social share previews resolve on a live host), then rebuild + redeploy. The `.netlify.app` URL keeps working regardless, so this is a polish step, not a blocker.
-3. **Google Search Console:** follow `docs/SEARCH-CONSOLE.md` (verify domain, submit `sitemap-index.xml`, request indexing). Do this *after* the domain resolves.
+`danieloliverracing.com` is attached in Netlify (Domain management), SSL is provisioned, and `www`
+301-redirects to the apex. Canonical, `og:url`, and `og:image` all derive from `Astro.site`, so they
+resolve on the live domain automatically — there's no `publicOrigin` override to maintain anymore.
+
+Remaining owner task (account-side, not code): **Google Search Console** — follow
+`docs/SEARCH-CONSOLE.md` to verify the domain, submit `sitemap-index.xml`, and request indexing.
 
 ## Structure & the two content systems
 
