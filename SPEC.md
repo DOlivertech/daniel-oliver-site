@@ -28,7 +28,7 @@ photography, an animated hamburger overlay menu, a signature as a branding eleme
 - Partners: Race Control, Elite Detail Pros, Monza Detail Works, Nick's Auto Transport, Demia Motorsports,
   Sim Racing Nation, PLB SimToReal, Forseti. Logos in `public/images/sponsors/` (webp).
 - Socials: Instagram `@daniel.oliver25`, YouTube `@DanielOliverRacing`, TikTok `@danieloliverracing`.
-- Contact: ***removed***. Partnership pitch: "more than a logo on a car — building a story together"; TV + digital exposure, media production, trackside presence.
+- Contact: via the site's contact form. Partnership pitch: "more than a logo on a car — building a story together"; TV + digital exposure, media production, trackside presence.
 - Store: external link to https://www.danieloliverracing.com/store (do not build a store).
 
 ## Images (already downloaded, all .webp, in `public/images/`)
