@@ -5,3 +5,6 @@ dist/
 
 # Local Netlify folder
 .netlify
+
+# Signature GIF capture scratch frames
+docs/screenshots/*.frames/

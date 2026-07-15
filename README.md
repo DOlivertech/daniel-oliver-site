@@ -30,6 +30,12 @@ built-in content editor. Built with **Astro 5** + **Tailwind CSS 4**, content ma
   </tr>
 </table>
 
+<p align="center">
+  <img src="docs/screenshots/signature-write-on.gif" alt="Signature writing itself on" width="520" /><br />
+  <sub>The signature draws itself on — one traced SVG path + a moving CSS mask. See
+  <a href="docs/SIGNATURE.md">docs/SIGNATURE.md</a> to use your own.</sub>
+</p>
+
 📝 **Just want to edit content?** Jump to [Editing content](#editing-content) or read the plain-English
 guide in **[docs/EDITING.md](docs/EDITING.md)**.
 
@@ -136,8 +142,8 @@ src/
 public/
   admin/        Decap CMS (index.html + config.yml)
   images/       hero/, galleries/, sponsors/, brand/, flags/, 2026/, uploads/
-scripts/        Playwright verification + screenshot tooling
-docs/           EDITING.md, SEARCH-CONSOLE.md, screenshots/
+scripts/        Playwright verification + screenshot/GIF tooling
+docs/           EDITING.md, SIGNATURE.md, SEARCH-CONSOLE.md, screenshots/
 ```
 
 Deeper architecture notes, gotchas, and the go-live checklist live in **[AGENTS.md](AGENTS.md)**.
@@ -151,7 +157,9 @@ and a distinctive motion system — with nothing to run but Node and Netlify. To
 2. **Point the CMS at your repo.** In `public/admin/config.yml`, change `backend.repo` to your own
    `owner/repo`. That, plus your Netlify site, is all the CMS needs — it commits content to your repo.
 3. **Rebrand.** Edit `src/data/site.json` (name, tagline, socials, colors) and swap the design tokens
-   in `src/styles/global.css`. Replace the logo/favicon in `public/`.
+   in `src/styles/global.css`. Replace the logo/favicon in `public/`, and drop in your own
+   handwritten signature — [docs/SIGNATURE.md](docs/SIGNATURE.md) walks through tracing it to the
+   animated mark.
 4. **Replace the content.** Edit `src/data/pages/*.json` for copy, drop your own posts in
    `src/content/**`, and put your images in `public/images/` (or upload via `/admin`).
 5. **Set your domain.** Update `site` in `astro.config.mjs` and the URLs in

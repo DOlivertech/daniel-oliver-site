@@ -12,7 +12,8 @@
     "verify:hero": "node scripts/verify-hero.mjs",
     "verify:reveals": "node scripts/verify-reveals.mjs",
     "verify:a11y": "node scripts/a11y.mjs",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "signature:gif": "node scripts/signature-gif.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
