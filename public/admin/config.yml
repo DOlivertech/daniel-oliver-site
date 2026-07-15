@@ -773,6 +773,7 @@ collections:
         default: upcoming
         hint: "Switch to 'completed' after the race — it moves to the Completed section with a checkered-flag badge."
       - { name: result, label: Result, widget: string, required: false, hint: "Finishing position, e.g. P1, 2nd, DNF. P1/P2/P3 get a gold/silver/bronze medal. Leave blank for 'Result to come'." }
+      - { name: coDriver, label: "Co-driver (optional)", widget: string, required: false, hint: "For endurance/shared-drive rounds — the co-driver's name. Shows as 'Co-driver · Name' on the card." }
       - { name: link, label: "Link (e.g. gallery URL)", widget: string, required: false }
       - { name: body, label: Notes, widget: markdown, required: false }
 

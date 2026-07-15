@@ -6,7 +6,8 @@ location: "Austin, Texas"
 series: "IMSA Airbnb Endurance Challenge"
 track: "cota"
 status: "completed"
-result: "—"
+result: "P10"
+coDriver: "Martin Bruhat"
 link: "/news/2026-imsa-cota-debut"
 ---
 Daniel's IMSA debut — a two-hour LMP3 endurance race at COTA with Performance Tech Motorsports (No. 38 Ligier JS P320), co-driving with Martin Bruhat.

@@ -136,6 +136,7 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
             <div>
               <h3 class="font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
               <p class="mt-1 font-mono text-xs text-mist">{resolveTrack(e).iso && <Flag iso={resolveTrack(e).iso} title={resolveTrack(e).name} class="mr-1.5 h-3" />}{resolveTrack(e).name} · {e.data.location} · {e.data.series}</p>
+              {e.data.coDriver && <p class="mt-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-mist/75">Co-driver · {e.data.coDriver}</p>}
             </div>
           </div>
           <span class="relative shrink-0 rounded-full border border-violet/40 bg-violet/10 px-4 py-2 font-mono text-xs tracking-widest text-white">
@@ -175,6 +176,7 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
 
             <h3 class="relative mt-3 font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
             <p class="relative mt-1.5 font-mono text-xs text-mist">{resolveTrack(e).iso && <Flag iso={resolveTrack(e).iso} title={resolveTrack(e).name} class="mr-1.5 h-3" />}{resolveTrack(e).name} · {e.data.series}</p>
+            {e.data.coDriver && <p class="relative mt-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-mist/75">Co-driver · {e.data.coDriver}</p>}
 
             <div class="relative mt-5 flex items-center justify-between gap-4 border-t border-line/60 pt-4">
               {hasResult(e.data.result) ? (
