@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SocialLinks from '../components/SocialLinks.astro';
-import site from '../data/site.json';
 import page from '../data/pages/contact.json';
 
-const { hero, emailCard, socialsCard, partnershipCard, form } = page;
+const { hero, socialsCard, partnershipCard, form } = page;
 ---
 <BaseLayout title={page.meta.title} description={page.meta.description}>
   <section class="px-6 pb-14 pt-40 sm:px-12 lg:px-20">
@@ -21,13 +20,7 @@ const { hero, emailCard, socialsCard, partnershipCard, form } = page;
     <div class="grid gap-10 lg:grid-cols-[1fr_1.3fr]">
       <!-- Direct channels -->
       <div class="flex flex-col gap-6">
-        <a href={`mailto:${site.email}`} class="card reveal group p-8">
-          <p class="eyebrow mb-3">{emailCard.eyebrow}</p>
-          <p class="break-all font-display text-base font-bold text-white transition-colors group-hover:text-cyan sm:text-lg">{site.email}</p>
-          <p class="mt-2 text-sm text-mist">{emailCard.blurb}</p>
-        </a>
-
-        <div class="card reveal p-8" style="--reveal-delay:100ms">
+        <div class="card reveal p-8">
           <p class="eyebrow mb-4">{socialsCard.eyebrow}</p>
           <SocialLinks />
         </div>

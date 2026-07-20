@@ -790,7 +790,6 @@ collections:
           - { name: heroImage, label: Hero Image, widget: image }
           - { name: heroHeadline, label: Hero Headline, widget: string }
           - { name: bioShort, label: Short Bio, widget: text }
-          - { name: email, label: Contact Email, widget: string }
           - name: brand
             label: Brand Logos
             widget: object
@@ -1293,12 +1292,6 @@ collections:
               - { name: titlePrefix, label: Title Prefix, widget: string }
               - { name: titleAccent, label: Title Accent, widget: string }
               - { name: intro, label: Intro, widget: text }
-          - name: emailCard
-            label: Email Card
-            widget: object
-            fields:
-              - { name: eyebrow, label: Eyebrow, widget: string }
-              - { name: blurb, label: Blurb, widget: text }
           - name: socialsCard
             label: Socials Card
             widget: object
