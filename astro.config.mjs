@@ -9,6 +9,8 @@ export default defineConfig({
   server: { port: 4642 },
   integrations: [
     sitemap({
+      // /store just 301-redirects to the Shopify store — keep it out of the sitemap.
+      filter: (page) => !/\/store\/?$/.test(page),
       // Give crawlers a freshness signal and rank the homepage above deep pages.
       serialize(item) {
         item.lastmod = new Date().toISOString();

@@ -1,0 +1,5 @@
+# The store now lives on Shopify at store.danieloliverracing.com.
+# Force /store (and any subpath) to redirect there. The "!" shadows the
+# built /store page so the redirect always wins.
+/store    https://store.danieloliverracing.com   301!
+/store/*  https://store.danieloliverracing.com   301!
