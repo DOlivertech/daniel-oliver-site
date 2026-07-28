@@ -3,3 +3,23 @@
 # built /store page so the redirect always wins.
 /store    https://store.danieloliverracing.com   301!
 /store/*  https://store.danieloliverracing.com   301!
+
+# ---- Legacy URLs from the old Squarespace site ----
+# These are still in Google's index and were returning 404s. Confirmed via
+# Search Console (/partners) and the Wayback Machine (/limitbreak, /search).
+# A 301 passes the old page's ranking signal to the new one.
+/partners     /partnerships                        301
+/limitbreak   /about                               301
+/search       /                                    301
+/feed         /news                                301
+
+# ---- Likely inbound guesses / typos ----
+# None of these were ever real paths, but they're the obvious things a human
+# or an old backlink might try. Cheap to catch, better than a 404.
+/sponsors     /partnerships                        301
+/sponsorship  /partnerships                        301
+/partner      /partnerships                        301
+/shop         https://store.danieloliverracing.com 301
+/merch        https://store.danieloliverracing.com 301
+/gallery      /media                               301
+/photos       /media                               301
