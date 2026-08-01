@@ -8,3 +8,6 @@ dist/
 
 # Signature GIF capture scratch frames
 docs/screenshots/*.frames/
+
+# Local-only hosted downloads (kept out of the public repo)
+public/downloads/
