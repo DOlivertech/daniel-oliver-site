@@ -12,7 +12,7 @@
   "next": {
     "eyebrow": "Next event",
     "tbaNote": "EXACT DATE TO BE ANNOUNCED (COUNTDOWN IS PROVISIONAL)",
-    "comingSoon": true,
+    "comingSoon": false,
     "comingSoonText": "Information coming soon",
     "comingSoonSub": "The next race will be confirmed here shortly. Check back soon."
   },
