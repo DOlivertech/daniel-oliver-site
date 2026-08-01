@@ -775,6 +775,7 @@ collections:
       - { name: result, label: Result, widget: string, required: false, hint: "Finishing position, e.g. P1, 2nd, DNF. P1/P2/P3 get a gold/silver/bronze medal. Leave blank for 'Result to come'." }
       - { name: coDriver, label: "Co-driver (optional)", widget: string, required: false, hint: "For endurance/shared-drive rounds — the co-driver's name. Shows as 'Co-driver · Name' on the card." }
       - { name: link, label: "Link (e.g. gallery URL)", widget: string, required: false }
+      - { name: officialUrl, label: "Official event page (optional)", widget: string, required: false, pattern: ['^https?://', "Must be a full URL starting with http:// or https://"], hint: "Full URL to the series' own page for this round, e.g. https://www.imsa.com/events/2026-road-america-vprc/. Shows as an 'Event info' link on the card." }
       - { name: body, label: Notes, widget: markdown, required: false }
 
   - name: settings

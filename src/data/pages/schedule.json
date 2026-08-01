@@ -24,7 +24,8 @@
   },
   "upcoming": {
     "titlePrefix": "Upcoming",
-    "titleAccent": "2026"
+    "titleAccent": "2026",
+    "officialLabel": "Event info"
   },
   "past": {
     "titlePrefix": "Past",
@@ -39,6 +40,7 @@
     "photosLabel": "Photos →",
     "completedLabel": "Completed",
     "pendingResultLabel": "Result to come",
-    "storyLabel": "Read the story →"
+    "storyLabel": "Read the story →",
+    "officialLabel": "Event info"
   }
 }

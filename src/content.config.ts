@@ -39,6 +39,8 @@ const events = defineCollection({
     coDriver: z.string().optional(),
     link: z.string().optional(),
     track: z.string().optional(),
+    // Official series page for the round (e.g. the IMSA event page). External.
+    officialUrl: z.string().url().optional(),
   }),
 });
 

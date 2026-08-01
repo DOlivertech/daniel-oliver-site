@@ -137,6 +137,19 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
               <h3 class="font-display text-base font-bold text-white sm:text-lg">{e.data.title}</h3>
               <p class="mt-1 font-mono text-xs text-mist">{resolveTrack(e).iso && <Flag iso={resolveTrack(e).iso} title={resolveTrack(e).name} class="mr-1.5 h-3" />}{resolveTrack(e).name} · {e.data.location} · {e.data.series}</p>
               {e.data.coDriver && <p class="mt-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-mist/75">Co-driver · {e.data.coDriver}</p>}
+              {e.data.officialUrl && (
+                <a
+                  href={e.data.officialUrl}
+                  target="_blank"
+                  rel="noopener"
+                  class="mt-2 inline-flex items-center gap-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline"
+                >
+                  {page.upcoming.officialLabel}
+                  <svg viewBox="0 0 24 24" class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              )}
             </div>
           </div>
           <span class="relative shrink-0 rounded-full border border-violet/40 bg-violet/10 px-4 py-2 font-mono text-xs tracking-widest text-white">
@@ -191,9 +204,24 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
               ) : (
                 <span class="font-mono text-xs uppercase tracking-[0.2em] text-mist">{page.past.pendingResultLabel}</span>
               )}
-              {e.data.link && (
-                <a href={e.data.link} class="shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{e.data.link.startsWith('/news') ? page.past.storyLabel : page.past.photosLabel}</a>
-              )}
+              <div class="flex shrink-0 items-center gap-4">
+                {e.data.link && (
+                  <a href={e.data.link} class="font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline">{e.data.link.startsWith('/news') ? page.past.storyLabel : page.past.photosLabel}</a>
+                )}
+                {e.data.officialUrl && (
+                  <a
+                    href={e.data.officialUrl}
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] text-fog underline-offset-4 transition-colors hover:text-white hover:underline"
+                  >
+                    {page.past.officialLabel}
+                    <svg viewBox="0 0 24 24" class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
             </div>
           </li>
         );

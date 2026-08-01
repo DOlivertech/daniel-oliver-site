@@ -9,6 +9,7 @@ track: "road-america"
 status: "upcoming"
 coDriver: "Travis Hill"
 link: "/news/2026-road-america-shopify-racing"
+officialUrl: "https://www.imsa.com/events/2026-road-america-vprc/"
 ---
 
 The final round of the IMSA Airbnb Endurance Challenge, with Shopify Racing in LMP3.
