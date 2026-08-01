@@ -776,6 +776,21 @@ collections:
       - { name: coDriver, label: "Co-driver (optional)", widget: string, required: false, hint: "For endurance/shared-drive rounds — the co-driver's name. Shows as 'Co-driver · Name' on the card." }
       - { name: link, label: "Link (e.g. gallery URL)", widget: string, required: false }
       - { name: officialUrl, label: "Official event page (optional)", widget: string, required: false, pattern: ['^https?://', "Must be a full URL starting with http:// or https://"], hint: "Full URL to the series' own page for this round, e.g. https://www.imsa.com/events/2026-road-america-vprc/. Shows as an 'Event info' link on the card." }
+      - name: sessions
+        label: "Weekend running order (optional)"
+        label_singular: "session"
+        widget: list
+        required: false
+        summary: "{{fields.name}} — {{fields.day}} {{fields.start}}"
+        hint: "Only this event's own sessions (practice, qualifying, race). Shown on the Next Event card with the race highlighted. Copy times from the official entry list / running order."
+        fields:
+          - { name: name, label: Session, widget: string, hint: "e.g. Practice 1, Qualifying, Race. Anything containing 'Race' gets the gradient highlight." }
+          - { name: day, label: Day, widget: string, hint: "e.g. Fri 14 Aug" }
+          - { name: start, label: Start, widget: string, hint: "e.g. 5:40 PM" }
+          - { name: end, label: "End (optional)", widget: string, required: false }
+          - { name: duration, label: "Duration (optional)", widget: string, required: false, hint: "e.g. 50 min, 2 hours" }
+      - { name: sessionsTz, label: "Session times timezone (optional)", widget: string, required: false, hint: "Short label shown next to the running order, e.g. CT, ET, BST. Use the track's local timezone." }
+      - { name: sessionsNote, label: "Running order note (optional)", widget: string, required: false, hint: "Small print under the session list, e.g. 'Times are local and provisional — see the official event page for the final running order.'" }
       - { name: body, label: Notes, widget: markdown, required: false }
 
   - name: settings
