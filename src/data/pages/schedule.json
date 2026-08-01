@@ -14,7 +14,9 @@
     "tbaNote": "EXACT DATE TO BE ANNOUNCED (COUNTDOWN IS PROVISIONAL)",
     "comingSoon": false,
     "comingSoonText": "Information coming soon",
-    "comingSoonSub": "The next race will be confirmed here shortly. Check back soon."
+    "comingSoonSub": "The next race will be confirmed here shortly. Check back soon.",
+    "sessionsTitle": "Weekend running order",
+    "sessionsTzLabel": "All times"
   },
   "countdownLabels": {
     "days": "Days",

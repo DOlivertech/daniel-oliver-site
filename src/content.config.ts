@@ -41,6 +41,20 @@ const events = defineCollection({
     track: z.string().optional(),
     // Official series page for the round (e.g. the IMSA event page). External.
     officialUrl: z.string().url().optional(),
+    // Running order for the weekend — only the driver's own series' sessions.
+    sessions: z
+      .array(
+        z.object({
+          name: z.string(),
+          day: z.string(),
+          start: z.string(),
+          end: z.string().optional(),
+          duration: z.string().optional(),
+        })
+      )
+      .optional(),
+    sessionsTz: z.string().optional(),
+    sessionsNote: z.string().optional(),
   }),
 });
 

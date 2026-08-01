@@ -117,6 +117,33 @@ const eventsLd = [...upcoming, ...past].map((e) => ({
                 ))}
               </div>
               <p id="countdown-note" class="mt-4 hidden font-mono text-xs tracking-[0.2em] text-mist">{page.next.tbaNote}</p>
+
+              {next.data.sessions && next.data.sessions.length > 0 && (
+                <div class="mt-10 max-w-xl">
+                  <h3 class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-mist">
+                    {page.next.sessionsTitle}
+                    {next.data.sessionsTz && <span class="text-fog"> · {page.next.sessionsTzLabel} {next.data.sessionsTz}</span>}
+                  </h3>
+                  <ol class="mt-4 divide-y divide-line/60 border-t border-line/60">
+                    {next.data.sessions.map((s) => {
+                      const isRace = /race/i.test(s.name);
+                      return (
+                        <li class={`flex flex-wrap items-baseline gap-x-3 gap-y-1 py-3 ${isRace ? 'text-white' : 'text-fog'}`}>
+                          <span class={`min-w-[6.5rem] font-display text-sm font-bold ${isRace ? 'text-gradient' : ''}`}>{s.name}</span>
+                          <span class="font-mono text-xs uppercase tracking-[0.18em] text-mist">{s.day}</span>
+                          <span class="ml-auto font-mono text-xs tracking-[0.12em]">
+                            {s.start}{s.end && <span class="text-mist"> – {s.end}</span>}
+                            {s.duration && <span class="text-mist/70"> · {s.duration}</span>}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                  {next.data.sessionsNote && (
+                    <p class="mt-3 font-mono text-[0.65rem] leading-relaxed text-mist/80">{next.data.sessionsNote}</p>
+                  )}
+                </div>
+              )}
             </div>
           </>
         )}

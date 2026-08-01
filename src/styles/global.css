@@ -739,6 +739,15 @@ body.no-scroll {
 .cd-digit > .cd-cur {
   display: inline-block;
   will-change: transform, opacity;
+  /* Paint the gradient on the digit itself rather than inheriting the clip from
+     .cd-value. The digit is composited (will-change, and again while the flip
+     animation runs), and an ancestor's background-clip:text does not paint
+     through a composited layer — so inheriting would render the digits
+     invisible, permanently and mid-flip. */
+  background-image: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .cd-digit.flip > .cd-cur {
   animation: cd-flip 0.42s var(--ease-out-quint);
